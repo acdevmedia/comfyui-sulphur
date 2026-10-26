@@ -46,7 +46,8 @@ def convert(d,info):
         for group in ('required','optional'):
             for field,spec in schema.get(group,{}).items():
                 kind=spec[0];opts=spec[1] if len(spec)>1 and isinstance(spec[1],dict) else {}
-                is_widget=(isinstance(kind,list) or kind in ('INT','FLOAT','STRING','BOOLEAN','COMBO')) and not opts.get('forceInput')
+                widget_kind=opts.get('widgetType',kind)
+                is_widget=(isinstance(widget_kind,list) or widget_kind in ('INT','FLOAT','STRING','BOOLEAN','COMBO')) and not opts.get('forceInput')
                 if is_widget:
                     val=next(widgets,None)
                     if field not in connected and val is not None:inputs[field]=val
