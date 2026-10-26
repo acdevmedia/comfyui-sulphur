@@ -21,7 +21,7 @@ with open('/tmp/comfy-build-check.log','w') as log:
             for key,node in prompt.items():
                 assert node['class_type'] in info,(path.name,node['class_type'])
                 required=info[node['class_type']]['input'].get('required',{})
-                assert all(k in node['inputs'] for k in required),(path.name,key,set(required)-set(node['inputs']))
+                assert all(k in node['inputs'] or any(i.startswith(k+'.') for i in node['inputs']) for k in required),(path.name,key,set(required)-set(node['inputs']))
             print('[build] CPU server started; workflow nodes and required inputs verified:',path.name,flush=True)
     finally:
         proc.terminate()

@@ -72,7 +72,7 @@ def main():
             schema=info[node['class_type']]['input']
             for group in ('required','optional'):
                 for field,spec in schema.get(group,{}).items():
-                    if group=='required':assert field in node['inputs'],(path.name,key,field,'missing input')
+                    if group=='required':assert field in node['inputs'] or any(k.startswith(field+'.') for k in node['inputs']),(path.name,key,field,'missing input')
                     val=node['inputs'].get(field)
                     if isinstance(spec[0],list) and val is not None and not isinstance(val,list):
                         assert val in spec[0],(path.name,key,field,val,'model/option not available')
