@@ -1,8 +1,8 @@
 # Sulphur 2 on Runpod
 
-A small extension of the official Runpod ComfyUI image with Sulphur's four official workflow graphs, persistent models, FFmpeg and SageAttention. ComfyUI is the interface.
+A small extension of the official Runpod ComfyUI image with Sulphur's four official workflow graphs, reusable on-disk models, FFmpeg and SageAttention. ComfyUI is the interface.
 
-Deploy `ghcr.io/acdevmedia/sulphur-2:2`, expose HTTP 8188, mount persistent storage at `/workspace`, and use an NVIDIA A100 80 GB. Set `HF_TOKEN` through Runpod Secrets if required. See [deployment instructions](docs/RUNPOD.md).
+Deploy `ghcr.io/acdevmedia/sulphur-comyfui:2`, expose HTTP 8188, allocate 200 GB container disk with no persistent volume, and use an NVIDIA A100 80 GB. Set `HF_TOKEN` to `{{ RUNPOD_SECRET_HUGGINGFACE_TOKEN }}` through the template. See [deployment instructions](docs/RUNPOD.md).
 
 ## Versions and builds
 
@@ -28,4 +28,8 @@ Defaults are 960×544 at 24 fps, 241 frames (LTX's 8n+1 requirement, approximate
 
 Local checks: `python3 scripts/check-source.py`, `python3 scripts/package-workflows.py`, `bash -n scripts/*.sh`. Build checks import torch, SageAttention and Hugging Face Hub and verify FFmpeg and the launch flag. GPU testing and measured timings are documented in `docs/VALIDATION.md`; never infer generation success from an image build.
 
-Source references: [Sulphur author instructions](https://huggingface.co/SulphurAI/Sulphur-2-base), [official Runpod template](https://github.com/runpod/containers/tree/main/official-templates/comfyui), [ComfyUI](https://github.com/Comfy-Org/ComfyUI). LTX-SETUP was inspected without modification; its persistent download, Triton SageAttention and Actions publishing patterns informed this setup. S3 backups are deliberately not enabled by default; download outputs or back up your volume before deletion.
+Source references: [Sulphur author instructions](https://huggingface.co/SulphurAI/Sulphur-2-base), [official Runpod template](https://github.com/runpod/containers/tree/main/official-templates/comfyui), [ComfyUI](https://github.com/Comfy-Org/ComfyUI). LTX-SETUP was inspected without modification; its resumable download, Triton SageAttention and Actions publishing patterns informed this setup. S3 backups are deliberately not enabled by default; download outputs or back up your volume before deletion.
+
+Model use is governed by the author-provided LTX-2 Community License, retained in `versions/2/LICENSE-model.txt`. Image publishing does not redistribute model weights.
+
+The requested Runpod template uses **container storage only**. `/workspace` is not persistent storage in that configuration. Back up videos and workflows before stopping, replacing or deleting a pod; models may need downloading again after container replacement.

@@ -9,7 +9,7 @@ ROOT=Path(__file__).resolve().parents[1]
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--dry-run',action='store_true');args=parser.parse_args()
-    payload={'name':'Sulphur 2 — ComfyUI SageAttention','imageName':'ghcr.io/acdevmedia/sulphur-2:2','category':'NVIDIA','containerDiskInGb':40,'volumeInGb':160,'volumeMountPath':'/workspace','isPublic':False,'isServerless':False,'ports':['8188/http','22/tcp'],'env':{'SULPHUR_MODEL_VARIANT':'fp8','COMFYUI_ATTENTION':'sage'},'readme':(ROOT/'docs/RUNPOD.md').read_text()}
+    payload={'name':'Sulfur 2 (LTX 2.3) ComfyUI Video One-Click','imageName':'ghcr.io/acdevmedia/sulphur-comyfui:2','category':'NVIDIA','containerDiskInGb':200,'volumeInGb':0,'volumeMountPath':'/workspace','isPublic':False,'isServerless':False,'ports':['8188/http'],'env':{'COMFYUI_ATTENTION':'sage','HF_HOME':'/workspace/.cache/huggingface','HF_TOKEN':'{{ RUNPOD_SECRET_HUGGINGFACE_TOKEN }}','SULPHUR_MODEL_VARIANT':'fp8','SULPHUR_VERSION':'2'},'readme':(ROOT/'docs/RUNPOD.md').read_text()}
     if args.dry_run:print(json.dumps(payload,indent=2));return
     values={}
     if (ROOT/'.env').exists():
@@ -20,8 +20,9 @@ def main():
     def request(path,method='GET',data=None):
         req=urllib.request.Request('https://rest.runpod.io/v1'+path,method=method,data=json.dumps(data).encode() if data is not None else None,headers={'Authorization':'Bearer '+key,'Content-Type':'application/json','User-Agent':'curl/8.0'})
         with urllib.request.urlopen(req,timeout=60) as response:return json.load(response)
-    matches=[t for t in request('/templates') if t['name']==payload['name']]
+    matches=[t for t in request('/templates') if t['name'] in (payload['name'],'Sulphur 2 — ComfyUI SageAttention')]
     assert len(matches)<=1,'Duplicate templates found; refusing ambiguous update'
-    result=request('/templates/'+matches[0]['id'],'PATCH',payload) if matches else request('/templates','POST',payload)
+    update={k:v for k,v in payload.items() if k not in ('category','isServerless')}
+    result=request('/templates/'+matches[0]['id'],'PATCH',update) if matches else request('/templates','POST',payload)
     print(json.dumps({k:result.get(k) for k in ('id','name','imageName','containerDiskInGb','volumeInGb','volumeMountPath','ports')},indent=2))
 if __name__=='__main__':main()

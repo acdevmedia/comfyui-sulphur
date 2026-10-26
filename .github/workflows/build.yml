@@ -33,7 +33,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Image name
         id: image
-        run: echo "name=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/sulphur-2" >> "$GITHUB_OUTPUT"
+        run: echo "name=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/sulphur-comyfui" >> "$GITHUB_OUTPUT"
       - name: Build, validate and publish
         id: build
         uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294

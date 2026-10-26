@@ -5,7 +5,7 @@ exec > >(tee -a /workspace/logs/sulphur-startup.log) 2>&1
 trap 'echo "[ERROR] Setup failed at line $LINENO (exit $?). See /workspace/logs/sulphur-startup.log. Fix the reported issue and restart; completed downloads are retained."' ERR
 echo "[startup] Sulphur 2 — $(date -Is)"
 echo '[startup] Steps: GPU check → attention kernel check → models → workflows → official Runpod startup → ComfyUI.'
-echo '[storage] Models, workflows, inputs and videos live under /workspace/runpod-slim. Keep the volume when replacing the pod. Deleting a pod volume deletes its data.'
+echo '[storage] Models, workflows, inputs and videos live under /workspace/runpod-slim on 200 GB container storage. There is no persistent volume. Download important outputs before stop/redeploy/delete; container replacement loses local data.'
 echo '[versions] ComfyUI v0.42.1; CUDA 12.8; PyTorch 2.10.0+cu128; SageAttention 1.0.6. No package installs or updates are performed by Sulphur at boot.'
 /opt/sulphur/scripts/validate.sh runtime
 /opt/sulphur/scripts/download-models.sh

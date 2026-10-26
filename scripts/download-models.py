@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Resumable, pinned single-file downloads directly into persistent model folders."""
+"""Resumable, pinned single-file downloads directly into model folders."""
 import hashlib
 import json
 import os
@@ -16,7 +16,7 @@ selected=[m for m in profile['models'] if m['variant'] in (variant,'all') and no
 missing=sum(max(0,m['size']-(root/m['directory']/Path(m['file']).name).stat().st_size) if (root/m['directory']/Path(m['file']).name).exists() else m['size'] for m in selected)
 free=shutil.disk_usage(root).free
 print(f'[models] Profile {variant}: {sum(m["size"] for m in selected)/1e9:.2f} GB required; {missing/1e9:.2f} GB missing; {free/1e9:.2f} GB free.',flush=True)
-if free<missing+10*10**9:raise SystemExit('[models] ERROR: Insufficient persistent disk space. Free space or increase the /workspace volume; 10 GB output reserve is required.')
+if free<missing+10*10**9:raise SystemExit('[models] ERROR: Insufficient container disk space. Free space or increase the container disk; 10 GB output reserve is required.')
 for index,m in enumerate(selected,1):
     dest=root/m['directory'];dest.mkdir(exist_ok=True,parents=True)
     target=dest/Path(m['file']).name

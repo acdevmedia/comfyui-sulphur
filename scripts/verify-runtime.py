@@ -16,7 +16,17 @@ def request(base,path,data=None):
     with urllib.request.urlopen(req,timeout=60) as response:return json.load(response)
 
 def convert(d,info):
-    if 'nodes' not in d:return copy.deepcopy(d)
+    if 'nodes' not in d:
+        prompt=copy.deepcopy(d)
+        keep=set()
+        def visit_api(key):
+            if key in keep:return
+            keep.add(key)
+            for val in prompt[key]['inputs'].values():
+                if isinstance(val,list) and len(val)==2 and isinstance(val[0],str) and val[0] in prompt:visit_api(val[0])
+        for key,node in prompt.items():
+            if info[node['class_type']].get('output_node'):visit_api(key)
+        return {k:v for k,v in prompt.items() if k in keep}
     nodes={str(n['id']):n for n in d['nodes']}
     links={l[0]:l for l in d['links']}
     def source(link_id):
@@ -74,6 +84,7 @@ def main():
                 for field,spec in schema.get(group,{}).items():
                     if group=='required':assert field in node['inputs'] or any(k.startswith(field+'.') for k in node['inputs']),(path.name,key,field,'missing input')
                     val=node['inputs'].get(field)
+                    if node['class_type']=='LoadImage' and field=='image':continue  # users supply their own image
                     if isinstance(spec[0],list) and val is not None and not isinstance(val,list):
                         assert val in spec[0],(path.name,key,field,val,'model/option not available')
         print('[runtime] Nodes, required inputs and model choices verified:',path.name,flush=True)
