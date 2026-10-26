@@ -12,7 +12,7 @@ profile=json.loads((APP/'versions/2/profile.json').read_text())
 variant=os.getenv('SULPHUR_MODEL_VARIANT','fp8')
 if variant not in ('fp8','bf16','native-distilled'):raise SystemExit('Unknown SULPHUR_MODEL_VARIANT; choose fp8, bf16, native-distilled.')
 root=Path('/workspace/runpod-slim/ComfyUI/models');root.mkdir(parents=True,exist_ok=True)
-selected=[m for m in profile['models'] if m['variant'] in (variant,'all')]
+selected=[m for m in profile['models'] if m['variant'] in (variant,'all') and not (variant=='native-distilled' and m['directory']=='loras')]
 missing=sum(max(0,m['size']-(root/m['directory']/Path(m['file']).name).stat().st_size) if (root/m['directory']/Path(m['file']).name).exists() else m['size'] for m in selected)
 free=shutil.disk_usage(root).free
 print(f'[models] Profile {variant}: {sum(m["size"] for m in selected)/1e9:.2f} GB required; {missing/1e9:.2f} GB missing; {free/1e9:.2f} GB free.',flush=True)
@@ -24,6 +24,15 @@ for index,m in enumerate(selected,1):
     signature={'sha256':m['sha256'],'size':m['size']}
     if target.exists() and target.stat().st_size==m['size'] and marker.exists() and json.loads(marker.read_text())==signature:
         print(f'[models {index}/{len(selected)}] Reusing verified {target.name}; no network download.',flush=True);continue
+    if target.exists() and target.stat().st_size==m['size']:
+        print(f'[models] Verifying existing {target.name} before any network download.',flush=True)
+        digest=hashlib.sha256()
+        with target.open('rb') as handle:
+            for block in iter(lambda:handle.read(16*1024*1024),b''):digest.update(block)
+        if digest.hexdigest()==m['sha256']:
+            marker.write_text(json.dumps(signature))
+            print(f'[models] Existing {target.name} passed SHA256; no download needed.',flush=True)
+            continue
     start=time.monotonic()
     print(f'[models {index}/{len(selected)}] Fetching/verifying {target.name} ({m["size"]/1e9:.2f} GB). Interrupted downloads resume on restart. Progress below is download progress, not video generation.',flush=True)
     # local_dir uses .cache/huggingface metadata and partials without a second blob copy.
@@ -58,6 +67,8 @@ for src in (APP/'versions/2/workflows').glob('*.json'):
                         for field,val in node['inputs'].items():
                             if val==[key,0]:node['inputs'][field]=source
                     del d[key]
-    target.write_text(json.dumps(d,indent=2)+'\n')
+    temporary=target.with_suffix('.tmp')
+    temporary.write_text(json.dumps(d,indent=2)+'\n')
+    temporary.replace(target)
     print(f'[workflows] Installed {target.name}; your existing workflows are preserved.',flush=True)
 print('[models] Model preparation complete. ComfyUI starts next.',flush=True)

@@ -1,8 +1,8 @@
 {
   "id": "1fc90497-0a6e-49da-a848-5e9a71dfae1c",
   "revision": 0,
-  "last_node_id": 70,
-  "last_link_id": 119,
+  "last_node_id": 71,
+  "last_link_id": 122,
   "nodes": [
     {
       "id": 3,
@@ -1038,7 +1038,7 @@
         {
           "name": "images",
           "type": "IMAGE",
-          "link": 56
+          "link": 120
         },
         {
           "name": "audio",
@@ -2188,7 +2188,8 @@
           "name": "INT",
           "type": "INT",
           "links": [
-            28
+            28,
+            122
           ]
         }
       ],
@@ -2244,7 +2245,8 @@
           "name": "INT",
           "type": "INT",
           "links": [
-            26
+            26,
+            121
           ]
         }
       ],
@@ -3014,6 +3016,63 @@
         "ltx-2.3-22b-distilled-lora-1.1_fro90_ceil72_condsafe.safetensors",
         0.5
       ]
+    },
+    {
+      "id": 71,
+      "type": "ImageScale",
+      "pos": [
+        2600,
+        500
+      ],
+      "size": [
+        300,
+        180
+      ],
+      "flags": {},
+      "order": 54,
+      "mode": 0,
+      "title": "Requested final dimensions",
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 56
+        },
+        {
+          "name": "width",
+          "type": "INT",
+          "widget": {
+            "name": "width"
+          },
+          "link": 121
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "widget": {
+            "name": "height"
+          },
+          "link": 122
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            120
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        960,
+        544,
+        "disabled"
+      ]
     }
   ],
   "links": [
@@ -3357,7 +3416,7 @@
       56,
       43,
       0,
-      38,
+      71,
       0,
       "IMAGE"
     ],
@@ -3576,6 +3635,30 @@
       22,
       1,
       "IMAGE"
+    ],
+    [
+      120,
+      71,
+      0,
+      38,
+      0,
+      "IMAGE"
+    ],
+    [
+      121,
+      40,
+      0,
+      71,
+      1,
+      "INT"
+    ],
+    [
+      122,
+      25,
+      0,
+      71,
+      2,
+      "INT"
     ]
   ],
   "groups": [

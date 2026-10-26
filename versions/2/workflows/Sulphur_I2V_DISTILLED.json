@@ -470,7 +470,7 @@
         0
       ],
       "images": [
-        "73",
+        "75",
         0
       ],
       "audio": [
@@ -672,6 +672,25 @@
     "class_type": "VAEDecode",
     "_meta": {
       "title": "VAE Decode"
+    }
+  },
+  "75": {
+    "class_type": "ImageScale",
+    "inputs": {
+      "image": [
+        "73",
+        0
+      ],
+      "upscale_method": "lanczos",
+      "width": [
+        "40",
+        0
+      ],
+      "height": [
+        "25",
+        0
+      ],
+      "crop": "disabled"
     }
   }
 }

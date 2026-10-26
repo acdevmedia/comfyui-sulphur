@@ -1,8 +1,8 @@
 {
   "id": "400586e3-ede2-4b2e-9014-630a08674fa2",
   "revision": 0,
-  "last_node_id": 73,
-  "last_link_id": 140,
+  "last_node_id": 69,
+  "last_link_id": 142,
   "nodes": [
     {
       "id": 3,
@@ -986,7 +986,7 @@
         {
           "name": "images",
           "type": "IMAGE",
-          "link": 116
+          "link": 140
         },
         {
           "name": "audio",
@@ -1606,7 +1606,8 @@
           "type": "INT",
           "links": [
             25,
-            28
+            28,
+            142
           ]
         }
       ],
@@ -1654,7 +1655,8 @@
           "type": "INT",
           "links": [
             24,
-            26
+            26,
+            141
           ]
         }
       ],
@@ -3079,6 +3081,63 @@
         "ltx-2.3-22b-distilled-lora-1.1_fro90_ceil72_condsafe.safetensors",
         0.5
       ]
+    },
+    {
+      "id": 69,
+      "type": "ImageScale",
+      "pos": [
+        2600,
+        500
+      ],
+      "size": [
+        300,
+        180
+      ],
+      "flags": {},
+      "order": 55,
+      "mode": 0,
+      "title": "Requested final dimensions",
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 116
+        },
+        {
+          "name": "width",
+          "type": "INT",
+          "widget": {
+            "name": "width"
+          },
+          "link": 141
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "widget": {
+            "name": "height"
+          },
+          "link": 142
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            140
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        960,
+        544,
+        "disabled"
+      ]
     }
   ],
   "links": [
@@ -3590,7 +3649,7 @@
       116,
       68,
       0,
-      38,
+      69,
       0,
       "IMAGE"
     ],
@@ -3625,6 +3684,30 @@
       30,
       1,
       "STRING"
+    ],
+    [
+      140,
+      69,
+      0,
+      38,
+      0,
+      "IMAGE"
+    ],
+    [
+      141,
+      40,
+      0,
+      69,
+      1,
+      "INT"
+    ],
+    [
+      142,
+      25,
+      0,
+      69,
+      2,
+      "INT"
     ]
   ],
   "groups": [

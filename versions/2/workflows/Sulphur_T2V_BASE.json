@@ -1,8 +1,8 @@
 {
   "id": "8ab11aed-daff-4d6f-94cb-c8d9e88710ac",
   "revision": 0,
-  "last_node_id": 67,
-  "last_link_id": 112,
+  "last_node_id": 68,
+  "last_link_id": 115,
   "nodes": [
     {
       "id": 3,
@@ -1211,7 +1211,7 @@
         {
           "name": "images",
           "type": "IMAGE",
-          "link": 56
+          "link": 113
         },
         {
           "name": "audio",
@@ -2483,7 +2483,8 @@
           "type": "INT",
           "links": [
             25,
-            28
+            28,
+            115
           ]
         }
       ],
@@ -2531,7 +2532,8 @@
           "type": "INT",
           "links": [
             24,
-            26
+            26,
+            114
           ]
         }
       ],
@@ -3036,6 +3038,63 @@
         "ltx-2.3-22b-distilled-lora-1.1_fro90_ceil72_condsafe.safetensors",
         0.5
       ]
+    },
+    {
+      "id": 68,
+      "type": "ImageScale",
+      "pos": [
+        2600,
+        500
+      ],
+      "size": [
+        300,
+        180
+      ],
+      "flags": {},
+      "order": 54,
+      "mode": 0,
+      "title": "Requested final dimensions",
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 56
+        },
+        {
+          "name": "width",
+          "type": "INT",
+          "widget": {
+            "name": "width"
+          },
+          "link": 114
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "widget": {
+            "name": "height"
+          },
+          "link": 115
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            113
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        960,
+        544,
+        "disabled"
+      ]
     }
   ],
   "links": [
@@ -3427,7 +3486,7 @@
       56,
       43,
       0,
-      38,
+      68,
       0,
       "IMAGE"
     ],
@@ -3590,6 +3649,30 @@
       67,
       0,
       "MODEL"
+    ],
+    [
+      113,
+      68,
+      0,
+      38,
+      0,
+      "IMAGE"
+    ],
+    [
+      114,
+      40,
+      0,
+      68,
+      1,
+      "INT"
+    ],
+    [
+      115,
+      25,
+      0,
+      68,
+      2,
+      "INT"
     ]
   ],
   "groups": [

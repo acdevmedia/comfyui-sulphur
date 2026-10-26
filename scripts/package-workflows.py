@@ -32,6 +32,23 @@ def repair_ui(d):
                 if slot['name'] == 'vae' and slot.get('link') is not None:
                     for link in d['links']:
                         if link[0] == slot['link']: link[1:3] = [44,2]
+    # LTX floors half-height 272 to 256 internally. Normalize decoded frames
+    # to the requested final size without adding a separate upscaling pipeline.
+    nid=max(n['id'] for n in d['nodes'])+1
+    lid=max(l[0] for l in d['links'])+1
+    incoming=next(l for l in d['links'] if l[3]==38 and l[4]==0)
+    incoming[3:5]=[nid,0]
+    d['nodes'].append({'id':nid,'type':'ImageScale','pos':[2600,500],'size':[300,180],
+        'flags':{},'order':len(d['nodes']),'mode':0,'title':'Requested final dimensions',
+        'inputs':[{'name':'image','type':'IMAGE','link':incoming[0]},
+                  {'name':'width','type':'INT','widget':{'name':'width'},'link':lid+1},
+                  {'name':'height','type':'INT','widget':{'name':'height'},'link':lid+2}],
+        'outputs':[{'name':'IMAGE','type':'IMAGE','links':[lid]}],
+        'properties':{'Node name for S&R':'ImageScale'},
+        'widgets_values':['lanczos',960,544,'disabled']})
+    d['links'].extend([[lid,nid,0,38,0,'IMAGE'],[lid+1,40,0,nid,1,'INT'],[lid+2,25,0,nid,2,'INT']])
+    next(n for n in d['nodes'] if n['id']==38)['inputs'][0]['link']=lid
+    d['last_node_id']=nid;d['last_link_id']=lid+2
     # Rebuild output link lists after rewiring the optional preview VAE.
     for n in d['nodes']:
         for i,o in enumerate(n.get('outputs',[])):
@@ -61,4 +78,6 @@ for key in ('46','60','74'):
     del d[key]
 # An unused, incomplete decode node is exported by upstream; API validation rejects it.
 for key in ('43','58','65'):d.pop(key,None)
+d['75']={'class_type':'ImageScale','inputs':{'image':d['38']['inputs']['images'],'upscale_method':'lanczos','width':['40',0],'height':['25',0],'crop':'disabled'}}
+d['38']['inputs']['images']=['75',0]
 (P/'workflows/Sulphur_I2V_DISTILLED.json').write_text(json.dumps(d,indent=2)+'\n')
