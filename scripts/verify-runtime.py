@@ -31,6 +31,7 @@ def convert(d,info):
     links={l[0]:l for l in d['links']}
     def source(link_id):
         link=links[link_id];n=nodes[str(link[1])]
+        if n['type']=='Reroute':return source(n['inputs'][0]['link'])
         if n.get('mode',0)==4:
             candidates=[i for i in n.get('inputs',[]) if i['type']==link[5] and i.get('link') is not None]
             if not candidates:raise ValueError(f'Cannot bypass node {n["id"]}')
@@ -39,7 +40,7 @@ def convert(d,info):
         return [str(link[1]),link[2]]
     prompt={}
     for key,n in nodes.items():
-        if n.get('mode',0) in (2,4):continue
+        if n.get('mode',0) in (2,4) or n['type']=='Reroute':continue
         typ=n['type'];schema=info[typ]['input'];widgets=iter(n.get('widgets_values',[]));inputs={}
         connected={i['name']:i for i in n.get('inputs',[]) if i.get('link') is not None}
         for group in ('required','optional'):

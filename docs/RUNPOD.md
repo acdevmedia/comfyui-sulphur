@@ -2,7 +2,7 @@
 
 Use template **Sulfur 2 (LTX 2.3) ComfyUI Video One-Click**, image `ghcr.io/acdevmedia/sulphur-comyfui:2`. Allocate **200 GB container disk only**, with no pod volume or network volume. The default models occupy about 40.3 GB. `/workspace` is a normal directory on container disk in this configuration.
 
-Container storage is temporary: files are reused on a normal process/container restart while that disk remains intact, but are lost when Runpod replaces or removes the container disk (including pod deletion, and potentially stop/resume or image replacement). Download outputs before stopping/redeploying the pod. This intentionally follows the requested container-only layout; it provides no container-volume guarantee.
+Container storage is temporary: files are reused on a normal process/container restart while that disk remains intact, but are lost when Runpod replaces or removes the container disk (including pod deletion, and potentially stop/resume or image replacement). Download outputs before stopping/redeploying the pod. This intentionally follows the requested container-only layout; it provides no persistent-storage guarantee.
 
 Select A100 SXM4 80 GB, HTTP port `8188`, and optionally SSH `22/tcp`. No Runpod or GitHub API credentials belong in the pod. The template sets `HF_TOKEN={{ RUNPOD_SECRET_HUGGINGFACE_TOKEN }}`, matching the existing LTX template. Ensure that Runpod Secret exists in your account. Environment names are uppercase and listed alphabetically. Protect access to ComfyUI using Runpod's available access controls; ComfyUI itself does not provide authentication here.
 
