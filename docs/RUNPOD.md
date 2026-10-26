@@ -4,7 +4,7 @@ Use `ghcr.io/acdevmedia/sulphur-2:2`. Allocate 200 GB total: 40 GB container dis
 
 Select A100 SXM4 80 GB, HTTP port `8188`, and optionally SSH `22/tcp`. No Runpod or GitHub API credentials belong in the pod. Supply only `HF_TOKEN` when authenticated Hugging Face access is necessary. Protect access to ComfyUI using Runpod's available access controls; ComfyUI itself does not provide authentication here.
 
-First boot verifies GPU and SageAttention, checks free space, downloads only missing pinned files, validates hashes, and installs workflows into `/workspace/runpod-slim/ComfyUI/user/default/workflows/Sulphur/2/`. Open Connect → HTTP 8188 after the READY log. First launch includes model download time. Choose I2V distilled or T2V distilled first. Upload an image for I2V and enter your prompt.
+First boot verifies GPU and SageAttention, checks free space, downloads only missing pinned files, validates hashes, and installs workflows into `/workspace/runpod-slim/ComfyUI/user/default/workflows/Sulphur/2/<variant>/`. Open Connect → HTTP 8188 after the READY log. First launch includes model download time. Choose I2V distilled or T2V distilled first. Upload an image for I2V and enter your prompt.
 
 Settings: `SULPHUR_MODEL_VARIANT=fp8` (default), `bf16`, or `native-distilled`; `HF_HOME=/workspace/.cache/huggingface`. Set `COMFYUI_ATTENTION=pytorch` on the first boot to compare attention backends. Once the launch file exists, edit `/workspace/runpod-slim/comfyui_args.txt`: replace `--use-sage-attention` with `--use-pytorch-cross-attention`, or reverse it, then restart. The file is user-owned and is never overwritten. SageAttention's kernel validation still runs so a broken installation is reported.
 

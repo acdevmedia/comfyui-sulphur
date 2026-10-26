@@ -58,5 +58,12 @@
       "size": 9447702218,
       "sha256": "aaca463d11e6d8d2a4bdb0d6299214c15ef78a3f73e0ef8113d5a9d0219b3f6d"
     }
-  ]
+  ],
+  "base_image": "runpod/comfyui:1.4.1-comfyuiv0.35.0-cuda12.8@sha256:d411ebacf3fdbc98ded7f78f06ac12aae20c08041cde79ab08173c156d04aae5",
+  "python_version": "3.12",
+  "torch_version": "2.10.0+cu128",
+  "cuda_version": "12.8",
+  "frontend_version": "1.55.18",
+  "kjnodes_commit": "92783f23cf9df6a57ca4c5e035b4714ac0e2bcb4",
+  "workflow_revision": "65587bbb38c700622f9434a16e732c8b280c115e"
 }

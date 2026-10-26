@@ -19,6 +19,6 @@ RUN curl -fsSL https://github.com/Comfy-Org/ComfyUI/archive/63be2f9b82ad0dac88a7
     python3 -m pip freeze > /opt/sulphur-python-lock.txt
 COPY scripts /opt/sulphur/scripts
 COPY versions /opt/sulphur/versions
-RUN chmod +x /opt/sulphur/scripts/*.sh && /opt/sulphur/scripts/validate.sh build
+RUN chmod +x /opt/sulphur/scripts/*.sh && /opt/sulphur/scripts/validate.sh build && python3 /opt/sulphur/scripts/check-build-server.py
 EXPOSE 8188
 ENTRYPOINT ["/opt/sulphur/scripts/entrypoint.sh"]
