@@ -1,0 +1,50 @@
+name: Build and publish Sulphur 2
+on:
+  push:
+    branches: [develop, main]
+    tags: ['v2.*']
+  workflow_dispatch:
+permissions:
+  contents: read
+  packages: write
+concurrency:
+  group: sulphur-2-publish
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
+      - name: Validate source
+        run: |
+          bash -n scripts/*.sh
+          python3 scripts/check-source.py
+          python3 scripts/package-workflows.py
+          git diff --exit-code -- versions/2/workflows
+      - name: Free build disk
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+          df -h /
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069
+      - uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Image name
+        id: image
+        run: echo "name=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/sulphur-2" >> "$GITHUB_OUTPUT"
+      - name: Build, validate and publish
+        id: build
+        uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294
+        with:
+          context: .
+          platforms: linux/amd64
+          push: true
+          tags: |
+            ${{ steps.image.outputs.name }}:2
+            ${{ steps.image.outputs.name }}:sha-${{ github.sha }}
+          provenance: true
+          sbom: true
+      - name: Record published digest
+        run: echo '${{ steps.image.outputs.name }}@${{ steps.build.outputs.digest }}' >> "$GITHUB_STEP_SUMMARY"

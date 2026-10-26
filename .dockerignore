@@ -1,0 +1,7 @@
+*
+!Dockerfile
+!scripts/
+!scripts/**
+!versions/
+!versions/**
+versions/*/upstream/

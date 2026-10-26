@@ -1,0 +1,62 @@
+{
+  "version": "2",
+  "comfyui_version": "v0.42.1",
+  "comfyui_commit": "63be2f9b82ad0dac88a7ceaa28a9cf3154125a18",
+  "sageattention_version": "1.0.6",
+  "models": [
+    {
+      "repo": "SulphurAI/Sulphur-2-base",
+      "revision": "65587bbb38c700622f9434a16e732c8b280c115e",
+      "file": "sulphur_dev_fp8mixed.safetensors",
+      "directory": "checkpoints",
+      "variant": "fp8",
+      "size": 29161842846,
+      "sha256": "41c999575859c528ff108022246a5524960a778c18742696971c9b0aadb4f70f"
+    },
+    {
+      "repo": "SulphurAI/Sulphur-2-base",
+      "revision": "65587bbb38c700622f9434a16e732c8b280c115e",
+      "file": "sulphur_dev_bf16.safetensors",
+      "directory": "checkpoints",
+      "variant": "bf16",
+      "size": 46139885414,
+      "sha256": "330d6c138eebeeaf6c420ae50d346dec8ceb0f873ef1760aa5a26fe06b0e3918"
+    },
+    {
+      "repo": "SulphurAI/Sulphur-2-base",
+      "revision": "65587bbb38c700622f9434a16e732c8b280c115e",
+      "file": "sulphur_distil_bf16.safetensors",
+      "directory": "checkpoints",
+      "variant": "native-distilled",
+      "size": 46139885414,
+      "sha256": "4337658df84399cca4265044b034975b039a3fdcf750038e7932f330921369a4"
+    },
+    {
+      "repo": "SulphurAI/Sulphur-2-base",
+      "revision": "65587bbb38c700622f9434a16e732c8b280c115e",
+      "file": "distill_loras/ltx-2.3-22b-distilled-lora-1.1_fro90_ceil72_condsafe.safetensors",
+      "directory": "loras",
+      "variant": "all",
+      "size": 662072824,
+      "sha256": "e970f64a2ce5469491fb1714a3fa72c8b606fa82affff0531e836dbc91d31f34"
+    },
+    {
+      "repo": "Lightricks/LTX-2.3",
+      "revision": "c1521179de480464f366a98a9d9b2acc4cc097b9",
+      "file": "ltx-2.3-spatial-upscaler-x2-1.1.safetensors",
+      "directory": "latent_upscale_models",
+      "variant": "all",
+      "size": 995743560,
+      "sha256": "5f416311fa8172b65af67530758964708d29a317b830d689a51143b7f91913ed"
+    },
+    {
+      "repo": "Comfy-Org/ltx-2",
+      "revision": "ccde4ba417d7900669fd56dd292a883cee11ff37",
+      "file": "split_files/text_encoders/gemma_3_12B_it_fp4_mixed.safetensors",
+      "directory": "text_encoders",
+      "variant": "all",
+      "size": 9447702218,
+      "sha256": "aaca463d11e6d8d2a4bdb0d6299214c15ef78a3f73e0ef8113d5a9d0219b3f6d"
+    }
+  ]
+}
