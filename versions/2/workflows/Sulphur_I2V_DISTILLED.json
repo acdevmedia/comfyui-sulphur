@@ -551,11 +551,11 @@
     "inputs": {
       "filename_prefix": "video/LTX_2.3_t2v",
       "format": "auto",
-      "codec": "auto",
       "video": [
         "38",
         0
-      ]
+      ],
+      "format.codec": "auto"
     },
     "class_type": "SaveVideo",
     "_meta": {

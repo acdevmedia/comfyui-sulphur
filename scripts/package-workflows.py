@@ -78,6 +78,7 @@ for key in ('46','60','74'):
     del d[key]
 # An unused, incomplete decode node is exported by upstream; API validation rejects it.
 for key in ('43','58','65'):d.pop(key,None)
+d['45']['inputs']['format.codec']=d['45']['inputs'].pop('codec')
 d['75']={'class_type':'ImageScale','inputs':{'image':d['38']['inputs']['images'],'upscale_method':'lanczos','width':['40',0],'height':['25',0],'crop':'disabled'}}
 d['38']['inputs']['images']=['75',0]
 (P/'workflows/Sulphur_I2V_DISTILLED.json').write_text(json.dumps(d,indent=2)+'\n')

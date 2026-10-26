@@ -56,6 +56,11 @@ def convert(d,info):
                 if field in connected:inputs[field]=source(connected[field]['link'])
         # Dynamic ComfyMathExpression sockets do not appear in the fixed schema.
         for field,slot in connected.items():inputs[field]=source(slot['link'])
+        if typ=='SaveVideo':
+            saved=n.get('widgets_values',[])
+            inputs.update(filename_prefix=saved[0],format=saved[1])
+            inputs['format.codec']=saved[2]
+            inputs.pop('codec',None)
         prompt[key]={'class_type':typ,'inputs':inputs}
     # Only send nodes contributing to actual outputs, excluding unused author experiments.
     keep=set()
