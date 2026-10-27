@@ -47,9 +47,18 @@ def flatten(data):
             if origin == -10:  # subgraph input: follow the instance's input in the parent graph
                 inst, parent_resolve = parent
                 name = graph['inputs'][slot]['name']
-                inp = next(i for i in inst['inputs'] if i['name'] == name)
-                return parent_resolve(inp['link']) if inp.get('link') is not None else ('value', _widget_value(inst, name))
+                inp = next((i for i in inst.get('inputs',[]) if i['name'] == name),None)
+                if inp and inp.get('link') is not None:return parent_resolve(inp['link'])
+                value=_widget_value(inst,name)
+                if value is None:
+                    _,_,_,target,target_slot,_=links[link_id]
+                    value=_widget_value(nodes[target],nodes[target]['inputs'][target_slot]['name'])
+                return ('value',value)
             node = nodes[origin]
+            if node['type']=='Reroute':return resolve(node['inputs'][0]['link'])
+            if node.get('mode')==4:
+                candidates=[i for i in node.get('inputs',[]) if i.get('link') is not None and (i.get('type') in (links[link_id][5],'*') or links[link_id][5] in str(i.get('type','')).split(','))]
+                if candidates:return resolve(candidates[0]['link'])
             if node['type'] in PRIMITIVES:
                 value_input = next((i for i in node.get('inputs', []) if i['name'] == 'value'), None)
                 if value_input and value_input.get('link') is not None:
@@ -62,6 +71,7 @@ def flatten(data):
             return ('node', path + (origin,), slot)
 
         for node in graph.get('nodes', []):
+            if node.get('mode') in (2,4):continue
             if node['type'] in defs:
                 walk(defs[node['type']], path + (node['id'],), (node, resolve))
             elif node['type'] not in PRIMITIVES and node['type'] not in ('MarkdownNote', 'Note', 'Reroute'):

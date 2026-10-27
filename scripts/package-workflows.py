@@ -33,6 +33,15 @@ def fields(schema,values,prefix=''):
                 yield name,spec,value,widget
 
 def to_ui(api,title):
+    api=copy.deepcopy(api)
+    next_id=max(map(int,api))+1
+    for source in list(api.values()):
+        typ=source['class_type']
+        for field,spec,value,widget in list(fields(SCHEMA[typ]['input'],source['inputs'])):
+            if field in source['inputs'] and not widget and value is not None and not isinstance(value,list):
+                kind='PrimitiveBoolean' if isinstance(value,bool) else 'PrimitiveInt' if isinstance(value,int) else 'PrimitiveFloat' if isinstance(value,float) else 'PrimitiveStringMultiline' if isinstance(value,str) else None
+                if kind:
+                    key=str(next_id);next_id+=1;api[key]={'class_type':kind,'inputs':{'value':value}};source['inputs'][field]=[key,0]
     d={'id':title,'last_node_id':max(map(int,api)),'last_link_id':0,'nodes':[],'links':[],'groups':[],'config':{},'extra':{'ds':{'scale':0.75,'offset':[20,70]}},'version':0.4}
     nodes={};pending=[]
     for order,(key,source) in enumerate(api.items()):
@@ -60,6 +69,8 @@ def to_ui(api,title):
     return d
 
 def package(path):
+    catalog=json.loads((P/'workflow-catalog.json').read_text()) if (P/'workflow-catalog.json').exists() else {}
+    if path.name in catalog:return package_extra(path,catalog[path.name])
     api=json.loads(path.read_text());title=('Image to Video' if 'I2V' in path.name else 'Text to Video')+' — '+('Distilled' if 'DISTILLED' in path.name else 'Base')
     d=to_ui(api,title);nodes={n['id']:n for n in d['nodes']}
     # Keep input selection, the prompt and the finished video on the canvas.
@@ -82,6 +93,26 @@ def package(path):
     d['groups']=[]
     output_name={'Sulphur_I2V_DISTILLED.json':'01_Sulphur_Image_to_Video_Distilled.json','Sulphur_T2V_DISTILLED.json':'02_Sulphur_Text_to_Video_Distilled.json','Sulphur_I2V_BASE.json':'03_Sulphur_Image_to_Video_Base.json','Sulphur_T2V_BASE.json':'04_Sulphur_Text_to_Video_Base.json'}[path.name]
     (P/'workflows'/output_name).write_text(json.dumps(d,indent=2)+'\n')
+
+def package_extra(path,entry):
+    api=json.loads(path.read_text());d=to_ui(api,entry['title']);nodes={n['id']:n for n in d['nodes']}
+    keep_types={'LoadImage','LoadVideo','LoadAudio','SaveVideo','SaveAudioAdvanced','LTXVSparseTrackEditor'}
+    keep={n['id'] for n in d['nodes'] if n['type'] in keep_types}
+    prompt_id=entry.get('prompt_id')
+    if prompt_id is not None:keep.add(prompt_id)
+    for key,label in entry.get('input_labels',{}).items():nodes[int(key)]['title']=label
+    if prompt_id in nodes:nodes[prompt_id].update(title='Prompt — describe the result',size=[500,200])
+    fold_into_panel(d,'Shot settings — '+entry['title'],keep,entry['controls'])
+    input_y=250
+    for n in d['nodes']:
+        if n['id']==prompt_id:n['pos']=[0,0]
+        elif n['type'] in ('LoadImage','LoadVideo','LoadAudio','LTXVSparseTrackEditor'):
+            n['pos']=[0,input_y];n['size']=[390,250];input_y+=300
+        elif n['type'].startswith('Save'):
+            n['pos']=[1110,0];n['size']=[580,540];n['title']='Finished result — preview and download'
+        else:n.update(pos=[550,0],size=[500,640],color='#24364b',bgcolor='#172331')
+    d['groups']=[]
+    (P/'workflows'/entry['file']).write_text(json.dumps(d,indent=2)+'\n')
 
 if __name__=='__main__':
     for path in sorted((P/'api').glob('*.json')):package(path)

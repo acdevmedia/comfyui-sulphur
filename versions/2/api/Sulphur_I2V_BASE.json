@@ -530,7 +530,7 @@
         "43",
         0
       ],
-      "upscale_method": "lanczos",
+      "upscale_method": "bilinear",
       "width": [
         "40",
         0

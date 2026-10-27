@@ -114,6 +114,8 @@ Names are uppercase and listed alphabetically in the template:
 - **`SULPHUR_MODEL_VARIANT=fp8`** — default model selection; optional choices are described below.
 - **`SULPHUR_VERSION=2`** — identifies this image's packaged version.
 
+Runpod pods report every host CPU but enforce a smaller CPU quota (about 20 CPUs on A100 pods). At startup, Sulphur sets `OMP_NUM_THREADS` and `MKL_NUM_THREADS` to that quota. Without this cap, PyTorch starts one thread per host core and gets throttled, and CPU-side steps such as resizing frames and saving the video become about 10× slower. To choose your own value, set `OMP_NUM_THREADS` in the template.
+
 After the first launch, `/workspace/runpod-slim/comfyui_args.txt` is user-owned. To change attention, replace `--use-sage-attention` with `--use-pytorch-cross-attention`, or reverse the change, then restart ComfyUI. Changing the environment variable does not overwrite an existing arguments file.
 
 ### Optional model variants

@@ -1,0 +1,74 @@
+{
+  "Sulphur_video_ltx2_3_flf2v.json": {
+    "title": "First and Last Frame to Video",
+    "file": "05_Sulphur_First_and_Last_Frame_to_Video.json",
+    "prompt_id": 9004,
+    "controls": [
+      {
+        "label": "Width",
+        "source": 9000
+      },
+      {
+        "label": "Height",
+        "source": 9001
+      },
+      {
+        "label": "Frames (8n + 1)",
+        "source": 9002
+      },
+      {
+        "label": "FPS",
+        "source": 9003
+      },
+      {
+        "label": "Negative prompt",
+        "source": 9005
+      },
+      {
+        "label": "CFG",
+        "source": 9006
+      },
+      {
+        "label": "Seed",
+        "source": 9007
+      }
+    ],
+    "source": "video_ltx2_3_flf2v"
+  },
+  "Sulphur_video_ltx2_3_ia2v.json": {
+    "title": "Image and Audio to Video",
+    "file": "06_Sulphur_Image_and_Audio_to_Video.json",
+    "prompt_id": 9004,
+    "controls": [
+      {
+        "label": "Width",
+        "source": 9000
+      },
+      {
+        "label": "Height",
+        "source": 9001
+      },
+      {
+        "label": "Frames (8n + 1)",
+        "source": 9002
+      },
+      {
+        "label": "FPS",
+        "source": 9003
+      },
+      {
+        "label": "Negative prompt",
+        "source": 9005
+      },
+      {
+        "label": "CFG",
+        "source": 9006
+      },
+      {
+        "label": "Seed",
+        "source": 9007
+      }
+    ],
+    "source": "video_ltx2_3_ia2v"
+  }
+}
