@@ -1,143 +1,165 @@
-# Sulfur 2 (LTX 2.3) — ComfyUI Video One-Click
+# Sulphur 2 for ComfyUI on Runpod
 
-Create videos from a text prompt or a starting image, with generated audio, using **Sulphur 2** inside ComfyUI on Runpod.
+Turn a prompt, a picture or a soundtrack into a video with sound. This is **Sulphur 2**, a fine-tune of LTX 2.3, ready to run in ComfyUI on a Runpod GPU.
 
-This template prepares the models and four workflows for you. Use an **NVIDIA A100 80 GB** for the intended setup. The default is **960 × 544**, **24 frames per second**, and approximately **10 seconds** of video. You can change the prompt, seed, length and other settings in ComfyUI.
+Start a pod, wait for the models to download, and open a workflow. Each workflow is a tidy canvas: a box for your prompt, a box for your image if the workflow uses one, a **Shot settings** panel, and the finished video. You don't need to touch any wiring.
 
-**Image:** `ghcr.io/acdevmedia/sulphur-comyfui:2`  
-**Storage:** 200 GB container disk; no persistent volume  
-**Open ComfyUI:** Runpod **Connect → ComfyUI / HTTP 8188**
+| | |
+|---|---|
+| **GPU** | NVIDIA A100 80 GB (other GPUs with enough VRAM can work too) |
+| **Default shot** | 960 × 544, 24 fps, 241 frames (about 10 seconds), with audio |
+| **Speed** | About 40 seconds for a 10-second clip once the models are loaded (A100, Text to Video Distilled) |
+| **Storage** | 200 GB container disk. About 40 GB of it is models |
+| **Image** | `ghcr.io/acdevmedia/sulphur-comyfui:2` |
+| **Template** | [Deploy on Runpod](https://console.runpod.io/deploy?template=b551wbs9zm) |
 
-## 1. Add your Hugging Face secret
+---
 
-Do this **before starting a pod**:
+## Getting started
 
-1. Sign in to [Hugging Face](https://huggingface.co/) and create a token with read access in [Access Tokens](https://huggingface.co/settings/tokens).
-2. In your Runpod account, open **Secrets** and create a secret named **`HUGGINGFACE_TOKEN`**. Paste your Hugging Face token as its value.
-3. The template's environment variable **`HF_TOKEN`** is already set to **`{{ RUNPOD_SECRET_HUGGINGFACE_TOKEN }}`**. Leave that reference in place so Runpod supplies the secret when the pod starts.
-4. If Hugging Face asks you to accept a model's terms or request access, complete that on the relevant model page using the same account.
+### 1. Add your Hugging Face token (one time)
 
-Do not put your token in a prompt, workflow, GitHub file or public log. GitHub and Runpod API keys are not needed inside the pod.
+The models download from Hugging Face, so the pod needs your token.
 
-## 2. Deploy and open ComfyUI
+1. Create a **read** token in your [Hugging Face access tokens](https://huggingface.co/settings/tokens).
+2. In Runpod, open **Secrets** and add one named **`HUGGINGFACE_TOKEN`**. Paste the token as its value.
+3. That's all. The template already reads it through `HF_TOKEN={{ RUNPOD_SECRET_HUGGINGFACE_TOKEN }}`, so leave that line as it is.
+
+If Hugging Face asks you to accept a model's terms, accept them with the same account. Keep the token out of prompts, workflows and screenshots.
+
+### 2. Start a pod
 
 1. Open the [Runpod template](https://console.runpod.io/deploy?template=b551wbs9zm).
-2. Select **A100 SXM4 80 GB** and check the displayed hourly price before deploying.
-3. Keep **200 GB container disk** and **no volume storage**. The only application port required is **8188 HTTP**.
-4. Start the pod and watch its logs. The first start checks the GPU and SageAttention, downloads the models, verifies the files, and prepares ComfyUI. Downloads total about **40.3 GB**, so the interface will not be ready immediately.
-5. Wait for **“ComfyUI is READY on port 8188”**, then use **Connect → ComfyUI / HTTP 8188**.
+2. Pick **A100 SXM4 80 GB** and check the hourly price.
+3. Keep the **200 GB container disk**. You don't need a volume.
+4. Deploy, then open the pod's logs.
 
-The log explains each stage and reports file sizes, available space and download progress. Download progress is separate from video-generation progress.
+The first start checks the GPU, downloads about 40 GB of models and verifies each file. On our test pod this took about a minute and a half. When you see **"ComfyUI is READY on port 8188"**, click **Connect → HTTP 8188**.
 
-## 3. Make a video
+### 3. Make your first video
 
-In ComfyUI's workflow browser, look under **Sulphur → 2 → fp8**:
+Open the **Workflows** sidebar in ComfyUI. The Sulphur workflows are numbered:
 
-- **I2V Distilled:** start with an image. Upload/select your image and enter a prompt.
-- **T2V Distilled:** start with a text prompt. This is a good first workflow to try.
-- **I2V Base:** image-to-video with the author's longer sampling setup.
-- **T2V Base:** text-to-video with the author's longer sampling setup.
+| Workflow | You provide | Good for |
+|---|---|---|
+| **01 Image to Video — Distilled** | an image and a prompt | Bringing a still to life, fast. **Start here** if you have an image |
+| **02 Text to Video — Distilled** | a prompt | A shot from words alone, fast. **Start here** otherwise |
+| **03 Image to Video — Base** | an image and a prompt | The author's full-length sampling: slower, for when you want more steps |
+| **04 Text to Video — Base** | a prompt | Same as 03, from text |
+| **05 First and Last Frame to Video** | two images and a prompt | Animating the move between a start frame and an end frame |
+| **06 Image and Audio to Video** | an image, an audio clip and a prompt | Making a picture move in time with your own sound |
 
-**Distilled** workflows use fewer sampling steps and are the preferred starting point. The first generation also loads large models into GPU memory; later runs can reuse them. The I2V distilled source is supplied in ComfyUI's API format; ComfyUI can import it and reconstruct its graph.
+Type your prompt, upload any images or audio, and click **Run**. The video and its audio appear in the **Finished video** box, where you can play or download it.
 
-Set your prompt and seed, then run the workflow. Audio is connected by default. Videos are saved in ComfyUI's output folder and can be downloaded from the result preview. On the container filesystem, that folder is `/workspace/runpod-slim/ComfyUI/output`.
+**Distilled** workflows use the author's speed-up adapter and only a few sampling steps, so they're the quickest way to try ideas. **Base** workflows take longer.
 
-The default length is **241 frames**, about **10 seconds at 24 fps**. LTX uses frame counts of **8n + 1**: examples include 121, 241 and 481 frames. Longer clips are allowed, subject to available GPU memory; there is no imposed ten-second limit.
+### Tips
 
-## What gets downloaded?
+- **Clip length:** set **Frames** in Shot settings. LTX wants **8n + 1** frames: 121 is about 5 seconds, 241 about 10 and 481 about 20 at 24 fps. There's no ten-second cap; longer clips just need more GPU memory and time.
+- **Seeds:** change the **Seed** for a new take of the same prompt. Keep it fixed when you only want to adjust the prompt.
+- **Changing the prompt is cheap:** re-reading a new prompt takes about 2 seconds. Most of each run is the video itself.
+- **The first run is slower** because it loads the models into GPU memory. Later runs reuse them.
+- **Negative prompt:** describes what you don't want, such as blur or flicker. Each workflow ships with a sensible one.
 
-The default setup downloads **four files**, approximately **40.3 GB total**. Sizes below use decimal GB, as hosting services commonly do.
+---
 
-- **Sulphur dev FP8 checkpoint — 29.16 GB**  
-  `sulphur_dev_fp8mixed.safetensors`  
-  The main video model. It also supplies the video VAE, audio VAE and connector weights used by these workflows.
-- **Distillation LoRA — 0.66 GB**  
-  `ltx-2.3-22b-distilled-lora-1.1_fro90_ceil72_condsafe.safetensors`  
-  The author's compatible acceleration adapter for the dev checkpoint.
-- **Gemma text encoder — 9.45 GB**  
-  `gemma_3_12B_it_fp4_mixed.safetensors`  
-  Converts your written prompt into the representation the video model uses.
-- **LTX 2.3 spatial upscaler — 1.00 GB**  
-  `ltx-2.3-spatial-upscaler-x2-1.1.safetensors`  
-  Used by the author's two-stage workflow to reach the requested final size.
+## Save your work
 
-The main checkpoint and distillation adapter come from [SulphurAI](https://huggingface.co/SulphurAI/Sulphur-2-base). The encoder comes from [Comfy-Org](https://huggingface.co/Comfy-Org/ltx-2), and the spatial upscaler comes from [Lightricks](https://huggingface.co/Lightricks/LTX-2.3).
+**This template uses temporary storage only.** The 200 GB disk holds the models, your uploads and your videos, and it may not survive a pod stop, replacement, image upgrade or deletion.
 
-The template does **not** download the whole model repository, the separate Sulphur fine-tuning LoRA, prompt-enhancer models, or every precision variant. Large model files are downloaded to your pod; they are not included in the container image or GitHub repository.
+**Download any videos and edited workflows you want to keep before you stop the pod.** If the disk is lost, a new pod downloads the models again automatically.
 
-## Keep your videos safe
+Videos are saved in `/workspace/runpod-slim/ComfyUI/output` inside the pod.
 
-**This template uses temporary container storage only.** The 200 GB disk holds the application, models, inputs and outputs. Model files use about 40.3 GB; the application and container also use space.
+---
 
-Completed downloads are reused while the same container disk remains available, and interrupted downloads can resume. **Do not rely on that disk surviving a pod stop, replacement, image upgrade or deletion.** Download important videos, images and edited workflows before those actions. A replacement container may need to download the models again.
+## What's been done to make this work well
 
-## Changes made to the official workflows
+### Fixes to the original workflows
 
-The four graphs come from the model author's official workflows. Their sampler choices, sigma schedules, CFG settings, seed controls, negative prompts and audio connections are retained.
+The four Sulphur workflows started as the author's official files on [Hugging Face](https://huggingface.co/SulphurAI/Sulphur-2-base). The samplers, sigma schedules, CFG values, negative prompts and audio connections are kept exactly as the author set them. These changes were needed to make them run properly here:
 
-The setup makes these compatibility changes:
+- **The right model.** They load the Sulphur dev FP8 checkpoint instead of the original LTX checkpoint names.
+- **No double fine-tuning.** The old `sulphur_final` LoRA is switched off, because the Sulphur checkpoint already includes that training. Applying it again would overcook the result.
+- **Fixed file names.** The distillation LoRA and spatial upscaler point to files that actually exist.
+- **No missing nodes.** Two image-resize helpers from custom nodes that aren't installed were replaced with native ComfyUI nodes. Your starting image is fitted and centre-cropped to the shot size.
+- **No extra downloads.** The sampling preview uses the VAE inside the checkpoint instead of a separate preview VAE.
+- **The size you asked for.** LTX rounds the half-size first pass, so the final frames are resized slightly to land exactly on your chosen width and height.
+- **Works with current ComfyUI.** The video-save settings were updated for the pinned ComfyUI release.
+- **One attention switch.** The per-workflow attention patches are bypassed, so SageAttention (below) is controlled in one place for every workflow.
+- **A cleaner canvas.** The node graph is folded into a single **Shot settings** panel, with only the prompt, inputs and finished video left on the canvas. Everything is still there: open the panel to see the full graph.
 
-- Selects the Sulphur dev FP8 checkpoint instead of the original LTX checkpoint names.
-- Bypasses the old `sulphur_final` fine-tuning LoRAs: that fine-tuning is already included in the Sulphur checkpoint and must not be applied twice.
-- Repairs outdated distillation-LoRA and upscaler filenames.
-- Enables SageAttention through ComfyUI's launch settings and bypasses per-graph attention patches so the backend can be changed in one place.
-- Replaces two unavailable image-resize helpers with native ComfyUI nodes. Starting images are fitted and center-cropped to the requested default size.
-- Uses the checkpoint VAE for the optional preview instead of downloading a separate tiny preview VAE.
-- Corrects the final frame size after LTX rounds the half-resolution latent dimensions. The default saved frame is 960 × 544; this is a size correction, not an additional enhancement pipeline.
-- Updates API-format video-saving inputs for the pinned ComfyUI release.
+Workflows **05** and **06** are adapted from Lightricks' official LTX 2.3 examples and set up the same way, with the Sulphur model and the same Shot settings panel.
 
-There is no added prompt enhancer, moderation service, custom video interface or additional model family. The author's two-stage latent-upscaling controls remain in the graphs; no separate output-upscaling pipeline is added.
+### Speed
+
+- **SageAttention.** ComfyUI starts with `--use-sage-attention`, a faster attention kernel. At every start, the pod runs a real SageAttention kernel on the GPU and says plainly in the log if it fails, rather than quietly falling back.
+- **CPU threads that fit the pod.** Runpod pods report every CPU on the host (192 on A100 machines) but only let a container use about 20. Left alone, PyTorch started 96 threads and was constantly throttled, so saving the video and resizing frames ran about 10× too slowly. The pod now sizes its thread pools to the real limit. With the same workflow and settings, a 10-second Text to Video Distilled clip went from **124 seconds to about 40**, and the video save step alone went from **62 seconds to 2**.
+- **Faster final resize.** The last resize before saving uses bilinear scaling on the whole clip, instead of resizing each frame one by one with Lanczos on the CPU.
+- **Quick, safe downloads.** Models download straight into ComfyUI's folders, with no second cached copy. Each file is checked against a SHA256 checksum, interrupted downloads resume, and verified files are never downloaded twice.
+- **Nothing updates at boot.** ComfyUI and its packages are built into the image, so starts are predictable and nothing changes under you.
+
+---
+
+## What gets downloaded
+
+Four files, about **40.3 GB** in total:
+
+| File | Size | What it does |
+|---|---|---|
+| `sulphur_dev_fp8mixed.safetensors` | 29.16 GB | The Sulphur video model. It also contains the video VAE, audio VAE and connector weights |
+| `gemma_3_12B_it_fp4_mixed.safetensors` | 9.45 GB | The text encoder that reads your prompt |
+| `ltx-2.3-spatial-upscaler-x2-1.1.safetensors` | 1.00 GB | Doubles the first, half-size pass up to full size |
+| `ltx-2.3-22b-distilled-lora-1.1_fro90_ceil72_condsafe.safetensors` | 0.66 GB | The author's speed-up adapter for the Distilled workflows |
+
+They come from [SulphurAI](https://huggingface.co/SulphurAI/Sulphur-2-base), [Comfy-Org](https://huggingface.co/Comfy-Org/ltx-2) and [Lightricks](https://huggingface.co/Lightricks/LTX-2.3). The whole model repository, other precisions and prompt-enhancer models are **not** downloaded. Model weights are never stored in the container image or in this repository.
+
+---
 
 ## If something goes wrong
 
-- **The interface is not ready:** check the pod logs. On first start, model downloads must finish before ComfyUI opens.
-- **A download is denied:** check the Runpod secret name, the `HF_TOKEN` reference, your token's read permissions, and any model-access requirements on Hugging Face.
-- **There is not enough space:** keep the 200 GB container allocation, remove files you no longer need, or start with a clean disk. The downloader requires 10 GB of free space beyond missing model files as an output reserve.
-- **I2V reports a missing image:** upload/select your own starting image; the author's example filename is not downloaded.
-- **An attention or CUDA check fails:** the log identifies the failed check. Verify that the pod has a compatible NVIDIA GPU. The setup reports SageAttention failure explicitly.
+All startup messages are saved to `/workspace/logs/sulphur-startup.log` inside the pod.
 
-The combined startup log is `/workspace/logs/sulphur-startup.log` **inside the pod**. Existing user workflows are preserved; packaged workflows are installed only when absent.
+- **ComfyUI isn't ready yet:** on first start, the models must finish downloading first. The log shows progress, and download progress isn't video progress.
+- **A download is refused:** check that the Runpod secret is named `HUGGINGFACE_TOKEN`, that your token has read access, and that you've accepted any model terms on Hugging Face.
+- **Not enough space:** keep the 200 GB disk. The downloader also keeps 10 GB free for your videos.
+- **"Missing image" on an Image to Video workflow:** upload your own image. The author's example image isn't included.
+- **An attention or CUDA check fails:** the log names the failed check. Make sure the pod has an NVIDIA GPU.
+- **You updated the image but a workflow looks old:** your existing workflows are never overwritten. Rename or delete the old file, then restart the pod to get the new version.
 
-## Technical details
+---
 
-**Pinned software:** ComfyUI **v0.42.1**, frontend **1.55.18**, Python **3.12**, CUDA **12.8**, PyTorch **2.10.0+cu128**, SageAttention **1.0.6**. FFmpeg is included. The image extends the official Runpod ComfyUI image, pinned by digest. KJNodes supplies the author's sampling-preview control; unrelated custom-node bundles and ComfyUI-Manager are omitted.
+## Settings
 
-SageAttention uses Triton on the A100's SM80 architecture. Dependencies are installed during the GitHub Actions build. GPU-specific Triton kernel specialization occurs at runtime; no SageAttention CUDA extension or package installation is performed at pod startup. Startup executes a real kernel check. ComfyUI's own log must also confirm backend selection; installation alone does not establish a speed improvement.
+You can change these in the template's environment variables:
 
-### Environment settings
+| Variable | Default | What it does |
+|---|---|---|
+| `COMFYUI_ATTENTION` | `sage` | Attention backend for a fresh pod. Set `pytorch` to use PyTorch's built-in attention instead |
+| `HF_TOKEN` | `{{ RUNPOD_SECRET_HUGGINGFACE_TOKEN }}` | Your Hugging Face token, read from the Runpod secret |
+| `HF_HOME` | `/workspace/.cache/huggingface` | Hugging Face working folder |
+| `OMP_NUM_THREADS` | the pod's CPU limit | CPU threads for PyTorch. Set it only to override the automatic value |
+| `SULPHUR_MODEL_VARIANT` | `fp8` | Which main model to download (see below) |
 
-Names are uppercase and listed alphabetically in the template:
+**Switching attention on a running pod:** after the first start, ComfyUI's launch options live in `/workspace/runpod-slim/comfyui_args.txt`, and that file is yours. Swap `--use-sage-attention` for `--use-pytorch-cross-attention` (or back), then restart ComfyUI. Changing the environment variable later doesn't overwrite this file.
 
-- **`COMFYUI_ATTENTION=sage`** — default backend when creating a new launch-arguments file. `pytorch` selects PyTorch instead.
-- **`HF_HOME=/workspace/.cache/huggingface`** — Hugging Face working directory inside the container.
-- **`HF_TOKEN={{ RUNPOD_SECRET_HUGGINGFACE_TOKEN }}`** — resolves your Runpod secret at deployment.
-- **`SULPHUR_MODEL_VARIANT=fp8`** — default model selection; optional choices are described below.
-- **`SULPHUR_VERSION=2`** — identifies this image's packaged version.
+**Other model variants:**
 
-Runpod pods report every host CPU but enforce a smaller CPU quota (about 20 CPUs on A100 pods). At startup, Sulphur sets `OMP_NUM_THREADS` and `MKL_NUM_THREADS` to that quota. Without this cap, PyTorch starts one thread per host core and gets throttled, and CPU-side steps such as resizing frames and saving the video become about 10× slower. To choose your own value, set `OMP_NUM_THREADS` in the template.
+- `bf16`: the full-precision dev model (46.14 GB, about 57.2 GB of downloads in total).
+- `native-distilled`: the author's fully distilled model (46.14 GB, about 56.6 GB in total). Distillation is already built in, so the extra speed-up LoRA is switched off and the Base workflows aren't installed.
 
-After the first launch, `/workspace/runpod-slim/comfyui_args.txt` is user-owned. To change attention, replace `--use-sage-attention` with `--use-pytorch-cross-attention`, or reverse the change, then restart ComfyUI. Changing the environment variable does not overwrite an existing arguments file.
+Old model files stay on disk when you switch variants until you delete them, and the downloader checks for free space first.
 
-### Optional model variants
+---
 
-`bf16` replaces the main checkpoint with `sulphur_dev_bf16.safetensors` (**46.14 GB**), for about **57.2 GB** of model downloads in total.
+## For maintainers
 
-`native-distilled` uses `sulphur_distil_bf16.safetensors` (**46.14 GB**), for about **56.6 GB** total. It installs only distilled workflows and omits/disables the extra distillation LoRA, because distillation is already included.
+- **Pinned versions:** ComfyUI v0.42.1, frontend 1.55.18, Python 3.12, CUDA 12.8, PyTorch 2.10.0+cu128, SageAttention 1.0.6, with FFmpeg included. The image extends the official Runpod ComfyUI image, pinned by digest. Sulphur adds only two custom node packs, KJNodes and ComfyUI-LTXVideo. The full package list is in the image at `/opt/sulphur-python-lock.txt`.
+- **Builds run only on GitHub Actions.** Each build installs everything, starts a CPU-only ComfyUI and checks every workflow's nodes and inputs. It publishes `:2` plus an immutable `sha-<commit>` tag only if all of that passes, so a failed build never replaces `:2`.
+- **Where things live:** everything for this model version is in `versions/2/`: the author's original workflows, the repaired workflows, model sizes, checksums and pinned revisions. A future model version gets its own folder and tag.
+- **Upgrading a pod:** save your outputs, then redeploy with the newer `:2` image. Keep the previous digest if you might want to roll back.
+- **What's been tested:** see the [validation record](https://github.com/acdevmedia/comfyui-sulphur/blob/develop/docs/VALIDATION.md). A successful build doesn't prove that video generation works; only a GPU run does.
 
-These are optional alternatives, not additional default downloads. Each variant has a separate workflow subfolder. Changing variants keeps old model files until you remove them; the downloader checks available space before proceeding.
+[Source](https://github.com/acdevmedia/comfyui-sulphur) · [Builds](https://github.com/acdevmedia/comfyui-sulphur/actions) · [Model author's notes](https://huggingface.co/SulphurAI/Sulphur-2-base)
 
-### Reproducibility, builds and updates
-
-Version-specific assets live in the repository's `versions/2/` folder. That includes original workflows, repaired workflows, model byte sizes, SHA256 checksums and pinned source revisions. A future major model version belongs in a separate version folder and release tag.
-
-All container builds run **exclusively in GitHub Actions**. Builds install dependencies, test imports, start a CPU-only ComfyUI server, check the workflow nodes/inputs, and publish only after those checks pass. No local container builds are used.
-
-The moving release image is `ghcr.io/acdevmedia/sulphur-comyfui:2`; each published build also gets an immutable `sha-<commit>` tag. The image does not update ComfyUI or install Sulphur packages automatically at startup. To upgrade, first save your outputs and edited workflows, then deploy the newer `:2` image. Keep the previous image digest if you need to roll back.
-
-Downloads are pinned and checked against SHA256. Files go directly into ComfyUI's model folders without keeping a second full Hub blob-cache copy. Existing verified files are reused. Full installed Python package versions are recorded inside the image at `/opt/sulphur-python-lock.txt`.
-
-See the [validation record](https://github.com/acdevmedia/comfyui-sulphur/blob/develop/docs/VALIDATION.md) for what has actually been tested, including any GPU benchmarks or remaining limitations. Image-build success alone does not prove that video generation works.
-
-[Source code](https://github.com/acdevmedia/comfyui-sulphur) · [Builds](https://github.com/acdevmedia/comfyui-sulphur/actions) · [Model author's instructions](https://huggingface.co/SulphurAI/Sulphur-2-base)
-
-Model use is governed by the author's [LTX-2 Community License](https://github.com/acdevmedia/comfyui-sulphur/blob/develop/versions/2/LICENSE-model.txt). Model weights are not redistributed in the image.
+Model use is governed by the author's [LTX-2 Community License](https://github.com/acdevmedia/comfyui-sulphur/blob/develop/versions/2/LICENSE-model.txt). Model weights aren't redistributed in the image.
