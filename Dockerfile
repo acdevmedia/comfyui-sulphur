@@ -11,14 +11,21 @@ RUN curl -fsSL https://github.com/Comfy-Org/ComfyUI/archive/63be2f9b82ad0dac88a7
     mkdir -p /opt/comfyui-baked/custom_nodes/ComfyUI-KJNodes && \
     curl -fsSL https://github.com/kijai/ComfyUI-KJNodes/archive/92783f23cf9df6a57ca4c5e035b4714ac0e2bcb4.tar.gz | \
     tar xz --strip-components=1 -C /opt/comfyui-baked/custom_nodes/ComfyUI-KJNodes && \
+    mkdir -p /opt/comfyui-baked/custom_nodes/ComfyUI-LTXVideo && \
+    curl -fsSL https://github.com/Lightricks/ComfyUI-LTXVideo/archive/220e1d45aa0469f518e982102fca4dca92a61862.tar.gz | \
+    tar xz --strip-components=1 -C /opt/comfyui-baked/custom_nodes/ComfyUI-LTXVideo && \
     python3 -m pip install --no-cache-dir -c /opt/comfyui-runtime-constraints.txt \
     -r /opt/comfyui-baked/requirements.txt \
     -r /opt/comfyui-baked/custom_nodes/ComfyUI-KJNodes/requirements.txt \
-    'sageattention==1.0.6' 'huggingface_hub==0.36.0' && \
+    -r /opt/comfyui-baked/custom_nodes/ComfyUI-LTXVideo/requirements.txt \
+    'sageattention==1.0.6' 'huggingface_hub==0.36.0' 'transformers==4.57.6' 'diffusers==0.35.2' && \
     printf 'COMFYUI_VERSION=v0.42.1\nSULPHUR_VERSION=2\n' > /opt/comfyui-baked/.runpod-bundle-version && \
     python3 -m pip freeze > /opt/sulphur-python-lock.txt
 COPY scripts /opt/sulphur/scripts
 COPY versions /opt/sulphur/versions
-RUN chmod +x /opt/sulphur/scripts/*.sh && /opt/sulphur/scripts/validate.sh build && python3 /opt/sulphur/scripts/check-build-server.py
+ARG VCS_REF=development
+RUN printf "SULPHUR_BUNDLE=%s\n" "$VCS_REF" >> /opt/comfyui-baked/.runpod-bundle-version && \
+    sed -i 's/BAKED_NODES=(/BAKED_NODES=("ComfyUI-LTXVideo" /' /start.sh && \
+    chmod +x /opt/sulphur/scripts/*.sh && /opt/sulphur/scripts/validate.sh build && python3 /opt/sulphur/scripts/check-build-server.py
 EXPOSE 8188
 ENTRYPOINT ["/opt/sulphur/scripts/entrypoint.sh"]

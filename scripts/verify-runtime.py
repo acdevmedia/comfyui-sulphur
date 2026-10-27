@@ -16,6 +16,17 @@ def request(base,path,data=None):
     with urllib.request.urlopen(req,timeout=60) as response:return json.load(response)
 
 def convert(d,info):
+    if d.get('definitions',{}).get('subgraphs'):
+        from workflow_panels import flatten
+        flat=flatten(d)
+        names={path:':'.join(map(str,path)) for path in flat}
+        prompt={}
+        for path,(typ,widgets,inputs) in flat.items():
+            values={}
+            for field,val in inputs.items():
+                values[field]=val[1] if val[0]=='value' else [names[val[1]],val[2]]
+            prompt[names[path]]={'class_type':typ,'inputs':values}
+        return prompt
     if 'nodes' not in d:
         prompt=copy.deepcopy(d)
         keep=set()

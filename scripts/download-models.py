@@ -46,7 +46,7 @@ for index,m in enumerate(selected,1):
     marker.write_text(json.dumps(signature))
     print(f'[models] SHA256 verified {target.name}; elapsed {time.monotonic()-start:.1f}s.',flush=True)
 # Install versioned workflows once. Preserve all user edits across restarts.
-workflows=Path('/workspace/runpod-slim/ComfyUI/user/default/workflows/Sulphur/2')/variant;workflows.mkdir(parents=True,exist_ok=True)
+workflows=Path('/workspace/runpod-slim/ComfyUI/user/default/workflows');workflows.mkdir(parents=True,exist_ok=True)
 ckpt=next(m for m in selected if m['variant']==variant)['file']
 for src in (APP/'versions/2/workflows').glob('*.json'):
     target=workflows/src.name
@@ -54,11 +54,13 @@ for src in (APP/'versions/2/workflows').glob('*.json'):
     text=src.read_text().replace('sulphur_dev_fp8mixed.safetensors',ckpt)
     d=json.loads(text)
     if variant=='native-distilled':
-        if 'BASE' in src.name:continue
+        if 'Base' in src.name or 'BASE' in src.name:continue
         # This checkpoint already contains distillation. Never stack another distill LoRA.
         if 'nodes' in d:
-            for n in d['nodes']:
-                if n['type']=='LoraLoaderModelOnly':n['mode']=4
+            groups=[d]+d.get('definitions',{}).get('subgraphs',[])
+            for group in groups:
+                for n in group.get('nodes',[]):
+                    if n['type']=='LoraLoaderModelOnly' and 'distill' in str(n.get('widgets_values',[])).lower():n['mode']=4
         else:
             for key in list(d):
                 if d[key]['class_type']=='LoraLoaderModelOnly':

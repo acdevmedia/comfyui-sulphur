@@ -41,6 +41,7 @@ jobs:
         with:
           context: .
           platforms: linux/amd64
+          build-args: VCS_REF=${{ github.sha }}
           push: true
           tags: |
             ${{ steps.image.outputs.name }}:2

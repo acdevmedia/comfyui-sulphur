@@ -304,10 +304,7 @@
   },
   "25": {
     "inputs": {
-      "value": [
-        "69",
-        1
-      ]
+      "value": 544
     },
     "class_type": "PrimitiveInt",
     "_meta": {
@@ -334,7 +331,7 @@
   },
   "29": {
     "inputs": {
-      "value": "PROMPT GOES HERE, YOU CAN USE THE PROMPT ENHANCER EXTERNALLY\n\nThe prompt enhancer works with images through the mmporj, please use it"
+      "value": "A wide cinematic shot of a small sailboat crossing a calm lake at sunrise. Gentle wind and water sounds."
     },
     "class_type": "PrimitiveStringMultiline",
     "_meta": {
@@ -359,7 +356,10 @@
   },
   "31": {
     "inputs": {
-      "frame_rate": 24,
+      "frame_rate": [
+        "24",
+        0
+      ],
       "positive": [
         "30",
         0
@@ -494,10 +494,7 @@
   },
   "40": {
     "inputs": {
-      "value": [
-        "69",
-        0
-      ]
+      "value": 960
     },
     "class_type": "PrimitiveInt",
     "_meta": {
@@ -609,7 +606,7 @@
   },
   "67": {
     "inputs": {
-      "image": "Sulfur_Dust.webp"
+      "image": ""
     },
     "class_type": "LoadImage",
     "_meta": {
@@ -623,25 +620,19 @@
         0
       ],
       "upscale_method": "lanczos",
-      "width": 960,
-      "height": 544,
+      "width": [
+        "40",
+        0
+      ],
+      "height": [
+        "25",
+        0
+      ],
       "crop": "center"
     },
     "class_type": "ImageScale",
     "_meta": {
       "title": "Resize Image With Resolution"
-    }
-  },
-  "69": {
-    "inputs": {
-      "image": [
-        "68",
-        0
-      ]
-    },
-    "class_type": "GetImageSize",
-    "_meta": {
-      "title": "Get Image Size"
     }
   },
   "70": {

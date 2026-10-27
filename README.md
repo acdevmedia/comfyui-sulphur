@@ -38,7 +38,7 @@ In ComfyUI's workflow browser, look under **Sulphur → 2 → fp8**:
 - **I2V Base:** image-to-video with the author's longer sampling setup.
 - **T2V Base:** text-to-video with the author's longer sampling setup.
 
-**Distilled** workflows use fewer sampling steps and are the preferred starting point. The I2V distilled source is supplied in ComfyUI's API format; ComfyUI can import it and reconstruct its graph.
+**Distilled** workflows use fewer sampling steps and are the preferred starting point. The first generation also loads large models into GPU memory; later runs can reuse them. The I2V distilled source is supplied in ComfyUI's API format; ComfyUI can import it and reconstruct its graph.
 
 Set your prompt and seed, then run the workflow. Audio is connected by default. Videos are saved in ComfyUI's output folder and can be downloaded from the result preview. On the container filesystem, that folder is `/workspace/runpod-slim/ComfyUI/output`.
 

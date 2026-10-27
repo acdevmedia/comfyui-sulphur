@@ -11,6 +11,9 @@ for path in files:
         ids={n['id'] for n in d['nodes']}
         assert len(ids)==len(d['nodes'])
         assert all(l[1] in ids and l[3] in ids for l in d['links'])
+        for sg in d.get('definitions',{}).get('subgraphs',[]):
+            inner={n['id'] for n in sg['nodes']}|{-10,-20}
+            assert all(l['origin_id'] in inner and l['target_id'] in inner for l in sg['links'])
         for n in d['nodes']:
             if n['type']=='LoraLoaderModelOnly' and 'sulphur' in str(n.get('widgets_values',[])):assert n['mode']==4
     else:
