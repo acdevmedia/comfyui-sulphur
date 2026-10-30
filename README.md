@@ -1,5 +1,7 @@
 # Sulphur 2 for ComfyUI on Runpod
 
+[![Runpod](https://api.runpod.io/badge/acdevmedia/comfyui-sulphur)](https://console.runpod.io/hub/listing/acdevmedia/comfyui-sulphur)
+
 Turn a prompt, a picture or a soundtrack into a video with sound. This is **Sulphur 2**, a fine-tune of LTX 2.3, ready to run in ComfyUI on a Runpod GPU.
 
 Start a pod, wait for the models to download, and open a workflow. Each workflow is a tidy canvas: a box for your prompt, a box for your image if the workflow uses one, a **Shot settings** panel, and the finished video. You don't need to touch any wiring.
