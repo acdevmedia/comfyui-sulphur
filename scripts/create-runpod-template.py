@@ -9,7 +9,8 @@ ROOT=Path(__file__).resolve().parents[1]
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--dry-run',action='store_true');args=parser.parse_args()
-    payload={'name':'Sulfur 2 (LTX 2.3) ComfyUI Video One-Click','imageName':'ghcr.io/acdevmedia/sulphur-comyfui:2','category':'NVIDIA','containerDiskInGb':200,'volumeInGb':0,'volumeMountPath':'/workspace','isPublic':False,'isServerless':False,'ports':['8188/http'],'env':{'COMFYUI_ATTENTION':'sage','HF_HOME':'/workspace/.cache/huggingface','HF_TOKEN':'{{ RUNPOD_SECRET_HUGGINGFACE_TOKEN }}','SULPHUR_MODEL_VARIANT':'fp8','SULPHUR_VERSION':'2'},'readme':(ROOT/'README.md').read_text()}
+    payload=json.loads((ROOT/'config/runpod-template.json').read_text())
+    payload['readme']=(ROOT/'README.md').read_text()+'\n\n'+(ROOT/'docs/runpod-environment.md').read_text()
     if args.dry_run:print(json.dumps(payload,indent=2));return
     values={}
     if (ROOT/'.env').exists():

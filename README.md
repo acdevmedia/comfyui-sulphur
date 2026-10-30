@@ -165,3 +165,7 @@ Old model files stay on disk when you switch variants until you delete them, and
 [Source](https://github.com/acdevmedia/comfyui-sulphur) · [Builds](https://github.com/acdevmedia/comfyui-sulphur/actions) · [Model author's notes](https://huggingface.co/SulphurAI/Sulphur-2-base)
 
 Model use is governed by the author's [LTX-2 Community License](https://github.com/acdevmedia/comfyui-sulphur/blob/develop/versions/2/LICENSE-model.txt). Model weights aren't redistributed in the image.
+
+## Runpod environment reference
+
+See the [complete template environment reference](docs/runpod-environment.md) for every variable, its default, secret mapping, and Hub-specific differences. Defaults are synchronized from account template `b551wbs9zm`.

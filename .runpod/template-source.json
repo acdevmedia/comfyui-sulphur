@@ -1,0 +1,23 @@
+{
+  "templateId": "b551wbs9zm",
+  "templateName": "Sulfur 2 LTX 2.3 ComfyUI Video One-Click",
+  "imageName": "ghcr.io/acdevmedia/sulphur-comyfui:2",
+  "containerDiskInGb": 200,
+  "volumeMountPath": "/workspace",
+  "ports": [
+    "8188/http"
+  ],
+  "env": {
+    "COMFYUI_ATTENTION": "sage",
+    "HF_HOME": "/workspace/.cache/huggingface",
+    "HF_TOKEN": "{{ RUNPOD_SECRET_HUGGINGFACE_TOKEN }}",
+    "SULPHUR_MODEL_VARIANT": "fp8",
+    "SULPHUR_VERSION": "2"
+  },
+  "isPublic": true,
+  "startJupyter": null,
+  "startSsh": null,
+  "dockerEntrypoint": null,
+  "dockerStartCmd": null,
+  "volumeInGb": null
+}
