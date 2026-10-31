@@ -643,7 +643,7 @@
             },
             "widgets_values": [
               42,
-              "fixed"
+              "randomize"
             ],
             "widgets_values_named": {
               "noise_seed": 42
@@ -687,7 +687,7 @@
             },
             "widgets_values": [
               400910638816144,
-              "fixed"
+              "randomize"
             ],
             "widgets_values_named": {
               "noise_seed": 400910638816144

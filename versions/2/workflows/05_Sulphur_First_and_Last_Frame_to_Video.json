@@ -689,7 +689,7 @@
             },
             "widgets_values": [
               0,
-              "fixed"
+              "randomize"
             ],
             "widgets_values_named": {
               "noise_seed": 0

@@ -56,7 +56,7 @@ def to_ui(api,title):
                 fallback=options.get('default',0 if kind in ('INT','FLOAT') else '' if kind=='STRING' else False if kind=='BOOLEAN' else kind[0] if isinstance(kind,list) and kind else '')
                 n['widgets_values'].append(fallback if isinstance(value,list) else value)
                 n['widgets_values_named'][field]=fallback if isinstance(value,list) else value
-                if options.get('control_after_generate'):n['widgets_values'].append('fixed')
+                if options.get('control_after_generate'):n['widgets_values'].append('randomize')
             if isinstance(value,list):pending.append((n, len(n['inputs'])-1,value))
         for i,kind in enumerate(schema.get('output',[])):
             name=schema.get('output_name',schema['output'])[i]
