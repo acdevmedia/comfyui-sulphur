@@ -57,6 +57,15 @@
       "variant": "all",
       "size": 9447702218,
       "sha256": "aaca463d11e6d8d2a4bdb0d6299214c15ef78a3f73e0ef8113d5a9d0219b3f6d"
+    },
+    {
+      "repo": "joyfox/LTX-2.3-Transition-LORA",
+      "revision": "685118b10fdc2aea63b47bbc6c395fe8c602db53",
+      "file": "ltx2.3-transition.safetensors",
+      "directory": "loras",
+      "variant": "all",
+      "size": 390229424,
+      "sha256": "ba420d6fefafced8e317e2d6ff951b312b52f534377d016b491877a00b830d33"
     }
   ],
   "base_image": "runpod/comfyui:1.4.1-comfyuiv0.35.0-cuda12.8@sha256:d411ebacf3fdbc98ded7f78f06ac12aae20c08041cde79ab08173c156d04aae5",

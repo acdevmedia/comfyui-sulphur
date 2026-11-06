@@ -135,6 +135,12 @@ All startup messages are saved to `/workspace/logs/sulphur-startup.log` inside t
 
 The picture you start from is always used whole. **Width** and **Height** set the frame's area, and so the render time and memory; the image sets its shape. A typed size that already matches the image is used as it is. A head-to-toe portrait on the default 960 × 544 renders at 576 × 896 with the whole figure in frame, not a slice of it, and a square image at 736 × 736. Nothing is outpainted: the video takes the image's shape rather than generating new sides. In First and Last Frame the first frame sets the shape; a last frame with different proportions is centre-cropped to match.
 
+## Optional LoRAs
+
+First and Last Frame has a **Transition LoRA strength** control, 0 by default, using the [LTX-2.3 Transition LoRA](https://huggingface.co/joyfox/LTX-2.3-Transition-LORA) (Apache 2.0). Set it to 1 and add its trigger phrase from the model card to help one shot flow into the next. It was trained for guidance around 4, so check results on the distilled settings.
+
+These are pinned and downloaded at first boot, never baked into the image. At strength 0 ComfyUI skips a LoRA entirely, so it costs nothing while it is off.
+
 ## Browse and download outputs
 
 **Connect → HTTP 3923 / Copyparty** opens a gallery of everything in `/workspace/runpod-slim/ComfyUI/output`, newest first. Sign in with the values of Runpod Secrets `COPYPARTY_USERNAME` and `COPYPARTY_SECRET`. Select files to download them, or a whole folder as a ZIP. It is read-only: nothing can be uploaded, changed or deleted, and if either secret is missing it stays off without affecting ComfyUI. The log is `/workspace/logs/copyparty.log`.

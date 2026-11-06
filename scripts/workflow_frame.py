@@ -33,3 +33,20 @@ def fit_frame(api):
     api[fit_w] = {'inputs': {'expression': WIDTH, **values}, 'class_type': 'ComfyMathExpression', '_meta': {'title': 'Fit Frame Width'}}
     api[fit_h] = {'inputs': {'expression': HEIGHT, **values}, 'class_type': 'ComfyMathExpression', '_meta': {'title': 'Fit Frame Height'}}
     return api
+
+
+TRANSITION = 'ltx2.3-transition.safetensors'
+TRANSITION_NODE = '9100'
+
+
+def add_transition_lora(api):
+    """Add the scene transition LoRA after the model's own, off at strength 0; idempotent."""
+    if TRANSITION_NODE in api:
+        return api
+    tail = next(key for key, node in api.items() if node['class_type'] == 'LoraLoaderModelOnly')
+    for node in api.values():
+        if node['inputs'].get('model') == [tail, 0]:
+            node['inputs']['model'] = [TRANSITION_NODE, 0]
+    api[TRANSITION_NODE] = {'inputs': {'model': [tail, 0], 'lora_name': TRANSITION, 'strength_model': 0.0},
+                            'class_type': 'LoraLoaderModelOnly', '_meta': {'title': 'Scene transition LoRA'}}
+    return api

@@ -175,7 +175,7 @@
         0
       ],
       "model": [
-        "9011",
+        "9100",
         0
       ],
       "positive": [
@@ -540,6 +540,20 @@
     "class_type": "ComfyMathExpression",
     "_meta": {
       "title": "Fit Frame Height"
+    }
+  },
+  "9100": {
+    "inputs": {
+      "model": [
+        "9011",
+        0
+      ],
+      "lora_name": "ltx2.3-transition.safetensors",
+      "strength_model": 0.0
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "Scene transition LoRA"
     }
   }
 }

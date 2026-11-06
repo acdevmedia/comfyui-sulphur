@@ -1,7 +1,7 @@
 {
   "id": "First and Last Frame to Video",
-  "last_node_id": 9023,
-  "last_link_id": 81,
+  "last_node_id": 9109,
+  "last_link_id": 84,
   "nodes": [
     {
       "id": 100,
@@ -32,7 +32,7 @@
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            78
+            81
           ]
         },
         {
@@ -70,7 +70,7 @@
         {
           "name": "video",
           "type": "VIDEO",
-          "link": 80
+          "link": 83
         },
         {
           "name": "filename_prefix",
@@ -158,7 +158,7 @@
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            77
+            80
           ]
         },
         {
@@ -207,7 +207,7 @@
           "name": "STRING",
           "type": "STRING",
           "links": [
-            79
+            82
           ]
         }
       ],
@@ -223,7 +223,7 @@
       "title": "Prompt \u2014 describe the result"
     },
     {
-      "id": 9023,
+      "id": 9109,
       "type": "d1034822-4d5d-5352-a3dc-3ce239613ae1",
       "pos": [
         550,
@@ -308,25 +308,35 @@
           "link": null
         },
         {
+          "label": "Transition LoRA strength",
+          "localized_name": "transition_lora_strength",
+          "name": "transition_lora_strength",
+          "type": "FLOAT",
+          "widget": {
+            "name": "transition_lora_strength"
+          },
+          "link": null
+        },
+        {
           "label": "First frame",
           "localized_name": "input",
           "name": "input",
           "type": "IMAGE",
-          "link": 77
+          "link": 80
         },
         {
           "label": "Last frame",
           "localized_name": "input_2",
           "name": "input_2",
           "type": "IMAGE",
-          "link": 78
+          "link": 81
         },
         {
           "label": "Prompt \u2014 describe the result",
           "localized_name": "text",
           "name": "text",
           "type": "STRING",
-          "link": 79
+          "link": 82
         }
       ],
       "outputs": [
@@ -336,7 +346,7 @@
           "name": "VIDEO",
           "type": "VIDEO",
           "links": [
-            80
+            83
           ]
         }
       ],
@@ -352,7 +362,8 @@
         24,
         "blurry, low quality, distorted motion, flickering",
         1.0,
-        42
+        42,
+        0.0
       ],
       "widgets_values_named": {
         "width": 960,
@@ -361,7 +372,8 @@
         "fps": 24,
         "negative_prompt": "blurry, low quality, distorted motion, flickering",
         "cfg": 1.0,
-        "seed": 42
+        "seed": 42,
+        "transition_lora_strength": 0.0
       },
       "color": "#24364b",
       "bgcolor": "#172331"
@@ -369,32 +381,32 @@
   ],
   "links": [
     [
-      77,
+      80,
       130,
       0,
-      9023,
-      7,
-      "IMAGE"
-    ],
-    [
-      78,
-      100,
-      0,
-      9023,
+      9109,
       8,
       "IMAGE"
     ],
     [
-      79,
+      81,
+      100,
+      0,
+      9109,
+      9,
+      "IMAGE"
+    ],
+    [
+      82,
       9004,
       0,
-      9023,
-      9,
+      9109,
+      10,
       "STRING"
     ],
     [
-      80,
-      9023,
+      83,
+      9109,
       0,
       129,
       0,
@@ -420,8 +432,8 @@
         "version": 1,
         "state": {
           "lastGroupId": 0,
-          "lastNodeId": 9023,
-          "lastLinkId": 81,
+          "lastNodeId": 9109,
+          "lastLinkId": 84,
           "lastRerouteId": 0
         },
         "revision": 0,
@@ -433,7 +445,7 @@
             -400,
             0,
             160,
-            240
+            260
           ]
         },
         "outputNode": {
@@ -451,7 +463,7 @@
             "name": "width",
             "type": "INT",
             "linkIds": [
-              70
+              71
             ],
             "localized_name": "width",
             "label": "Width",
@@ -465,7 +477,7 @@
             "name": "height",
             "type": "INT",
             "linkIds": [
-              71
+              72
             ],
             "localized_name": "height",
             "label": "Height",
@@ -479,7 +491,7 @@
             "name": "frames_8n_1",
             "type": "INT",
             "linkIds": [
-              72
+              73
             ],
             "localized_name": "frames_8n_1",
             "label": "Frames (8n + 1)",
@@ -493,7 +505,7 @@
             "name": "fps",
             "type": "INT",
             "linkIds": [
-              73
+              74
             ],
             "localized_name": "fps",
             "label": "FPS",
@@ -507,7 +519,7 @@
             "name": "negative_prompt",
             "type": "STRING",
             "linkIds": [
-              74
+              75
             ],
             "localized_name": "negative_prompt",
             "label": "Negative prompt",
@@ -521,7 +533,7 @@
             "name": "cfg",
             "type": "FLOAT",
             "linkIds": [
-              75
+              76
             ],
             "localized_name": "cfg",
             "label": "CFG",
@@ -535,13 +547,27 @@
             "name": "seed",
             "type": "INT",
             "linkIds": [
-              76
+              77
             ],
             "localized_name": "seed",
             "label": "Seed",
             "pos": [
               0,
               120
+            ]
+          },
+          {
+            "id": "f3b8c640-80be-5724-9feb-6d912460d900",
+            "name": "transition_lora_strength",
+            "type": "FLOAT",
+            "linkIds": [
+              79
+            ],
+            "localized_name": "transition_lora_strength",
+            "label": "Transition LoRA strength",
+            "pos": [
+              0,
+              140
             ]
           },
           {
@@ -556,7 +582,7 @@
             "label": "First frame",
             "pos": [
               0,
-              140
+              160
             ]
           },
           {
@@ -570,7 +596,7 @@
             "label": "Last frame",
             "pos": [
               0,
-              160
+              180
             ]
           },
           {
@@ -584,7 +610,7 @@
             "label": "Prompt \u2014 describe the result",
             "pos": [
               0,
-              180
+              200
             ]
           }
         ],
@@ -2223,7 +2249,7 @@
                 "name": "MODEL",
                 "type": "MODEL",
                 "links": [
-                  27
+                  70
                 ]
               }
             ],
@@ -2518,58 +2544,69 @@
             }
           },
           {
-            "id": 9016,
-            "type": "PrimitiveInt",
+            "id": 9100,
+            "type": "LoraLoaderModelOnly",
             "pos": [
-              -380,
-              200
+              0,
+              2100
             ],
             "size": [
-              300,
-              60
+              310,
+              160
             ],
             "flags": {},
-            "order": 0,
+            "order": 42,
             "mode": 0,
             "inputs": [
               {
-                "localized_name": "value",
-                "name": "value",
-                "type": "INT",
-                "widget": {
-                  "name": "value"
-                },
+                "name": "model",
+                "type": "MODEL",
                 "link": 70
+              },
+              {
+                "name": "lora_name",
+                "type": "COMBO",
+                "link": null,
+                "widget": {
+                  "name": "lora_name"
+                }
+              },
+              {
+                "name": "strength_model",
+                "type": "FLOAT",
+                "link": 78,
+                "widget": {
+                  "name": "strength_model"
+                }
               }
             ],
             "outputs": [
               {
-                "localized_name": "INT",
-                "name": "INT",
-                "type": "INT",
+                "name": "MODEL",
+                "type": "MODEL",
                 "links": [
-                  62,
-                  66
+                  27
                 ]
               }
             ],
-            "title": "Width",
             "properties": {
-              "Node name for S&R": "PrimitiveInt"
+              "Node name for S&R": "LoraLoaderModelOnly"
             },
             "widgets_values": [
-              960
+              "ltx2.3-transition.safetensors",
+              0.0
             ],
             "widgets_values_named": {
-              "value": 960
+              "lora_name": "ltx2.3-transition.safetensors",
+              "strength_model": 0.0
             }
           },
           {
-            "id": 9017,
+            "id": 9101,
             "type": "PrimitiveInt",
             "pos": [
               -380,
-              300
+              200
             ],
             "size": [
               300,
@@ -2595,28 +2632,28 @@
                 "name": "INT",
                 "type": "INT",
                 "links": [
-                  63,
-                  67
+                  62,
+                  66
                 ]
               }
             ],
-            "title": "Height",
+            "title": "Width",
             "properties": {
               "Node name for S&R": "PrimitiveInt"
             },
             "widgets_values": [
-              544
+              960
             ],
             "widgets_values_named": {
-              "value": 544
+              "value": 960
             }
           },
           {
-            "id": 9018,
+            "id": 9102,
             "type": "PrimitiveInt",
             "pos": [
               -380,
-              400
+              300
             ],
             "size": [
               300,
@@ -2642,6 +2679,53 @@
                 "name": "INT",
                 "type": "INT",
                 "links": [
+                  63,
+                  67
+                ]
+              }
+            ],
+            "title": "Height",
+            "properties": {
+              "Node name for S&R": "PrimitiveInt"
+            },
+            "widgets_values": [
+              544
+            ],
+            "widgets_values_named": {
+              "value": 544
+            }
+          },
+          {
+            "id": 9103,
+            "type": "PrimitiveInt",
+            "pos": [
+              -380,
+              400
+            ],
+            "size": [
+              300,
+              60
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "value",
+                "name": "value",
+                "type": "INT",
+                "widget": {
+                  "name": "value"
+                },
+                "link": 73
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "INT",
+                "name": "INT",
+                "type": "INT",
+                "links": [
                   3,
                   12
                 ]
@@ -2659,7 +2743,7 @@
             }
           },
           {
-            "id": 9019,
+            "id": 9104,
             "type": "PrimitiveInt",
             "pos": [
               -380,
@@ -2680,7 +2764,7 @@
                 "widget": {
                   "name": "value"
                 },
-                "link": 73
+                "link": 74
               }
             ],
             "outputs": [
@@ -2707,7 +2791,7 @@
             }
           },
           {
-            "id": 9020,
+            "id": 9105,
             "type": "PrimitiveStringMultiline",
             "pos": [
               -380,
@@ -2728,7 +2812,7 @@
                 "widget": {
                   "name": "value"
                 },
-                "link": 74
+                "link": 75
               }
             ],
             "outputs": [
@@ -2753,7 +2837,7 @@
             }
           },
           {
-            "id": 9021,
+            "id": 9106,
             "type": "PrimitiveFloat",
             "pos": [
               -380,
@@ -2774,7 +2858,7 @@
                 "widget": {
                   "name": "value"
                 },
-                "link": 75
+                "link": 76
               }
             ],
             "outputs": [
@@ -2799,7 +2883,7 @@
             }
           },
           {
-            "id": 9022,
+            "id": 9107,
             "type": "PrimitiveInt",
             "pos": [
               -380,
@@ -2820,7 +2904,7 @@
                 "widget": {
                   "name": "value"
                 },
-                "link": 76
+                "link": 77
               }
             ],
             "outputs": [
@@ -2842,6 +2926,52 @@
             ],
             "widgets_values_named": {
               "value": 42
+            }
+          },
+          {
+            "id": 9108,
+            "type": "PrimitiveFloat",
+            "pos": [
+              -380,
+              900
+            ],
+            "size": [
+              300,
+              60
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "value",
+                "name": "value",
+                "type": "FLOAT",
+                "widget": {
+                  "name": "value"
+                },
+                "link": 79
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "FLOAT",
+                "name": "FLOAT",
+                "type": "FLOAT",
+                "links": [
+                  78
+                ]
+              }
+            ],
+            "title": "Transition LoRA strength",
+            "properties": {
+              "Node name for S&R": "PrimitiveFloat"
+            },
+            "widgets_values": [
+              0.0
+            ],
+            "widgets_values_named": {
+              "value": 0.0
             }
           }
         ],
@@ -3017,7 +3147,7 @@
           },
           {
             "id": 27,
-            "origin_id": 9011,
+            "origin_id": 9100,
             "origin_slot": 0,
             "target_id": 111,
             "target_slot": 0,
@@ -3264,8 +3394,16 @@
             "type": "INT"
           },
           {
+            "id": 70,
+            "origin_id": 9011,
+            "origin_slot": 0,
+            "target_id": 9100,
+            "target_slot": 0,
+            "type": "MODEL"
+          },
+          {
             "id": 62,
-            "origin_id": 9016,
+            "origin_id": 9101,
             "origin_slot": 0,
             "target_id": 9014,
             "target_slot": 1,
@@ -3273,7 +3411,7 @@
           },
           {
             "id": 66,
-            "origin_id": 9016,
+            "origin_id": 9101,
             "origin_slot": 0,
             "target_id": 9015,
             "target_slot": 1,
@@ -3281,7 +3419,7 @@
           },
           {
             "id": 63,
-            "origin_id": 9017,
+            "origin_id": 9102,
             "origin_slot": 0,
             "target_id": 9014,
             "target_slot": 2,
@@ -3289,7 +3427,7 @@
           },
           {
             "id": 67,
-            "origin_id": 9017,
+            "origin_id": 9102,
             "origin_slot": 0,
             "target_id": 9015,
             "target_slot": 2,
@@ -3297,7 +3435,7 @@
           },
           {
             "id": 3,
-            "origin_id": 9018,
+            "origin_id": 9103,
             "origin_slot": 0,
             "target_id": 103,
             "target_slot": 0,
@@ -3305,7 +3443,7 @@
           },
           {
             "id": 12,
-            "origin_id": 9018,
+            "origin_id": 9103,
             "origin_slot": 0,
             "target_id": 106,
             "target_slot": 2,
@@ -3313,7 +3451,7 @@
           },
           {
             "id": 4,
-            "origin_id": 9019,
+            "origin_id": 9104,
             "origin_slot": 0,
             "target_id": 103,
             "target_slot": 1,
@@ -3321,7 +3459,7 @@
           },
           {
             "id": 15,
-            "origin_id": 9019,
+            "origin_id": 9104,
             "origin_slot": 0,
             "target_id": 107,
             "target_slot": 2,
@@ -3329,7 +3467,7 @@
           },
           {
             "id": 47,
-            "origin_id": 9019,
+            "origin_id": 9104,
             "origin_slot": 0,
             "target_id": 120,
             "target_slot": 1,
@@ -3337,7 +3475,7 @@
           },
           {
             "id": 44,
-            "origin_id": 9020,
+            "origin_id": 9105,
             "origin_slot": 0,
             "target_id": 119,
             "target_slot": 0,
@@ -3345,7 +3483,7 @@
           },
           {
             "id": 30,
-            "origin_id": 9021,
+            "origin_id": 9106,
             "origin_slot": 0,
             "target_id": 111,
             "target_slot": 3,
@@ -3353,72 +3491,88 @@
           },
           {
             "id": 2,
-            "origin_id": 9022,
+            "origin_id": 9107,
             "origin_slot": 0,
             "target_id": 102,
             "target_slot": 0,
             "type": "INT"
           },
           {
-            "id": 70,
-            "origin_id": -10,
+            "id": 78,
+            "origin_id": 9108,
             "origin_slot": 0,
-            "target_id": 9016,
-            "target_slot": 0,
-            "type": "INT"
+            "target_id": 9100,
+            "target_slot": 2,
+            "type": "FLOAT"
           },
           {
             "id": 71,
             "origin_id": -10,
-            "origin_slot": 1,
-            "target_id": 9017,
+            "origin_slot": 0,
+            "target_id": 9101,
             "target_slot": 0,
             "type": "INT"
           },
           {
             "id": 72,
             "origin_id": -10,
-            "origin_slot": 2,
-            "target_id": 9018,
+            "origin_slot": 1,
+            "target_id": 9102,
             "target_slot": 0,
             "type": "INT"
           },
           {
             "id": 73,
             "origin_id": -10,
-            "origin_slot": 3,
-            "target_id": 9019,
+            "origin_slot": 2,
+            "target_id": 9103,
             "target_slot": 0,
             "type": "INT"
           },
           {
             "id": 74,
             "origin_id": -10,
-            "origin_slot": 4,
-            "target_id": 9020,
-            "target_slot": 0,
-            "type": "STRING"
-          },
-          {
-            "id": 75,
-            "origin_id": -10,
-            "origin_slot": 5,
-            "target_id": 9021,
-            "target_slot": 0,
-            "type": "FLOAT"
-          },
-          {
-            "id": 76,
-            "origin_id": -10,
-            "origin_slot": 6,
-            "target_id": 9022,
+            "origin_slot": 3,
+            "target_id": 9104,
             "target_slot": 0,
             "type": "INT"
           },
           {
-            "id": 38,
+            "id": 75,
+            "origin_id": -10,
+            "origin_slot": 4,
+            "target_id": 9105,
+            "target_slot": 0,
+            "type": "STRING"
+          },
+          {
+            "id": 76,
+            "origin_id": -10,
+            "origin_slot": 5,
+            "target_id": 9106,
+            "target_slot": 0,
+            "type": "FLOAT"
+          },
+          {
+            "id": 77,
+            "origin_id": -10,
+            "origin_slot": 6,
+            "target_id": 9107,
+            "target_slot": 0,
+            "type": "INT"
+          },
+          {
+            "id": 79,
             "origin_id": -10,
             "origin_slot": 7,
+            "target_id": 9108,
+            "target_slot": 0,
+            "type": "FLOAT"
+          },
+          {
+            "id": 38,
+            "origin_id": -10,
+            "origin_slot": 8,
             "target_id": 117,
             "target_slot": 0,
             "type": "IMAGE"
@@ -3426,7 +3580,7 @@
           {
             "id": 61,
             "origin_id": -10,
-            "origin_slot": 7,
+            "origin_slot": 8,
             "target_id": 9013,
             "target_slot": 0,
             "type": "IMAGE"
@@ -3434,7 +3588,7 @@
           {
             "id": 41,
             "origin_id": -10,
-            "origin_slot": 8,
+            "origin_slot": 9,
             "target_id": 118,
             "target_slot": 0,
             "type": "IMAGE"
@@ -3442,7 +3596,7 @@
           {
             "id": 54,
             "origin_id": -10,
-            "origin_slot": 9,
+            "origin_slot": 10,
             "target_id": 124,
             "target_slot": 0,
             "type": "STRING"

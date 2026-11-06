@@ -31,6 +31,16 @@
       {
         "label": "Seed",
         "source": 9007
+      },
+      {
+        "label": "Transition LoRA strength",
+        "kind": "PrimitiveFloat",
+        "targets": [
+          [
+            9100,
+            "strength_model"
+          ]
+        ]
       }
     ],
     "source": "video_ltx2_3_flf2v",
