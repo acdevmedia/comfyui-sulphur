@@ -164,7 +164,7 @@ Every clip workflow renders one guided pass at the size in **Shot settings**, wi
 
 **The three gated LoRAs are optional.** They use the LTX-2 Community License, which needs a separate commercial licence for companies with revenue of $10 million a year or more. Open each link above and accept the terms with the Hugging Face account behind `HF_TOKEN`. The pod then fetches them at boot, about 1.96 GB in all. Without a token or an accepted licence it logs which ones it skipped and starts normally; only those workflows are affected. To fetch them on a running pod, run `python3 /opt/sulphur/scripts/download-models.py` in its terminal.
 
-Each LoRA is pinned to a revision and size in `versions/2/profile.json`. Hugging Face hides the SHA256 of a gated file until its licence is accepted, so those three are checked by size until a maintainer accepts them and runs `python3 scripts/pin-gated-models.py`, which reads `HF_TOKEN` from the shell or the ignored `.env` and fills in the hashes.
+Each LoRA is pinned to a revision, size and SHA256 in `versions/2/profile.json`. Hugging Face hides a gated file's hash until its licence is accepted, so to add another gated LoRA, set its `sha256` to `null`, accept the licence and run `python3 scripts/pin-gated-models.py`. It reads `HF_TOKEN` from the shell or the ignored `.env`, never prints it, and also confirms the hashes already pinned.
 
 Regenerate these four from their source with `python3 scripts/prepare-iclora-apis.py`, then `python3 scripts/package-workflows.py`.
 

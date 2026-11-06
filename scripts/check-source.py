@@ -25,8 +25,8 @@ for path in files:
                 if isinstance(v,list):assert v[0] in d
 p=json.loads((ROOT/'versions/2/profile.json').read_text())
 assert sum(x['size'] for x in p['models'] if x['variant'] in ('fp8','all'))<100e9
-# Hugging Face hides a gated file's hash without an accepted licence; scripts/pin-gated-models.py fills it in.
-assert all(len(x['revision'])==40 and (len(x['sha256'] or '')==64 or (x.get('gated') and x['sha256'] is None)) for x in p['models'])
+# Hugging Face hides a gated file's hash without an accepted licence; scripts/pin-gated-models.py fetches it.
+assert all(len(x['revision'])==40 and len(x['sha256'] or '')==64 for x in p['models'])
 assert not any(x.get('gated') and x['variant']!='all' for x in p['models'])
 gated_loras={x['file'] for x in p['models'] if x.get('gated')}
 print(f'PASS: {len(files)} workflow graphs; valid links, pinned assets, default model budget <100 GB.')
@@ -92,7 +92,7 @@ for name,lora in loras.items():
     assert (lora in gated_loras)==('This one needs a licence first' in catalog[api_name]['note']),api_name
 assert p['sphere_light_commit'] in (ROOT/'Dockerfile').read_text() and p['sphere_light_commit'] in (ROOT/'.runpod/Dockerfile').read_text()
 assert catalog['Sulphur_ic_lora_crossview.json']['controls'][-1]['label']=='IC-LoRA strength'
-print(f'PASS: {len(loras)} IC-LoRA graphs wired correctly; {sum(x["sha256"] is None for x in p["models"])} gated LoRA hashes still to pin.')
+print(f'PASS: {len(loras)} IC-LoRA graphs wired correctly.')
 
 # Exercise quota-aware thread sizing without importing torch or requiring a GPU.
 subprocess.run(["bash",str(ROOT/"scripts/test-cpu-threads.sh")],check=True)
