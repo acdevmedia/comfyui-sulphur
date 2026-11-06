@@ -23,7 +23,12 @@ def main():
         with urllib.request.urlopen(req,timeout=60) as response:return json.load(response)
     matches=[t for t in request('/templates') if t['name'] in (payload['name'],'Sulfur 2 LTX 2.3 ComfyUI Video One-Click','Sulphur 2 — ComfyUI SageAttention')]
     assert len(matches)<=1,'Duplicate templates found; refusing ambiguous update'
-    update={k:v for k,v in payload.items() if k not in ('category','isServerless')}
-    result=request('/templates/'+matches[0]['id'],'PATCH',update) if matches else request('/templates','POST',payload)
-    print(json.dumps({k:result.get(k) for k in ('id','name','imageName','containerDiskInGb','volumeInGb','volumeMountPath','ports')},indent=2))
+    assert matches,'No existing template; create it in Runpod first'
+    # GraphQL, like the other packages: REST PATCH wrongly refuses public templates over registry credentials.
+    source=json.loads((ROOT/'.runpod/template-source.json').read_text())
+    value={'id':matches[0]['id'],'name':payload['name'],'imageName':payload['imageName'],'containerDiskInGb':payload['containerDiskInGb'],'volumeInGb':0,'volumeMountPath':payload['volumeMountPath'],'isPublic':payload['isPublic'],'isServerless':False,'dockerArgs':'','ports':','.join(payload['ports']),'portsConfig':[{'port':x.split('/')[0],'name':{'8188':'ComfyUI','3923':'Copyparty'}[x.split('/')[0]]} for x in payload['ports']],'env':[{'key':k,'value':v} for k,v in payload['env'].items()],'readme':payload['readme'],'category':'NVIDIA','startJupyter':source['startJupyter'],'startSsh':source['startSsh']}
+    req=urllib.request.Request('https://api.runpod.io/graphql',data=json.dumps({'query':'mutation($input: SaveTemplateInput!) { saveTemplate(input:$input) { id name imageName } }','variables':{'input':value}}).encode(),headers={'Authorization':'Bearer '+key,'Content-Type':'application/json','User-Agent':'Mozilla/5.0'})
+    with urllib.request.urlopen(req,timeout=45) as response:result=json.load(response)
+    if result.get('errors'):raise RuntimeError([e['message'][-200:] for e in result['errors']])
+    print(json.dumps(result['data']['saveTemplate'],indent=2))
 if __name__=='__main__':main()
