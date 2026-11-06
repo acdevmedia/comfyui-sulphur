@@ -8,13 +8,16 @@
   "isPublic": true,
   "isServerless": false,
   "ports": [
-    "8188/http"
+    "8188/http",
+    "3923/http"
   ],
   "env": {
     "COMFYUI_ATTENTION": "sage",
     "HF_HOME": "/workspace/.cache/huggingface",
     "HF_TOKEN": "{{ RUNPOD_SECRET_HUGGINGFACE_TOKEN }}",
     "SULPHUR_MODEL_VARIANT": "fp8",
-    "SULPHUR_VERSION": "2"
+    "SULPHUR_VERSION": "2",
+    "COPYPARTY_USERNAME": "{{ RUNPOD_SECRET_COPYPARTY_USERNAME }}",
+    "COPYPARTY_PASSWORD": "{{ RUNPOD_SECRET_COPYPARTY_SECRET }}"
   }
 }

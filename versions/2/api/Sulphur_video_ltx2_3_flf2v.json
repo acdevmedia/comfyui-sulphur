@@ -244,14 +244,14 @@
     "inputs": {
       "resize_type": "scale dimensions",
       "resize_type.width": [
-        "9000",
-        0
+        "9014",
+        1
       ],
       "resize_type.height": [
-        "9001",
-        0
+        "9015",
+        1
       ],
-      "resize_type.crop": "center",
+      "resize_type.crop": "disabled",
       "scale_method": "nearest-exact",
       "input": [
         "130",
@@ -264,12 +264,12 @@
     "inputs": {
       "resize_type": "scale dimensions",
       "resize_type.width": [
-        "9000",
-        0
+        "9014",
+        1
       ],
       "resize_type.height": [
-        "9001",
-        0
+        "9015",
+        1
       ],
       "resize_type.crop": "center",
       "scale_method": "nearest-exact",
@@ -470,14 +470,76 @@
       ],
       "upscale_method": "bilinear",
       "width": [
+        "9014",
+        1
+      ],
+      "height": [
+        "9015",
+        1
+      ],
+      "crop": "disabled"
+    }
+  },
+  "9013": {
+    "inputs": {
+      "image": [
+        "130",
+        0
+      ]
+    },
+    "class_type": "GetImageSize",
+    "_meta": {
+      "title": "Size of your image"
+    }
+  },
+  "9014": {
+    "inputs": {
+      "expression": "max(64,round(sqrt(a*b*c/d)/32)*32)",
+      "values.a": [
         "9000",
         0
       ],
-      "height": [
+      "values.b": [
         "9001",
         0
       ],
-      "crop": "disabled"
+      "values.c": [
+        "9013",
+        0
+      ],
+      "values.d": [
+        "9013",
+        1
+      ]
+    },
+    "class_type": "ComfyMathExpression",
+    "_meta": {
+      "title": "Fit Frame Width"
+    }
+  },
+  "9015": {
+    "inputs": {
+      "expression": "max(64,round(sqrt(a*b*d/c)/32)*32)",
+      "values.a": [
+        "9000",
+        0
+      ],
+      "values.b": [
+        "9001",
+        0
+      ],
+      "values.c": [
+        "9013",
+        0
+      ],
+      "values.d": [
+        "9013",
+        1
+      ]
+    },
+    "class_type": "ComfyMathExpression",
+    "_meta": {
+      "title": "Fit Frame Height"
     }
   }
 }

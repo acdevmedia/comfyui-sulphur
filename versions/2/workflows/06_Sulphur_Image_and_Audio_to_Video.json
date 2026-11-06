@@ -1,18 +1,18 @@
 {
   "id": "Image and Audio to Video",
-  "last_node_id": 9020,
-  "last_link_id": 89,
+  "last_node_id": 9023,
+  "last_link_id": 98,
   "nodes": [
     {
       "id": 100,
       "type": "LoadImage",
       "pos": [
         0,
-        250
+        820
       ],
       "size": [
-        390,
-        250
+        480,
+        520
       ],
       "flags": {},
       "order": 0,
@@ -32,7 +32,7 @@
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            87
+            96
           ]
         },
         {
@@ -69,7 +69,7 @@
         {
           "name": "video",
           "type": "VIDEO",
-          "link": 88
+          "link": 97
         },
         {
           "name": "filename_prefix",
@@ -133,11 +133,11 @@
       "type": "LoadAudio",
       "pos": [
         0,
-        550
+        250
       ],
       "size": [
-        390,
-        250
+        480,
+        520
       ],
       "flags": {},
       "order": 41,
@@ -157,7 +157,7 @@
           "name": "AUDIO",
           "type": "AUDIO",
           "links": [
-            86
+            95
           ]
         }
       ],
@@ -200,7 +200,7 @@
           "name": "STRING",
           "type": "STRING",
           "links": [
-            85
+            94
           ]
         }
       ],
@@ -216,7 +216,7 @@
       "title": "Prompt \u2014 describe the result"
     },
     {
-      "id": 9020,
+      "id": 9023,
       "type": "13da423c-db46-502f-919a-f9f4840710fb",
       "pos": [
         550,
@@ -305,21 +305,21 @@
           "localized_name": "text",
           "name": "text",
           "type": "STRING",
-          "link": 85
+          "link": 94
         },
         {
           "label": "LoadAudio",
           "localized_name": "audio",
           "name": "audio",
           "type": "AUDIO",
-          "link": 86
+          "link": 95
         },
         {
           "label": "LoadImage",
           "localized_name": "input",
           "name": "input",
           "type": "IMAGE",
-          "link": 87
+          "link": 96
         }
       ],
       "outputs": [
@@ -329,7 +329,7 @@
           "name": "VIDEO",
           "type": "VIDEO",
           "links": [
-            88
+            97
           ]
         }
       ],
@@ -362,32 +362,32 @@
   ],
   "links": [
     [
-      85,
+      94,
       9004,
       0,
-      9020,
+      9023,
       7,
       "STRING"
     ],
     [
-      86,
+      95,
       144,
       0,
-      9020,
+      9023,
       8,
       "AUDIO"
     ],
     [
-      87,
+      96,
       100,
       0,
-      9020,
+      9023,
       9,
       "IMAGE"
     ],
     [
-      88,
-      9020,
+      97,
+      9023,
       0,
       143,
       0,
@@ -413,8 +413,8 @@
         "version": 1,
         "state": {
           "lastGroupId": 0,
-          "lastNodeId": 9020,
-          "lastLinkId": 89,
+          "lastNodeId": 9023,
+          "lastLinkId": 98,
           "lastRerouteId": 0
         },
         "revision": 0,
@@ -444,7 +444,7 @@
             "name": "width",
             "type": "INT",
             "linkIds": [
-              78
+              87
             ],
             "localized_name": "width",
             "label": "Width",
@@ -458,7 +458,7 @@
             "name": "height",
             "type": "INT",
             "linkIds": [
-              79
+              88
             ],
             "localized_name": "height",
             "label": "Height",
@@ -472,7 +472,7 @@
             "name": "frames_8n_1",
             "type": "INT",
             "linkIds": [
-              80
+              89
             ],
             "localized_name": "frames_8n_1",
             "label": "Frames (8n + 1)",
@@ -486,7 +486,7 @@
             "name": "fps",
             "type": "INT",
             "linkIds": [
-              81
+              90
             ],
             "localized_name": "fps",
             "label": "FPS",
@@ -500,7 +500,7 @@
             "name": "negative_prompt",
             "type": "STRING",
             "linkIds": [
-              82
+              91
             ],
             "localized_name": "negative_prompt",
             "label": "Negative prompt",
@@ -514,7 +514,7 @@
             "name": "cfg",
             "type": "FLOAT",
             "linkIds": [
-              83
+              92
             ],
             "localized_name": "cfg",
             "label": "CFG",
@@ -528,7 +528,7 @@
             "name": "seed",
             "type": "INT",
             "linkIds": [
-              84
+              93
             ],
             "localized_name": "seed",
             "label": "Seed",
@@ -570,7 +570,8 @@
             "name": "input",
             "type": "IMAGE",
             "linkIds": [
-              68
+              68,
+              78
             ],
             "localized_name": "input",
             "label": "LoadImage",
@@ -2656,14 +2657,14 @@
               "scale dimensions",
               512,
               512,
-              "center",
+              "disabled",
               "lanczos"
             ],
             "widgets_values_named": {
               "resize_type": "scale dimensions",
               "resize_type.width": 512,
               "resize_type.height": 512,
-              "resize_type.crop": "center",
+              "resize_type.crop": "disabled",
               "scale_method": "lanczos"
             }
           },
@@ -2878,6 +2879,208 @@
           },
           {
             "id": 9013,
+            "type": "GetImageSize",
+            "pos": [
+              1400,
+              2400
+            ],
+            "size": [
+              310,
+              160
+            ],
+            "flags": {},
+            "order": 52,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "image",
+                "type": "IMAGE",
+                "link": 78
+              }
+            ],
+            "outputs": [
+              {
+                "name": "width",
+                "type": "INT",
+                "links": [
+                  81,
+                  85
+                ]
+              },
+              {
+                "name": "height",
+                "type": "INT",
+                "links": [
+                  82,
+                  86
+                ]
+              },
+              {
+                "name": "batch_size",
+                "type": "INT",
+                "links": []
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "GetImageSize"
+            },
+            "widgets_values": [],
+            "widgets_values_named": {}
+          },
+          {
+            "id": 9014,
+            "type": "ComfyMathExpression",
+            "pos": [
+              1750,
+              2400
+            ],
+            "size": [
+              310,
+              160
+            ],
+            "flags": {},
+            "order": 53,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "expression",
+                "type": "STRING",
+                "link": null,
+                "widget": {
+                  "name": "expression"
+                }
+              },
+              {
+                "name": "values.a",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 79
+              },
+              {
+                "name": "values.b",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 80
+              },
+              {
+                "name": "values.c",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 81
+              },
+              {
+                "name": "values.d",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 82
+              }
+            ],
+            "outputs": [
+              {
+                "name": "FLOAT",
+                "type": "FLOAT",
+                "links": []
+              },
+              {
+                "name": "INT",
+                "type": "INT",
+                "links": [
+                  48,
+                  52,
+                  69,
+                  76
+                ]
+              },
+              {
+                "name": "BOOL",
+                "type": "BOOLEAN",
+                "links": []
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ComfyMathExpression"
+            },
+            "widgets_values": [
+              "max(64,round(sqrt(a*b*c/d)/32)*32)"
+            ],
+            "widgets_values_named": {
+              "expression": "max(64,round(sqrt(a*b*c/d)/32)*32)"
+            }
+          },
+          {
+            "id": 9015,
+            "type": "ComfyMathExpression",
+            "pos": [
+              0,
+              2700
+            ],
+            "size": [
+              310,
+              160
+            ],
+            "flags": {},
+            "order": 54,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "expression",
+                "type": "STRING",
+                "link": null,
+                "widget": {
+                  "name": "expression"
+                }
+              },
+              {
+                "name": "values.a",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 83
+              },
+              {
+                "name": "values.b",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 84
+              },
+              {
+                "name": "values.c",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 85
+              },
+              {
+                "name": "values.d",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 86
+              }
+            ],
+            "outputs": [
+              {
+                "name": "FLOAT",
+                "type": "FLOAT",
+                "links": []
+              },
+              {
+                "name": "INT",
+                "type": "INT",
+                "links": [
+                  49,
+                  51,
+                  70,
+                  77
+                ]
+              },
+              {
+                "name": "BOOL",
+                "type": "BOOLEAN",
+                "links": []
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ComfyMathExpression"
+            },
+            "widgets_values": [
+              "max(64,round(sqrt(a*b*d/c)/32)*32)"
+            ],
+            "widgets_values_named": {
+              "expression": "max(64,round(sqrt(a*b*d/c)/32)*32)"
+            }
+          },
+          {
+            "id": 9016,
             "type": "PrimitiveInt",
             "pos": [
               -380,
@@ -2898,7 +3101,7 @@
                 "widget": {
                   "name": "value"
                 },
-                "link": 78
+                "link": 87
               }
             ],
             "outputs": [
@@ -2907,10 +3110,8 @@
                 "name": "INT",
                 "type": "INT",
                 "links": [
-                  48,
-                  52,
-                  69,
-                  76
+                  79,
+                  83
                 ]
               }
             ],
@@ -2926,7 +3127,7 @@
             }
           },
           {
-            "id": 9014,
+            "id": 9017,
             "type": "PrimitiveInt",
             "pos": [
               -380,
@@ -2947,7 +3148,7 @@
                 "widget": {
                   "name": "value"
                 },
-                "link": 79
+                "link": 88
               }
             ],
             "outputs": [
@@ -2956,10 +3157,8 @@
                 "name": "INT",
                 "type": "INT",
                 "links": [
-                  49,
-                  51,
-                  70,
-                  77
+                  80,
+                  84
                 ]
               }
             ],
@@ -2975,7 +3174,7 @@
             }
           },
           {
-            "id": 9015,
+            "id": 9018,
             "type": "PrimitiveInt",
             "pos": [
               -380,
@@ -2996,7 +3195,7 @@
                 "widget": {
                   "name": "value"
                 },
-                "link": 80
+                "link": 89
               }
             ],
             "outputs": [
@@ -3022,7 +3221,7 @@
             }
           },
           {
-            "id": 9016,
+            "id": 9019,
             "type": "PrimitiveInt",
             "pos": [
               -380,
@@ -3043,7 +3242,7 @@
                 "widget": {
                   "name": "value"
                 },
-                "link": 81
+                "link": 90
               }
             ],
             "outputs": [
@@ -3070,7 +3269,7 @@
             }
           },
           {
-            "id": 9017,
+            "id": 9020,
             "type": "PrimitiveStringMultiline",
             "pos": [
               -380,
@@ -3091,7 +3290,7 @@
                 "widget": {
                   "name": "value"
                 },
-                "link": 82
+                "link": 91
               }
             ],
             "outputs": [
@@ -3116,7 +3315,7 @@
             }
           },
           {
-            "id": 9018,
+            "id": 9021,
             "type": "PrimitiveFloat",
             "pos": [
               -380,
@@ -3137,7 +3336,7 @@
                 "widget": {
                   "name": "value"
                 },
-                "link": 83
+                "link": 92
               }
             ],
             "outputs": [
@@ -3163,7 +3362,7 @@
             }
           },
           {
-            "id": 9019,
+            "id": 9022,
             "type": "PrimitiveInt",
             "pos": [
               -380,
@@ -3184,7 +3383,7 @@
                 "widget": {
                   "name": "value"
                 },
-                "link": 84
+                "link": 93
               }
             ],
             "outputs": [
@@ -3533,12 +3732,44 @@
             "type": "LATENT"
           },
           {
+            "id": 48,
+            "origin_id": 9014,
+            "origin_slot": 1,
+            "target_id": 123,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 49,
+            "origin_id": 9015,
+            "origin_slot": 1,
+            "target_id": 123,
+            "target_slot": 2,
+            "type": "INT"
+          },
+          {
             "id": 50,
             "origin_id": 142,
             "origin_slot": 0,
             "target_id": 125,
             "target_slot": 0,
             "type": "COMFY_MATCHTYPE_V3"
+          },
+          {
+            "id": 51,
+            "origin_id": 9015,
+            "origin_slot": 1,
+            "target_id": 126,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 52,
+            "origin_id": 9014,
+            "origin_slot": 1,
+            "target_id": 127,
+            "target_slot": 1,
+            "type": "INT"
           },
           {
             "id": 53,
@@ -3637,6 +3868,22 @@
             "type": "MODEL"
           },
           {
+            "id": 69,
+            "origin_id": 9014,
+            "origin_slot": 1,
+            "target_id": 140,
+            "target_slot": 2,
+            "type": "INT"
+          },
+          {
+            "id": 70,
+            "origin_id": 9015,
+            "origin_slot": 1,
+            "target_id": 140,
+            "target_slot": 3,
+            "type": "INT"
+          },
+          {
             "id": 71,
             "origin_id": 140,
             "origin_slot": 0,
@@ -3653,72 +3900,88 @@
             "type": "IMAGE"
           },
           {
-            "id": 48,
-            "origin_id": 9013,
-            "origin_slot": 0,
-            "target_id": 123,
-            "target_slot": 1,
-            "type": "INT"
-          },
-          {
-            "id": 52,
-            "origin_id": 9013,
-            "origin_slot": 0,
-            "target_id": 127,
-            "target_slot": 1,
-            "type": "INT"
-          },
-          {
-            "id": 69,
-            "origin_id": 9013,
-            "origin_slot": 0,
-            "target_id": 140,
-            "target_slot": 2,
-            "type": "INT"
-          },
-          {
             "id": 76,
-            "origin_id": 9013,
-            "origin_slot": 0,
+            "origin_id": 9014,
+            "origin_slot": 1,
             "target_id": 9012,
             "target_slot": 2,
-            "type": "INT"
-          },
-          {
-            "id": 49,
-            "origin_id": 9014,
-            "origin_slot": 0,
-            "target_id": 123,
-            "target_slot": 2,
-            "type": "INT"
-          },
-          {
-            "id": 51,
-            "origin_id": 9014,
-            "origin_slot": 0,
-            "target_id": 126,
-            "target_slot": 1,
-            "type": "INT"
-          },
-          {
-            "id": 70,
-            "origin_id": 9014,
-            "origin_slot": 0,
-            "target_id": 140,
-            "target_slot": 3,
             "type": "INT"
           },
           {
             "id": 77,
-            "origin_id": 9014,
-            "origin_slot": 0,
+            "origin_id": 9015,
+            "origin_slot": 1,
             "target_id": 9012,
             "target_slot": 3,
             "type": "INT"
           },
           {
+            "id": 81,
+            "origin_id": 9013,
+            "origin_slot": 0,
+            "target_id": 9014,
+            "target_slot": 3,
+            "type": "INT"
+          },
+          {
+            "id": 82,
+            "origin_id": 9013,
+            "origin_slot": 1,
+            "target_id": 9014,
+            "target_slot": 4,
+            "type": "INT"
+          },
+          {
+            "id": 85,
+            "origin_id": 9013,
+            "origin_slot": 0,
+            "target_id": 9015,
+            "target_slot": 3,
+            "type": "INT"
+          },
+          {
+            "id": 86,
+            "origin_id": 9013,
+            "origin_slot": 1,
+            "target_id": 9015,
+            "target_slot": 4,
+            "type": "INT"
+          },
+          {
+            "id": 79,
+            "origin_id": 9016,
+            "origin_slot": 0,
+            "target_id": 9014,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 83,
+            "origin_id": 9016,
+            "origin_slot": 0,
+            "target_id": 9015,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 80,
+            "origin_id": 9017,
+            "origin_slot": 0,
+            "target_id": 9014,
+            "target_slot": 2,
+            "type": "INT"
+          },
+          {
+            "id": 84,
+            "origin_id": 9017,
+            "origin_slot": 0,
+            "target_id": 9015,
+            "target_slot": 2,
+            "type": "INT"
+          },
+          {
             "id": 58,
-            "origin_id": 9015,
+            "origin_id": 9018,
             "origin_slot": 0,
             "target_id": 130,
             "target_slot": 2,
@@ -3726,7 +3989,7 @@
           },
           {
             "id": 73,
-            "origin_id": 9015,
+            "origin_id": 9018,
             "origin_slot": 0,
             "target_id": 9010,
             "target_slot": 1,
@@ -3734,7 +3997,7 @@
           },
           {
             "id": 29,
-            "origin_id": 9016,
+            "origin_id": 9019,
             "origin_slot": 0,
             "target_id": 114,
             "target_slot": 2,
@@ -3742,7 +4005,7 @@
           },
           {
             "id": 54,
-            "origin_id": 9016,
+            "origin_id": 9019,
             "origin_slot": 0,
             "target_id": 129,
             "target_slot": 1,
@@ -3750,7 +4013,7 @@
           },
           {
             "id": 74,
-            "origin_id": 9016,
+            "origin_id": 9019,
             "origin_slot": 0,
             "target_id": 9010,
             "target_slot": 2,
@@ -3758,7 +4021,7 @@
           },
           {
             "id": 37,
-            "origin_id": 9017,
+            "origin_id": 9020,
             "origin_slot": 0,
             "target_id": 119,
             "target_slot": 0,
@@ -3766,7 +4029,7 @@
           },
           {
             "id": 8,
-            "origin_id": 9018,
+            "origin_id": 9021,
             "origin_slot": 0,
             "target_id": 106,
             "target_slot": 3,
@@ -3774,7 +4037,7 @@
           },
           {
             "id": 42,
-            "origin_id": 9018,
+            "origin_id": 9021,
             "origin_slot": 0,
             "target_id": 120,
             "target_slot": 3,
@@ -3782,7 +4045,7 @@
           },
           {
             "id": 1,
-            "origin_id": 9019,
+            "origin_id": 9022,
             "origin_slot": 0,
             "target_id": 101,
             "target_slot": 0,
@@ -3790,65 +4053,65 @@
           },
           {
             "id": 2,
-            "origin_id": 9019,
+            "origin_id": 9022,
             "origin_slot": 0,
             "target_id": 102,
             "target_slot": 0,
             "type": "INT"
           },
           {
-            "id": 78,
+            "id": 87,
             "origin_id": -10,
             "origin_slot": 0,
-            "target_id": 9013,
-            "target_slot": 0,
-            "type": "INT"
-          },
-          {
-            "id": 79,
-            "origin_id": -10,
-            "origin_slot": 1,
-            "target_id": 9014,
-            "target_slot": 0,
-            "type": "INT"
-          },
-          {
-            "id": 80,
-            "origin_id": -10,
-            "origin_slot": 2,
-            "target_id": 9015,
-            "target_slot": 0,
-            "type": "INT"
-          },
-          {
-            "id": 81,
-            "origin_id": -10,
-            "origin_slot": 3,
             "target_id": 9016,
             "target_slot": 0,
             "type": "INT"
           },
           {
-            "id": 82,
+            "id": 88,
+            "origin_id": -10,
+            "origin_slot": 1,
+            "target_id": 9017,
+            "target_slot": 0,
+            "type": "INT"
+          },
+          {
+            "id": 89,
+            "origin_id": -10,
+            "origin_slot": 2,
+            "target_id": 9018,
+            "target_slot": 0,
+            "type": "INT"
+          },
+          {
+            "id": 90,
+            "origin_id": -10,
+            "origin_slot": 3,
+            "target_id": 9019,
+            "target_slot": 0,
+            "type": "INT"
+          },
+          {
+            "id": 91,
             "origin_id": -10,
             "origin_slot": 4,
-            "target_id": 9017,
+            "target_id": 9020,
             "target_slot": 0,
             "type": "STRING"
           },
           {
-            "id": 83,
+            "id": 92,
             "origin_id": -10,
             "origin_slot": 5,
-            "target_id": 9018,
+            "target_id": 9021,
             "target_slot": 0,
             "type": "FLOAT"
           },
           {
-            "id": 84,
+            "id": 93,
             "origin_id": -10,
             "origin_slot": 6,
-            "target_id": 9019,
+            "target_id": 9022,
             "target_slot": 0,
             "type": "INT"
           },
@@ -3873,6 +4136,14 @@
             "origin_id": -10,
             "origin_slot": 9,
             "target_id": 140,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 78,
+            "origin_id": -10,
+            "origin_slot": 9,
+            "target_id": 9013,
             "target_slot": 0,
             "type": "IMAGE"
           },

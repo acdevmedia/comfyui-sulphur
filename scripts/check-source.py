@@ -29,3 +29,4 @@ print(f'PASS: {len(files)} workflow graphs; valid links, pinned assets, default 
 
 # Exercise quota-aware thread sizing without importing torch or requiring a GPU.
 subprocess.run(["bash",str(ROOT/"scripts/test-cpu-threads.sh")],check=True)
+subprocess.run(["python3",str(ROOT/"scripts/test_workflow_frame.py")],check=True)

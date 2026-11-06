@@ -82,8 +82,8 @@
     "inputs": {
       "expression": "a/2",
       "values.a": [
-        "40",
-        0
+        "73",
+        1
       ]
     }
   },
@@ -92,8 +92,8 @@
     "inputs": {
       "expression": "a/2",
       "values.a": [
-        "25",
-        0
+        "74",
+        1
       ]
     }
   },
@@ -431,14 +431,14 @@
       ],
       "upscale_method": "lanczos",
       "width": [
-        "40",
-        0
+        "73",
+        1
       ],
       "height": [
-        "25",
-        0
+        "74",
+        1
       ],
-      "crop": "center"
+      "crop": "disabled"
     }
   },
   "14": {
@@ -532,14 +532,76 @@
       ],
       "upscale_method": "bilinear",
       "width": [
+        "73",
+        1
+      ],
+      "height": [
+        "74",
+        1
+      ],
+      "crop": "disabled"
+    }
+  },
+  "72": {
+    "inputs": {
+      "image": [
+        "67",
+        0
+      ]
+    },
+    "class_type": "GetImageSize",
+    "_meta": {
+      "title": "Size of your image"
+    }
+  },
+  "73": {
+    "inputs": {
+      "expression": "max(64,round(sqrt(a*b*c/d)/32)*32)",
+      "values.a": [
         "40",
         0
       ],
-      "height": [
+      "values.b": [
         "25",
         0
       ],
-      "crop": "disabled"
+      "values.c": [
+        "72",
+        0
+      ],
+      "values.d": [
+        "72",
+        1
+      ]
+    },
+    "class_type": "ComfyMathExpression",
+    "_meta": {
+      "title": "Fit Frame Width"
+    }
+  },
+  "74": {
+    "inputs": {
+      "expression": "max(64,round(sqrt(a*b*d/c)/32)*32)",
+      "values.a": [
+        "40",
+        0
+      ],
+      "values.b": [
+        "25",
+        0
+      ],
+      "values.c": [
+        "72",
+        0
+      ],
+      "values.d": [
+        "72",
+        1
+      ]
+    },
+    "class_type": "ComfyMathExpression",
+    "_meta": {
+      "title": "Fit Frame Height"
     }
   }
 }

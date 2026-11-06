@@ -21,5 +21,7 @@ if [[ ! -f "$args" ]]; then
 fi
 echo '[attention] Launch settings are in /workspace/runpod-slim/comfyui_args.txt. Existing user settings are preserved.'
 if ! grep -q '^--use-sage-attention' "$args"; then echo '[attention] NOTICE: SageAttention is installed but your launch file selects another backend. No SageAttention performance claim applies.'; fi
+source /opt/sulphur/scripts/copyparty.sh
+start_copyparty /workspace/runpod-slim/ComfyUI/output 'Sulphur outputs'
 echo '[startup] Starting the official Runpod services. Wait for "ComfyUI is READY on port 8188", then use Connect → HTTP 8188.'
 exec /start.sh "$@"

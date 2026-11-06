@@ -33,7 +33,11 @@
         "source": 9007
       }
     ],
-    "source": "video_ltx2_3_flf2v"
+    "source": "video_ltx2_3_flf2v",
+    "input_labels": {
+      "130": "First frame",
+      "100": "Last frame"
+    }
   },
   "Sulphur_video_ltx2_3_ia2v.json": {
     "title": "Image and Audio to Video",

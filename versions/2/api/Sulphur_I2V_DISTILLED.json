@@ -208,8 +208,8 @@
     "inputs": {
       "expression": "a/2",
       "values.a": [
-        "40",
-        0
+        "77",
+        1
       ]
     },
     "class_type": "ComfyMathExpression",
@@ -221,8 +221,8 @@
     "inputs": {
       "expression": "a/2",
       "values.a": [
-        "25",
-        0
+        "78",
+        1
       ]
     },
     "class_type": "ComfyMathExpression",
@@ -621,14 +621,14 @@
       ],
       "upscale_method": "lanczos",
       "width": [
-        "40",
-        0
+        "77",
+        1
       ],
       "height": [
-        "25",
-        0
+        "78",
+        1
       ],
-      "crop": "center"
+      "crop": "disabled"
     },
     "class_type": "ImageScale",
     "_meta": {
@@ -674,14 +674,76 @@
       ],
       "upscale_method": "bilinear",
       "width": [
+        "77",
+        1
+      ],
+      "height": [
+        "78",
+        1
+      ],
+      "crop": "disabled"
+    }
+  },
+  "76": {
+    "inputs": {
+      "image": [
+        "67",
+        0
+      ]
+    },
+    "class_type": "GetImageSize",
+    "_meta": {
+      "title": "Size of your image"
+    }
+  },
+  "77": {
+    "inputs": {
+      "expression": "max(64,round(sqrt(a*b*c/d)/32)*32)",
+      "values.a": [
         "40",
         0
       ],
-      "height": [
+      "values.b": [
         "25",
         0
       ],
-      "crop": "disabled"
+      "values.c": [
+        "76",
+        0
+      ],
+      "values.d": [
+        "76",
+        1
+      ]
+    },
+    "class_type": "ComfyMathExpression",
+    "_meta": {
+      "title": "Fit Frame Width"
+    }
+  },
+  "78": {
+    "inputs": {
+      "expression": "max(64,round(sqrt(a*b*d/c)/32)*32)",
+      "values.a": [
+        "40",
+        0
+      ],
+      "values.b": [
+        "25",
+        0
+      ],
+      "values.c": [
+        "76",
+        0
+      ],
+      "values.d": [
+        "76",
+        1
+      ]
+    },
+    "class_type": "ComfyMathExpression",
+    "_meta": {
+      "title": "Fit Frame Height"
     }
   }
 }

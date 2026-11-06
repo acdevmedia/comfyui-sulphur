@@ -131,6 +131,16 @@ All startup messages are saved to `/workspace/logs/sulphur-startup.log` inside t
 
 ---
 
+## Portrait and landscape images
+
+The picture you start from is always used whole. **Width** and **Height** set the frame's area, and so the render time and memory; the image sets its shape. A typed size that already matches the image is used as it is. A head-to-toe portrait on the default 960 × 544 renders at 576 × 896 with the whole figure in frame, not a slice of it, and a square image at 736 × 736. Nothing is outpainted: the video takes the image's shape rather than generating new sides. In First and Last Frame the first frame sets the shape; a last frame with different proportions is centre-cropped to match.
+
+## Browse and download outputs
+
+**Connect → HTTP 3923 / Copyparty** opens a gallery of everything in `/workspace/runpod-slim/ComfyUI/output`, newest first. Sign in with the values of Runpod Secrets `COPYPARTY_USERNAME` and `COPYPARTY_SECRET`. Select files to download them, or a whole folder as a ZIP. It is read-only: nothing can be uploaded, changed or deleted, and if either secret is missing it stays off without affecting ComfyUI. The log is `/workspace/logs/copyparty.log`.
+
+`zip`, `unzip` and `aws` are on the path in the terminal for moving outputs off the Pod yourself.
+
 ## Settings
 
 You can change these in the template's environment variables:

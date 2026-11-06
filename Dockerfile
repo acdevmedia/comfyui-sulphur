@@ -21,11 +21,15 @@ RUN curl -fsSL https://github.com/Comfy-Org/ComfyUI/archive/63be2f9b82ad0dac88a7
     'sageattention==1.0.6' 'huggingface_hub==0.36.0' 'transformers==4.57.6' 'diffusers==0.35.2' && \
     printf 'COMFYUI_VERSION=v0.42.1\nSULPHUR_VERSION=2\n' > /opt/comfyui-baked/.runpod-bundle-version && \
     python3 -m pip freeze > /opt/sulphur-python-lock.txt
+RUN apt-get update && apt-get install -y --no-install-recommends zip unzip && rm -rf /var/lib/apt/lists/* && \
+    python3 -m pip install --no-cache-dir 'copyparty==1.20.26' && python3 -m pip freeze > /opt/sulphur-python-lock.txt && \
+    python3 -m venv /opt/awscli && /opt/awscli/bin/pip install --no-cache-dir 'awscli==1.46.3' && ln -s /opt/awscli/bin/aws /usr/local/bin/aws
 COPY scripts /opt/sulphur/scripts
 COPY versions /opt/sulphur/versions
 ARG VCS_REF=development
 RUN printf "SULPHUR_BUNDLE=%s\n" "$VCS_REF" >> /opt/comfyui-baked/.runpod-bundle-version && \
     sed -i 's/BAKED_NODES=(/BAKED_NODES=("ComfyUI-LTXVideo" /' /start.sh && \
-    chmod +x /opt/sulphur/scripts/*.sh && /opt/sulphur/scripts/validate.sh build && python3 /opt/sulphur/scripts/check-build-server.py
-EXPOSE 8188
+    chmod +x /opt/sulphur/scripts/*.sh && /opt/sulphur/scripts/validate.sh build && python3 /opt/sulphur/scripts/check-build-server.py && \
+    bash /opt/sulphur/scripts/test-copyparty.sh
+EXPOSE 8188 3923
 ENTRYPOINT ["/opt/sulphur/scripts/entrypoint.sh"]

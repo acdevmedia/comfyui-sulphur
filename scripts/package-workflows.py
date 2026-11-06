@@ -3,6 +3,7 @@
 import copy
 import json
 from pathlib import Path
+from workflow_frame import fit_frame
 from workflow_panels import fold_into_panel
 ROOT=Path(__file__).resolve().parents[1];P=ROOT/'versions/2'
 SCHEMA=json.loads((P/'node-schemas.json').read_text())
@@ -69,6 +70,8 @@ def to_ui(api,title):
     return d
 
 def package(path):
+    api=fit_frame(json.loads(path.read_text()))
+    path.write_text(json.dumps(api,indent=2)+'\n')
     catalog=json.loads((P/'workflow-catalog.json').read_text()) if (P/'workflow-catalog.json').exists() else {}
     if path.name in catalog:return package_extra(path,catalog[path.name])
     api=json.loads(path.read_text());title=('Image to Video' if 'I2V' in path.name else 'Text to Video')+' — '+('Distilled' if 'DISTILLED' in path.name else 'Base')
@@ -76,7 +79,7 @@ def package(path):
     # Keep input selection, the prompt and the finished video on the canvas.
     keep={n['id'] for n in d['nodes'] if n['type'] in ('LoadImage','SaveVideo','PrimitiveStringMultiline')}
     nodes[29].update(title='Prompt — describe the shot',size=[500,230])
-    if 67 in nodes:nodes[67].update(title='Starting image — upload your own',size=[340,350])
+    if 67 in nodes:nodes[67].update(title='Starting image — upload your own',size=[480,680])
     fields_to_expose=[{'label':'Width','source':40},{'label':'Height','source':25},{'label':'Frames (8n + 1)','source':27},{'label':'FPS','source':26},
         {'label':'Seed','kind':'PrimitiveInt','targets':[(2,'noise_seed')]},
         {'label':'Refinement seed','kind':'PrimitiveInt','targets':[(1,'noise_seed')]},
@@ -104,10 +107,11 @@ def package_extra(path,entry):
     if prompt_id in nodes:nodes[prompt_id].update(title='Prompt — describe the result',size=[500,200])
     fold_into_panel(d,'Shot settings — '+entry['title'],keep,entry['controls'])
     input_y=250
-    for n in d['nodes']:
+    # Show the opening frame first: it is the later loader in the first and last frame graph.
+    for n in sorted(d['nodes'],key=lambda n:-n['id']):
         if n['id']==prompt_id:n['pos']=[0,0]
         elif n['type'] in ('LoadImage','LoadVideo','LoadAudio','LTXVSparseTrackEditor'):
-            n['pos']=[0,input_y];n['size']=[390,250];input_y+=300
+            n['pos']=[0,input_y];n['size']=[480,520];input_y+=570
         elif n['type'].startswith('Save'):
             n['pos']=[1110,0];n['size']=[580,540];n['title']='Finished result — preview and download'
         else:n.update(pos=[550,0],size=[500,640],color='#24364b',bgcolor='#172331')
