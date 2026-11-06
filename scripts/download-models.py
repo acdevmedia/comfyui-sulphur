@@ -12,7 +12,9 @@ profile=json.loads((APP/'versions/2/profile.json').read_text())
 variant=os.getenv('SULPHUR_MODEL_VARIANT','fp8')
 if variant not in ('fp8','bf16','native-distilled'):raise SystemExit('Unknown SULPHUR_MODEL_VARIANT; choose fp8, bf16, native-distilled.')
 root=Path('/workspace/runpod-slim/ComfyUI/models');root.mkdir(parents=True,exist_ok=True)
-selected=[m for m in profile['models'] if m['variant'] in (variant,'all') and not (variant=='native-distilled' and m['directory']=='loras')]
+token=os.getenv('HF_TOKEN') or None
+if token and token.startswith('{{'):token=None
+selected=[m for m in profile['models'] if m['variant'] in (variant,'all') and not (variant=='native-distilled' and 'distill' in m['file'])]
 missing=sum(max(0,m['size']-(root/m['directory']/Path(m['file']).name).stat().st_size) if (root/m['directory']/Path(m['file']).name).exists() else m['size'] for m in selected)
 free=shutil.disk_usage(root).free
 print(f'[models] Profile {variant}: {sum(m["size"] for m in selected)/1e9:.2f} GB required; {missing/1e9:.2f} GB missing; {free/1e9:.2f} GB free.',flush=True)
@@ -33,14 +35,20 @@ for index,m in enumerate(selected,1):
             marker.write_text(json.dumps(signature))
             print(f'[models] Existing {target.name} passed SHA256; no download needed.',flush=True)
             continue
+    if m.get('gated') and not token:
+        print(f'[models {index}/{len(selected)}] Skipping {target.name}: it needs HF_TOKEN and its licence accepted at https://huggingface.co/{m["repo"]}. Only its own workflow is affected.',flush=True);continue
     start=time.monotonic()
     print(f'[models {index}/{len(selected)}] Fetching/verifying {target.name} ({m["size"]/1e9:.2f} GB). Interrupted downloads resume on restart. Progress below is download progress, not video generation.',flush=True)
     # local_dir uses .cache/huggingface metadata and partials without a second blob copy.
-    path=Path(hf_hub_download(repo_id=m['repo'],filename=m['file'],revision=m['revision'],local_dir=dest,token=os.getenv('HF_TOKEN') or None))
+    try:path=Path(hf_hub_download(repo_id=m['repo'],filename=m['file'],revision=m['revision'],local_dir=dest,token=token))
+    except Exception as error:
+        if not m.get('gated'):raise
+        print(f'[models] Skipping {target.name} ({type(error).__name__}): accept its licence at https://huggingface.co/{m["repo"]} with the account behind HF_TOKEN, then restart. Only its own workflow is affected.',flush=True);continue
     digest=hashlib.sha256()
     with path.open('rb') as handle:
         for block in iter(lambda:handle.read(16*1024*1024),b''):digest.update(block)
-    if path.stat().st_size!=m['size'] or digest.hexdigest()!=m['sha256']:
+    if not m['sha256']:print(f'[models] {target.name} has no pinned SHA256 yet; checking its size only.',flush=True)
+    if path.stat().st_size!=m['size'] or (m['sha256'] and digest.hexdigest()!=m['sha256']):
         path.unlink(missing_ok=True);raise SystemExit(f'[models] ERROR: Integrity check failed for {target.name}; restart to retry.')
     if path!=target:path.replace(target)
     marker.write_text(json.dumps(signature))

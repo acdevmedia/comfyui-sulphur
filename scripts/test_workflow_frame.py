@@ -18,7 +18,7 @@ assert fitted(960,544,3000,3000)==(736,736)
 count=0
 for path in sorted((P/'api').glob('*.json')):
     api=json.loads(path.read_text())
-    if not any(n['class_type']=='LoadImage' for n in api.values()):continue
+    if 'ingredients' in path.name or not any(n['class_type']=='LoadImage' for n in api.values()):continue
     fits={k for k,n in api.items() if n['inputs'].get('expression') in (WIDTH,HEIGHT)}
     assert len(fits)==2,path.name
     sizers=[n for n in api.values() if n['class_type'] in ('EmptyLTXVLatentVideo','ImageScale','SolidMask')]

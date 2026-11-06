@@ -50,6 +50,12 @@ Open the **Workflows** sidebar in ComfyUI. The Sulphur workflows are numbered:
 | **04 Text to Video — Base** | a prompt | Same as 03, from text |
 | **05 First and Last Frame to Video** | two images and a prompt | Animating the move between a start frame and an end frame |
 | **06 Image and Audio to Video** | an image, an audio clip and a prompt | Making a picture move in time with your own sound |
+| **07 New Camera Angle** | a clip | Re-shooting the same take from a new position |
+| **08 Recurring Characters** | a reference sheet and a prompt | Keeping people and places the same across shots |
+| **09 Relight** | an exterior clip and a light ball | Moving the sun without changing the shot |
+| **10 Day to Night** | a daylight clip and a prompt | Turning a day shot into night |
+
+Workflows 07 to 10 need a little more setup: see [Coverage and continuity](#coverage-and-continuity).
 
 Type your prompt, upload any images or audio, and click **Run**. The video and its audio appear in the **Finished video** box, where you can play or download it.
 
@@ -105,7 +111,7 @@ Workflows **05** and **06** are adapted from Lightricks' official LTX 2.3 exampl
 
 ## What gets downloaded
 
-Four files, about **40.3 GB** in total:
+Four main files, about **40.3 GB** in total, plus the small [optional LoRAs](#optional-loras):
 
 | File | Size | What it does |
 |---|---|---|
@@ -141,6 +147,27 @@ First and Last Frame has a **Transition LoRA strength** control, 0 by default, u
 
 These are pinned and downloaded at first boot, never baked into the image. At strength 0 ComfyUI skips a LoRA entirely, so it costs nothing while it is off.
 
+## Coverage and continuity
+
+Workflows 07 to 10 each use an IC-LoRA, a LoRA that only works through its own reference input, so each one is a separate workflow rather than a strength control. Each has a how-to note beside it. All four are new and have not been run on a GPU yet, and the LoRAs were trained on plain LTX 2.3, not on Sulphur, so check a short clip first.
+
+| Workflow | You provide | What it does | LoRA and licence |
+|---|---|---|---|
+| **07 New Camera Angle** | a clip | Re-shoots the same take from a new position, keeps its sound | [CrossView Prompt v0.9](https://huggingface.co/Cseti/LTX2.3-22B_IC-LoRA-CrossView-Prompt), Apache 2.0, downloaded at first boot |
+| **08 Recurring Characters** | a reference sheet | Keeps people, wardrobe, props and location the same across shots | [Ingredients](https://huggingface.co/Lightricks/LTX-2.3-22b-IC-LoRA-Ingredients), gated |
+| **09 Relight** | an exterior clip and a light ball | Moves the sun without changing the shot, keeps its sound | [Relight](https://huggingface.co/Lightricks/LTX-2.3-22b-IC-LoRA-Relight), gated |
+| **10 Day to Night** | a daylight clip | Turns a day shot into night, keeps its sound | [Day to Night](https://huggingface.co/Lightricks/LTX-2.3-22b-IC-LoRA-Day-To-Night), gated |
+
+Every clip workflow renders one guided pass at the size in **Shot settings**, with no upscale. Relight must stay single-pass: the second stage drops the reference. **Width** and **Height** set the frame's area and your clip sets its shape. Your clip's sound is held during sampling and the original goes into the result, so the new shot lines up on the same audio track.
+
+**New Camera Angle** takes a fixed vocabulary of 63 moves and works best in small steps, so chain several for a big move. It reaches about 60° either side of the front. **Relight** is for sunlit exteriors, and it adds the Sphere Light Render node (MIT), pinned in the image. The ball is drawn by your browser when you click Run, so this workflow needs the ComfyUI page rather than an API call.
+
+**The three gated LoRAs are optional.** They use the LTX-2 Community License, which needs a separate commercial licence for companies with revenue of $10 million a year or more. Open each link above and accept the terms with the Hugging Face account behind `HF_TOKEN`. The pod then fetches them at boot, about 1.96 GB in all. Without a token or an accepted licence it logs which ones it skipped and starts normally; only those workflows are affected. To fetch them on a running pod, run `python3 /opt/sulphur/scripts/download-models.py` in its terminal.
+
+Each LoRA is pinned to a revision and size in `versions/2/profile.json`. Hugging Face hides the SHA256 of a gated file until its licence is accepted, so those three are checked by size until a maintainer accepts them and runs `python3 scripts/pin-gated-models.py`, which reads `HF_TOKEN` from the shell or the ignored `.env` and fills in the hashes.
+
+Regenerate these four from their source with `python3 scripts/prepare-iclora-apis.py`, then `python3 scripts/package-workflows.py`.
+
 ## Browse and download outputs
 
 **Connect → HTTP 3923 / Copyparty** opens a gallery of everything in `/workspace/runpod-slim/ComfyUI/output`, newest first. Sign in with the values of Runpod Secrets `COPYPARTY_USERNAME` and `COPYPARTY_SECRET`. Select files to download them, or a whole folder as a ZIP. It is read-only: nothing can be uploaded, changed or deleted, and if either secret is missing it stays off without affecting ComfyUI. The log is `/workspace/logs/copyparty.log`.
@@ -172,7 +199,7 @@ Old model files stay on disk when you switch variants until you delete them, and
 
 ## For maintainers
 
-- **Pinned versions:** ComfyUI v0.42.1, frontend 1.55.18, Python 3.12, CUDA 12.8, PyTorch 2.10.0+cu128, SageAttention 1.0.6, with FFmpeg included. The image extends the official Runpod ComfyUI image, pinned by digest. Sulphur adds only two custom node packs, KJNodes and ComfyUI-LTXVideo. The full package list is in the image at `/opt/sulphur-python-lock.txt`.
+- **Pinned versions:** ComfyUI v0.42.1, frontend 1.55.18, Python 3.12, CUDA 12.8, PyTorch 2.10.0+cu128, SageAttention 1.0.6, with FFmpeg included. The image extends the official Runpod ComfyUI image, pinned by digest. Sulphur adds only three custom node packs: KJNodes, ComfyUI-LTXVideo and Sphere Light Render. The full package list is in the image at `/opt/sulphur-python-lock.txt`.
 - **Builds run only on GitHub Actions.** Each build installs everything, starts a CPU-only ComfyUI and checks every workflow's nodes and inputs. It publishes `:2` plus an immutable `sha-<commit>` tag only if all of that passes, so a failed build never replaces `:2`.
 - **Where things live:** everything for this model version is in `versions/2/`: the author's original workflows, the repaired workflows, model sizes, checksums and pinned revisions. A future model version gets its own folder and tag.
 - **Upgrading a pod:** save your outputs, then redeploy with the newer `:2` image. Keep the previous digest if you might want to roll back.

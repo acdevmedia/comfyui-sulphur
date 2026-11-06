@@ -2431,5 +2431,523 @@
       "AUDIO"
     ],
     "output_node": false
+  },
+  "LoadVideo": {
+    "input": {
+      "required": {
+        "file": [
+          "COMBO",
+          {
+            "multiselect": false,
+            "options": [],
+            "video_upload": true
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "file"
+      ]
+    },
+    "output": [
+      "VIDEO"
+    ],
+    "output_name": [
+      "VIDEO"
+    ],
+    "output_node": false
+  },
+  "GetVideoComponents": {
+    "input": {
+      "required": {
+        "video": [
+          "VIDEO",
+          {
+            "tooltip": "The video to extract components from."
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "video"
+      ]
+    },
+    "output": [
+      "IMAGE",
+      "AUDIO",
+      "FLOAT",
+      "COMBO",
+      "COMBO"
+    ],
+    "output_name": [
+      "images",
+      "audio",
+      "fps",
+      "bit_depth",
+      "color_space"
+    ],
+    "output_node": false
+  },
+  "RepeatImageBatch": {
+    "input": {
+      "required": {
+        "image": [
+          "IMAGE",
+          {}
+        ],
+        "amount": [
+          "INT",
+          {
+            "default": 1,
+            "min": 1,
+            "max": 4096
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "image",
+        "amount"
+      ]
+    },
+    "output": [
+      "IMAGE"
+    ],
+    "output_name": [
+      "IMAGE"
+    ],
+    "output_node": false
+  },
+  "ImageFromBatch": {
+    "input": {
+      "required": {
+        "image": [
+          "IMAGE",
+          {}
+        ],
+        "batch_index": [
+          "INT",
+          {
+            "default": 0,
+            "min": -16384,
+            "max": 16384
+          }
+        ],
+        "length": [
+          "INT",
+          {
+            "default": 1,
+            "min": 1,
+            "max": 4096
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "image",
+        "batch_index",
+        "length"
+      ]
+    },
+    "output": [
+      "IMAGE"
+    ],
+    "output_name": [
+      "IMAGE"
+    ],
+    "output_node": false
+  },
+  "ImageCompositeMasked": {
+    "input": {
+      "required": {
+        "destination": [
+          "IMAGE",
+          {}
+        ],
+        "source": [
+          "IMAGE",
+          {}
+        ],
+        "x": [
+          "INT",
+          {
+            "default": 0,
+            "min": 0,
+            "max": 16384,
+            "step": 1
+          }
+        ],
+        "y": [
+          "INT",
+          {
+            "default": 0,
+            "min": 0,
+            "max": 16384,
+            "step": 1
+          }
+        ],
+        "resize_source": [
+          "BOOLEAN",
+          {
+            "default": false
+          }
+        ]
+      },
+      "optional": {
+        "mask": [
+          "MASK",
+          {}
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "destination",
+        "source",
+        "x",
+        "y",
+        "resize_source"
+      ],
+      "optional": [
+        "mask"
+      ]
+    },
+    "output": [
+      "IMAGE"
+    ],
+    "output_name": [
+      "IMAGE"
+    ],
+    "output_node": false
+  },
+  "EmptyAudio": {
+    "input": {
+      "required": {
+        "duration": [
+          "FLOAT",
+          {
+            "tooltip": "Duration of the empty audio clip in seconds",
+            "default": 60.0,
+            "min": 0.0,
+            "max": 18446744073709551615,
+            "step": 0.01
+          }
+        ],
+        "sample_rate": [
+          "INT",
+          {
+            "tooltip": "Sample rate of the empty audio clip.",
+            "advanced": true,
+            "default": 44100,
+            "min": 1,
+            "max": 192000
+          }
+        ],
+        "channels": [
+          "INT",
+          {
+            "tooltip": "Number of audio channels (1 for mono, 2 for stereo).",
+            "advanced": true,
+            "default": 2,
+            "min": 1,
+            "max": 2
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "duration",
+        "sample_rate",
+        "channels"
+      ]
+    },
+    "output": [
+      "AUDIO"
+    ],
+    "output_name": [
+      "AUDIO"
+    ],
+    "output_node": false
+  },
+  "AudioMerge": {
+    "input": {
+      "required": {
+        "audio1": [
+          "AUDIO",
+          {}
+        ],
+        "audio2": [
+          "AUDIO",
+          {}
+        ],
+        "merge_method": [
+          "COMBO",
+          {
+            "tooltip": "The method used to combine the audio waveforms.",
+            "multiselect": false,
+            "options": [
+              "add",
+              "mean",
+              "subtract",
+              "multiply"
+            ]
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "audio1",
+        "audio2",
+        "merge_method"
+      ]
+    },
+    "output": [
+      "AUDIO"
+    ],
+    "output_name": [
+      "AUDIO"
+    ],
+    "output_node": false
+  },
+  "LTXICLoRALoaderModelOnly": {
+    "input": {
+      "required": {
+        "model": [
+          "MODEL",
+          {}
+        ],
+        "lora_name": [
+          "COMBO",
+          {
+            "multiselect": false,
+            "options": []
+          }
+        ],
+        "strength_model": [
+          "FLOAT",
+          {
+            "default": 1.0,
+            "min": -100.0,
+            "max": 100.0,
+            "step": 0.01
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "model",
+        "lora_name",
+        "strength_model"
+      ]
+    },
+    "output": [
+      "MODEL",
+      "FLOAT"
+    ],
+    "output_name": [
+      "model",
+      "latent_downscale_factor"
+    ],
+    "output_node": false
+  },
+  "LTXAddVideoICLoRAGuide": {
+    "input": {
+      "required": {
+        "positive": [
+          "CONDITIONING",
+          {}
+        ],
+        "negative": [
+          "CONDITIONING",
+          {}
+        ],
+        "vae": [
+          "VAE",
+          {}
+        ],
+        "latent": [
+          "LATENT",
+          {}
+        ],
+        "image": [
+          "IMAGE",
+          {}
+        ],
+        "frame_idx": [
+          "INT",
+          {
+            "default": 0,
+            "min": -9999,
+            "max": 9999
+          }
+        ],
+        "strength": [
+          "FLOAT",
+          {
+            "default": 1.0,
+            "min": 0.0,
+            "max": 1.0,
+            "step": 0.01
+          }
+        ],
+        "latent_downscale_factor": [
+          "FLOAT",
+          {
+            "default": 1.0,
+            "min": 1.0,
+            "max": 10.0,
+            "step": 1.0
+          }
+        ],
+        "crop": [
+          "COMBO",
+          {
+            "default": "disabled",
+            "multiselect": false,
+            "options": [
+              "disabled",
+              "center"
+            ]
+          }
+        ],
+        "use_tiled_encode": [
+          "BOOLEAN",
+          {
+            "default": false
+          }
+        ],
+        "tile_size": [
+          "INT",
+          {
+            "default": 256,
+            "min": 64,
+            "max": 512,
+            "step": 32
+          }
+        ],
+        "tile_overlap": [
+          "INT",
+          {
+            "default": 64,
+            "min": 16,
+            "max": 256,
+            "step": 16
+          }
+        ]
+      },
+      "optional": {
+        "use_streaming": [
+          "BOOLEAN",
+          {
+            "default": false
+          }
+        ],
+        "tile_frames": [
+          "INT",
+          {
+            "default": 97,
+            "min": 0,
+            "max": 1000,
+            "step": 1
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "positive",
+        "negative",
+        "vae",
+        "latent",
+        "image",
+        "frame_idx",
+        "strength",
+        "latent_downscale_factor",
+        "crop",
+        "use_tiled_encode",
+        "tile_size",
+        "tile_overlap"
+      ],
+      "optional": [
+        "use_streaming",
+        "tile_frames"
+      ]
+    },
+    "output": [
+      "CONDITIONING",
+      "CONDITIONING",
+      "LATENT"
+    ],
+    "output_name": [
+      "positive",
+      "negative",
+      "latent"
+    ],
+    "output_node": false
+  },
+  "SphereLightManualNode": {
+    "input": {
+      "required": {
+        "rotation": [
+          "FLOAT",
+          {
+            "default": 0.0,
+            "min": -180,
+            "max": 180,
+            "step": 1,
+            "display": "slider"
+          }
+        ],
+        "elevation": [
+          "FLOAT",
+          {
+            "default": 45.0,
+            "min": 5,
+            "max": 85,
+            "step": 1,
+            "display": "slider"
+          }
+        ],
+        "intensity": [
+          "FLOAT",
+          {
+            "default": 1.5,
+            "min": 0.2,
+            "max": 3.0,
+            "step": 0.1,
+            "display": "slider"
+          }
+        ],
+        "render_b64": [
+          "STRING",
+          {
+            "default": "",
+            "multiline": false
+          }
+        ]
+      }
+    },
+    "input_order": {
+      "required": [
+        "rotation",
+        "elevation",
+        "intensity",
+        "render_b64"
+      ]
+    },
+    "output": [
+      "IMAGE"
+    ],
+    "output_name": [
+      "render"
+    ],
+    "output_node": false
   }
 }

@@ -84,5 +84,194 @@
       }
     ],
     "source": "video_ltx2_3_ia2v"
+  },
+  "Sulphur_ic_lora_crossview.json": {
+    "title": "New Camera Angle",
+    "file": "07_Sulphur_New_Camera_Angle.json",
+    "prompt_id": 9004,
+    "controls": [
+      {
+        "label": "Width",
+        "source": 9000
+      },
+      {
+        "label": "Height",
+        "source": 9001
+      },
+      {
+        "label": "Frames (8n + 1)",
+        "source": 9002
+      },
+      {
+        "label": "Negative prompt",
+        "source": 9005
+      },
+      {
+        "label": "CFG",
+        "source": 9006
+      },
+      {
+        "label": "Seed",
+        "source": 9007
+      },
+      {
+        "label": "IC-LoRA strength",
+        "kind": "PrimitiveFloat",
+        "targets": [
+          [
+            9100,
+            "strength_model"
+          ]
+        ]
+      }
+    ],
+    "source": "ic_lora",
+    "input_labels": {
+      "100": "Your source video"
+    },
+    "note": "## How to move the camera\n\nThis re-shoots your clip from a new position, like a second camera on the same take, and keeps your clip's sound so it lines up in the edit.\n\n1. Upload **Your source video**. No opening image is needed.\n2. Write only the camera move, in these exact words:\n\n`crossview. new camera angle: to the left, higher, closer.`\n\n- **Side:** same angle \u00b7 slightly to the left \u00b7 slightly to the right \u00b7 to the left \u00b7 to the right \u00b7 far to the left \u00b7 far to the right\n- **Height:** lower \u00b7 same height \u00b7 higher\n- **Distance:** closer \u00b7 same distance \u00b7 further\n\n3. Run. For a big move, feed the result back in and make another small one.\n\nSmall moves are the most reliable. The range is about 60\u00b0 either side of the front, so a view from behind is out of reach. **IC-LoRA strength** starts at 1.5 because the effect is weaker on fast sampling; 1.2 to 1.5 is the useful range. This is a v0.9 proof of concept, and it was trained on the plain LTX-2.3 model.\n\n**Width** and **Height** set the frame's area, and your clip sets its shape. **Frames** sets the length, and the shot stops at the end of your clip."
+  },
+  "Sulphur_ic_lora_ingredients.json": {
+    "title": "Recurring Characters",
+    "file": "08_Sulphur_Recurring_Characters.json",
+    "prompt_id": 9004,
+    "controls": [
+      {
+        "label": "Width",
+        "source": 9000
+      },
+      {
+        "label": "Height",
+        "source": 9001
+      },
+      {
+        "label": "Frames (8n + 1)",
+        "source": 9002
+      },
+      {
+        "label": "FPS",
+        "source": 9003
+      },
+      {
+        "label": "Negative prompt",
+        "source": 9005
+      },
+      {
+        "label": "CFG",
+        "source": 9006
+      },
+      {
+        "label": "Seed",
+        "source": 9007
+      },
+      {
+        "label": "IC-LoRA strength",
+        "kind": "PrimitiveFloat",
+        "targets": [
+          [
+            9100,
+            "strength_model"
+          ]
+        ]
+      }
+    ],
+    "source": "ic_lora",
+    "input_labels": {
+      "100": "Reference sheet"
+    },
+    "note": "## How to keep a character across shots\n\n1. Upload one **Reference sheet** on a black background with no text: a face close-up and a full-body view of each person, each important prop, and a clean panel of the location. Bigger panels carry over better.\n2. Keep the prompt's two parts. **Reference sheet:** names each panel by its position. **Generated video:** describes the action and shot.\n3. Run. Reuse the same sheet and the same descriptions for every shot of the scene.\n\nThe sheet guides the shot and is never seen in the result. It is stretched to the frame, so make it the same shape. 768 x 448, 121 frames at 24 fps is what the model was trained on; other sizes and longer clips drift. Lightricks tuned **IC-LoRA strength** at 1.4 and start their examples at 1.0.\n\n**This one needs a licence first.** Accept the LTX-2 Community License at [Lightricks/LTX-2.3-22b-IC-LoRA-Ingredients](https://huggingface.co/Lightricks/LTX-2.3-22b-IC-LoRA-Ingredients) with the Hugging Face account behind `HF_TOKEN`, then restart the Pod or run `python3 /opt/sulphur/scripts/download-models.py` in its terminal. Until then this workflow reports a missing LoRA; nothing else is affected."
+  },
+  "Sulphur_ic_lora_relight.json": {
+    "title": "Relight",
+    "file": "09_Sulphur_Relight.json",
+    "prompt_id": 9004,
+    "controls": [
+      {
+        "label": "Width",
+        "source": 9000
+      },
+      {
+        "label": "Height",
+        "source": 9001
+      },
+      {
+        "label": "Frames (8n + 1)",
+        "source": 9002
+      },
+      {
+        "label": "Negative prompt",
+        "source": 9005
+      },
+      {
+        "label": "CFG",
+        "source": 9006
+      },
+      {
+        "label": "Seed",
+        "source": 9007
+      },
+      {
+        "label": "IC-LoRA strength",
+        "kind": "PrimitiveFloat",
+        "targets": [
+          [
+            9100,
+            "strength_model"
+          ]
+        ]
+      }
+    ],
+    "source": "ic_lora",
+    "input_labels": {
+      "100": "Your source video",
+      "108": "Light direction"
+    },
+    "note": "## How to relight a shot\n\n1. Upload **Your source video**. It must be an exterior: this model is for sunlight.\n2. Set **Light direction**. The ball is added to the corner of the frame the model reads, and is not in the result.\n3. Keep the prompt's first sentence and match its end to the ball:\n\n`relight the video to match the light-direction ball. hard directional sunlight from the right`\n\n- **From:** front \u00b7 front-right \u00b7 right \u00b7 back-right \u00b7 behind \u00b7 back-left \u00b7 left \u00b7 front-left\n- **Looks:** hard directional sunlight \u00b7 hard high-angle sunlight \u00b7 hard low-angle sunlight \u00b7 soft diffused daylight \u00b7 soft warm afternoon light \u00b7 cool soft daylight \u00b7 dim overcast light \u00b7 strong backlight with rim light \u00b7 soft hazy backlight \u00b7 warm golden low front sun \u00b7 warm golden low side sun \u00b7 frontal sunlight\n\nDescribe the light only, not the scene. If the words and the ball disagree, the ball wins. Your clip's sound is kept. 1280 x 704, 121 frames at 24 fps is what the model was trained on, and it works in a single pass only.\n\n**Width** and **Height** set the frame's area, and your clip sets its shape. **Frames** sets the length, and the shot stops at the end of your clip.\n\n**This one needs a licence first.** Accept the LTX-2 Community License at [Lightricks/LTX-2.3-22b-IC-LoRA-Relight](https://huggingface.co/Lightricks/LTX-2.3-22b-IC-LoRA-Relight) with the Hugging Face account behind `HF_TOKEN`, then restart the Pod or run `python3 /opt/sulphur/scripts/download-models.py` in its terminal. Until then this workflow reports a missing LoRA; nothing else is affected."
+  },
+  "Sulphur_ic_lora_day_to_night.json": {
+    "title": "Day to Night",
+    "file": "10_Sulphur_Day_to_Night.json",
+    "prompt_id": 9004,
+    "controls": [
+      {
+        "label": "Width",
+        "source": 9000
+      },
+      {
+        "label": "Height",
+        "source": 9001
+      },
+      {
+        "label": "Frames (8n + 1)",
+        "source": 9002
+      },
+      {
+        "label": "Negative prompt",
+        "source": 9005
+      },
+      {
+        "label": "CFG",
+        "source": 9006
+      },
+      {
+        "label": "Seed",
+        "source": 9007
+      },
+      {
+        "label": "IC-LoRA strength",
+        "kind": "PrimitiveFloat",
+        "targets": [
+          [
+            9100,
+            "strength_model"
+          ]
+        ]
+      }
+    ],
+    "source": "ic_lora",
+    "input_labels": {
+      "100": "Your source video"
+    },
+    "note": "## How to turn day into night\n\n1. Upload **Your source video**, shot in daylight at 24 fps.\n2. Describe the night look and keep the last sentence, which holds the shot still. Steer the colour with phrases such as warm tungsten light or cool white LED light.\n3. Run. Composition, camera and motion come from your clip, and its sound is kept.\n\n768 x 448, 97 frames at 24 fps is what the model was trained on; longer clips drift towards the end. On the fast settings here **CFG** stays at 1. Lightricks' own recipe is 30 steps at CFG 3 to 4, where higher is darker.\n\n**Width** and **Height** set the frame's area, and your clip sets its shape. **Frames** sets the length, and the shot stops at the end of your clip.\n\n**This one needs a licence first.** Accept the LTX-2 Community License at [Lightricks/LTX-2.3-22b-IC-LoRA-Day-To-Night](https://huggingface.co/Lightricks/LTX-2.3-22b-IC-LoRA-Day-To-Night) with the Hugging Face account behind `HF_TOKEN`, then restart the Pod or run `python3 /opt/sulphur/scripts/download-models.py` in its terminal. Until then this workflow reports a missing LoRA; nothing else is affected."
   }
 }

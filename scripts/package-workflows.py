@@ -70,7 +70,9 @@ def to_ui(api,title):
     return d
 
 def package(path):
-    api=fit_frame(json.loads(path.read_text()))
+    api=json.loads(path.read_text())
+    # A reference sheet is not the picture: Ingredients renders at its trained size whatever the sheet's shape.
+    if 'ingredients' not in path.name:api=fit_frame(api)
     if 'flf2v' in path.name:add_transition_lora(api)
     path.write_text(json.dumps(api,indent=2)+'\n')
     catalog=json.loads((P/'workflow-catalog.json').read_text()) if (P/'workflow-catalog.json').exists() else {}
@@ -98,9 +100,14 @@ def package(path):
     output_name={'Sulphur_I2V_DISTILLED.json':'01_Sulphur_Image_to_Video_Distilled.json','Sulphur_T2V_DISTILLED.json':'02_Sulphur_Text_to_Video_Distilled.json','Sulphur_I2V_BASE.json':'03_Sulphur_Image_to_Video_Base.json','Sulphur_T2V_BASE.json':'04_Sulphur_Text_to_Video_Base.json'}[path.name]
     (P/'workflows'/output_name).write_text(json.dumps(d,indent=2)+'\n')
 
+def add_note(d,text):
+    last=max(n['id'] for graph in [d]+d.get('definitions',{}).get('subgraphs',[]) for n in graph.get('nodes',[]))+1
+    d['nodes'].append({'id':last,'type':'MarkdownNote','pos':[-540,100],'size':[500,760],'flags':{},'order':0,'mode':0,'inputs':[],'outputs':[],'title':'How to use this workflow','properties':{},'widgets_values':[text],'color':'#222','bgcolor':'#000'})
+    d['last_node_id']=last
+
 def package_extra(path,entry):
     api=json.loads(path.read_text());d=to_ui(api,entry['title']);nodes={n['id']:n for n in d['nodes']}
-    keep_types={'LoadImage','LoadVideo','LoadAudio','SaveVideo','SaveAudioAdvanced','LTXVSparseTrackEditor'}
+    keep_types={'LoadImage','LoadVideo','LoadAudio','SaveVideo','SaveAudioAdvanced','LTXVSparseTrackEditor','SphereLightManualNode'}
     keep={n['id'] for n in d['nodes'] if n['type'] in keep_types}
     prompt_id=entry.get('prompt_id')
     if prompt_id is not None:keep.add(prompt_id)
@@ -109,14 +116,15 @@ def package_extra(path,entry):
     fold_into_panel(d,'Shot settings — '+entry['title'],keep,entry['controls'])
     input_y=250
     # Show the opening frame first: it is the later loader in the first and last frame graph.
-    for n in sorted(d['nodes'],key=lambda n:-n['id']):
+    for n in sorted(d['nodes'],key=lambda n:(n['type']=='SphereLightManualNode',-n['id'])):
         if n['id']==prompt_id:n['pos']=[0,0]
-        elif n['type'] in ('LoadImage','LoadVideo','LoadAudio','LTXVSparseTrackEditor'):
+        elif n['type'] in ('LoadImage','LoadVideo','LoadAudio','LTXVSparseTrackEditor','SphereLightManualNode'):
             n['pos']=[0,input_y];n['size']=[480,520];input_y+=570
         elif n['type'].startswith('Save'):
             n['pos']=[1110,0];n['size']=[580,540];n['title']='Finished result — preview and download'
         else:n.update(pos=[550,0],size=[500,640],color='#24364b',bgcolor='#172331')
     d['groups']=[]
+    if 'note' in entry:add_note(d,entry['note'])
     (P/'workflows'/entry['file']).write_text(json.dumps(d,indent=2)+'\n')
 
 if __name__=='__main__':

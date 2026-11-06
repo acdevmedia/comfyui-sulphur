@@ -102,7 +102,8 @@ def main():
                 for field,spec in schema.get(group,{}).items():
                     if group=='required':assert field in node['inputs'] or any(k.startswith(field+'.') for k in node['inputs']),(path.name,key,field,'missing input')
                     val=node['inputs'].get(field)
-                    if node['class_type']=='LoadImage' and field=='image':continue  # users supply their own image
+                    if (node['class_type'],field) in (('LoadImage','image'),('LoadVideo','file')):continue  # users supply their own input
+                    if node['class_type']=='LTXICLoRALoaderModelOnly' and field=='lora_name':continue  # licence-gated LoRAs are optional
                     if isinstance(spec[0],list) and val is not None and not isinstance(val,list):
                         assert val in spec[0],(path.name,key,field,val,'model/option not available')
         print('[runtime] Nodes, required inputs and model choices verified:',path.name,flush=True)
