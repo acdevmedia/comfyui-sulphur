@@ -78,13 +78,23 @@ for name,lora in loras.items():
             assert prompt[guide['inputs']['image'][0]]['class_type']=='RepeatImageBatch' and not of('LoadVideo')
             assert reaches(prompt,guide['inputs']['image'][0],of('LoadImage')[0])
         else:
-            # Same take: the clip guides the picture and its sound is held, then muxed back unchanged.
+            # Same take: the clip guides the picture and its sound is muxed back unchanged.
             assert reaches(prompt,guide['inputs']['image'][0],of('LoadVideo')[0]) and not of('LoadImage')
-            assert prompt[of('CreateVideo')[0]]['inputs']['audio']==prompt[of('LTXVAudioVAEEncode')[0]]['inputs']['audio']
-            assert prompt[of('SetLatentNoiseMask')[0]]['inputs']['samples'][0]==of('LTXVAudioVAEEncode')[0]
+            assert prompt[prompt[of('CreateVideo')[0]]['inputs']['audio'][0]]['class_type']=='TrimAudioDuration'
+            if name!='relight':
+                assert prompt[of('CreateVideo')[0]]['inputs']['audio']==prompt[of('LTXVAudioVAEEncode')[0]]['inputs']['audio']
+                assert prompt[of('SetLatentNoiseMask')[0]]['inputs']['samples'][0]==of('LTXVAudioVAEEncode')[0]
         if name=='relight':
             ball=prompt[guide['inputs']['image'][0]]
             assert ball['class_type']=='ImageCompositeMasked' and reaches(prompt,guide['inputs']['image'][0],of('SphereLightManualNode')[0])
+            # These follow Lightricks' workflow, and the default ball must agree with the default words.
+            assert prompt[ball['inputs']['source'][0]]['inputs']['upscale_method']=='area'
+            sphere=prompt[of('SphereLightManualNode')[0]]['inputs']
+            assert (sphere['rotation'],sphere['elevation'],sphere['intensity'])==(90.0,15.0,2.0)
+            assert any('low-angle sunlight from the right' in str(n['inputs'].get('text')) or 'low-angle sunlight from the right' in str(n['inputs'].get('value')) for n in prompt.values())
+            assert prompt[of('LTXVConcatAVLatent')[0]]['inputs']['audio_latent'][0]==of('LTXVEmptyLatentAudio')[0] and not of('SetLatentNoiseMask')
+    # Regenerating these graphs must not lose a control the packager adds.
+    assert (name!='ingredients')==any(f['label']=='Exact Frame' for f in catalog[api_name]['controls']),api_name
     canvas={n['type'] for n in panel['nodes']}
     assert {n.get('title') for n in panel['nodes']}>=set(catalog[api_name]['input_labels'].values()),api_name
     assert 'LoadImage' in canvas or 'LoadVideo' in canvas,api_name

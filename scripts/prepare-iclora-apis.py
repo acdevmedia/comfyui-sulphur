@@ -19,6 +19,7 @@ RELIGHT='ltx-2.3-22b-ic-lora-relight-1.0.safetensors'
 DAY_TO_NIGHT='ltx-2.3-22b-ic-lora-day-to-night-0.9.safetensors'
 IC_LORA='9100'
 # Relight's training geometry at 1280 x 704: a 143 px patch, 22 px from the top and right edges.
+# Lightricks' graph at the pinned revision uses the same, and lets the audio latent run free.
 BALL_SCALE='sqrt(a*b/901120)'
 SHAPE='''
 
@@ -51,16 +52,16 @@ INGREDIENTS_NOTE='''## How to keep a character across shots
 The sheet guides the shot and is never seen in the result. It is stretched to the frame, so make it the same shape. 768 x 448, 121 frames at 24 fps is what the model was trained on; other sizes and longer clips drift. Lightricks tuned **IC-LoRA strength** at 1.4 and start their examples at 1.0.'''
 RELIGHT_NOTE='''## How to relight a shot
 
-1. Upload **Your source video**. It must be an exterior: this model is for sunlight.
-2. Set **Light direction**. The ball is added to the corner of the frame the model reads, and is not in the result.
+1. Upload **Your source video**. This model was made for sunlit exteriors, and it works best on footage with no strong light direction already, such as an overcast day.
+2. Set **Light direction**. Rotation 0 lights the scene from the camera's side, 90 from the right, 180 from behind and -90 from the left. The ball is added to the corner of the frame the model reads, and is not in the result.
 3. Keep the prompt's first sentence and match its end to the ball:
 
-`relight the video to match the light-direction ball. hard directional sunlight from the right`
+`relight the video to match the light-direction ball. hard low-angle sunlight from the right`
 
-- **From:** front · front-right · right · back-right · behind · back-left · left · front-left
+- **From:** the front · the front-right · the right · the back-right · behind · the back-left · the left · the front-left
 - **Looks:** hard directional sunlight · hard high-angle sunlight · hard low-angle sunlight · soft diffused daylight · soft warm afternoon light · cool soft daylight · dim overcast light · strong backlight with rim light · soft hazy backlight · warm golden low front sun · warm golden low side sun · frontal sunlight
 
-Describe the light only, not the scene. If the words and the ball disagree, the ball wins. Your clip's sound is kept. 1280 x 704, 121 frames at 24 fps is what the model was trained on, and it works in a single pass only.'''
+Describe the light only, not the scene, and use one light setup per clip. If the words and the ball disagree, the ball wins. The default ball, elevation 15 at intensity 2, follows Lightricks' example. A higher sun brightens the ball's grey background, so lower **intensity** as you raise **elevation**: about 0.8 at elevation 45. Your clip's sound is kept. 1280 x 704, 121 frames at 24 fps is what the model was trained on, and it works in a single pass only.'''
 DAY_TO_NIGHT_NOTE='''## How to turn day into night
 
 1. Upload **Your source video**, shot in daylight at 24 fps.
@@ -110,8 +111,8 @@ def save(g,images,fps,audio,title):
     video=g.add('CreateVideo',fps=fps,bit_depth='auto',color_space='sRGB',codec='none',images=[images,0],audio=audio)
     g.add('SaveVideo',filename_prefix=f'video/{PREFIX}_'+title.replace(' ','_'),format='auto',**{'format.codec':'auto'},video=[video,0])
 
-def from_clip(g,title,lora,strength,paint=None):
-    """Same take, new picture: the clip guides every frame and its own sound is held and kept."""
+def from_clip(g,title,lora,strength,paint=None,hold_sound=True):
+    """Same take, new picture: the clip guides every frame and its own sound is kept."""
     clip=g.add('LoadVideo',file='');parts=g.add('GetVideoComponents',video=[clip,0]);size=g.add('GetImageSize','Size of your clip',image=[parts,0])
     width=g.math(WIDTH,'Fit Frame Width',a=['9000',0],b=['9001',0],c=[size,0],d=[size,1])
     height=g.math(HEIGHT,'Fit Frame Height',a=['9000',0],b=['9001',0],c=[size,0],d=[size,1])
@@ -125,19 +126,22 @@ def from_clip(g,title,lora,strength,paint=None):
     silence=g.add('EmptyAudio','Silence, for a clip with no sound',duration=[seconds,0],sample_rate=44100,channels=2)
     merged=g.add('AudioMerge',audio1=[parts,1],audio2=[silence,0],merge_method='add')
     sound=g.add('TrimAudioDuration',start_index=0,duration=[seconds,0],audio=[merged,0])
-    encoded=g.add('LTXVAudioVAEEncode',audio=[sound,0],audio_vae=[audio_vae,0])
-    mask=g.add('SolidMask',value=0,width=[width,1],height=[height,1])
-    held=g.add('SetLatentNoiseMask','Hold your clip\'s sound',samples=[encoded,0],mask=[mask,0])
-    images,_=generate(g,checkpoint,conditions,[guide,0],[width,1],[height,1],[frames,1],[held,0])
+    if hold_sound:
+        encoded=g.add('LTXVAudioVAEEncode',audio=[sound,0],audio_vae=[audio_vae,0])
+        mask=g.add('SolidMask',value=0,width=[width,1],height=[height,1])
+        audio=g.add('SetLatentNoiseMask','Hold your clip\'s sound',samples=[encoded,0],mask=[mask,0])
+    else:
+        audio=g.add('LTXVEmptyLatentAudio',frames_number=[frames,1],frame_rate=[parts,2],batch_size=1,audio_vae=[audio_vae,0])
+    images,_=generate(g,checkpoint,conditions,[guide,0],[width,1],[height,1],[frames,1],[audio,0])
     save(g,images,[parts,2],[sound,0],title)
     return clip
 
 def add_ball(g,fitted,width,height):
-    ball=g.add('SphereLightManualNode','Light direction',rotation=0.0,elevation=45.0,intensity=1.5,render_b64='')
+    ball=g.add('SphereLightManualNode','Light direction',rotation=90.0,elevation=15.0,intensity=2.0,render_b64='')
     scale=dict(a=[width,1],b=[height,1])
     patch=g.math(f'round(143*{BALL_SCALE})','Ball patch size',**scale);margin=g.math(f'round(22*{BALL_SCALE})','Ball margin',**scale)
     corner=g.math('a-b-c','Ball patch left edge',a=[width,1],b=[patch,1],c=[margin,1])
-    sized=g.add('ImageScale',image=[ball,0],upscale_method='lanczos',width=[patch,1],height=[patch,1],crop='disabled')
+    sized=g.add('ImageScale',image=[ball,0],upscale_method='area',width=[patch,1],height=[patch,1],crop='disabled')
     return g.add('ImageCompositeMasked','Ball in the top-right corner',destination=[fitted,0],source=[sized,0],x=[corner,1],y=[margin,1],resize_source=False)
 
 def crossview():
@@ -162,8 +166,8 @@ def ingredients():
     return g,sheet,{'note':INGREDIENTS_NOTE+FETCH.format(repo='Lightricks/LTX-2.3-22b-IC-LoRA-Ingredients'),'fps':True}
 
 def relight():
-    g=Graph('relight the video to match the light-direction ball. hard directional sunlight from the right','worst quality, inconsistent motion, blurry, jittery, distorted',1280,704,121)
-    clip=from_clip(g,'Relight',RELIGHT,1.0,add_ball)
+    g=Graph('relight the video to match the light-direction ball. hard low-angle sunlight from the right','worst quality, inconsistent motion, blurry, jittery, distorted',1280,704,121)
+    clip=from_clip(g,'Relight',RELIGHT,1.0,add_ball,hold_sound=False)
     return g,clip,{'note':RELIGHT_NOTE+SHAPE+FETCH.format(repo='Lightricks/LTX-2.3-22b-IC-LoRA-Relight')}
 
 def day_to_night():
@@ -180,7 +184,10 @@ if __name__=='__main__':
     for name,number,title,build,label in WORKFLOWS:
         g,source,extra=build()
         api=f'{PREFIX}_ic_lora_{name}.json';(P/'api'/api).write_text(json.dumps(g.api,indent=2)+'\n')
-        fields=[{'label':'Width','source':9000},{'label':'Height','source':9001},{'label':'Frames (8n + 1)','source':9002}]
+        fields=[{'label':'Width','source':9000},{'label':'Height','source':9001}]
+        # package-workflows.py adds the Exact Frame switch to every graph it fits to a picture.
+        if name!='ingredients':fields.append({'label':'Exact Frame','source':9101})
+        fields.append({'label':'Frames (8n + 1)','source':9002})
         if extra.get('fps'):fields.append({'label':'FPS','source':9003})
         fields+=[{'label':'Negative prompt','source':9005},{'label':'CFG','source':9006},{'label':'Seed','source':9007},{'label':'IC-LoRA strength','kind':'PrimitiveFloat','targets':[[int(IC_LORA),'strength_model']]}]
         labels={source:label}

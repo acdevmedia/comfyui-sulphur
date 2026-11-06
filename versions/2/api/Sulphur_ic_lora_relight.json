@@ -20,7 +20,7 @@
   "9004": {
     "class_type": "PrimitiveStringMultiline",
     "inputs": {
-      "value": "relight the video to match the light-direction ball. hard directional sunlight from the right"
+      "value": "relight the video to match the light-direction ball. hard low-angle sunlight from the right"
     }
   },
   "9005": {
@@ -179,9 +179,9 @@
   "108": {
     "class_type": "SphereLightManualNode",
     "inputs": {
-      "rotation": 0.0,
-      "elevation": 45.0,
-      "intensity": 1.5,
+      "rotation": 90.0,
+      "elevation": 15.0,
+      "intensity": 2.0,
       "render_b64": ""
     },
     "_meta": {
@@ -250,7 +250,7 @@
         "108",
         0
       ],
-      "upscale_method": "lanczos",
+      "upscale_method": "area",
       "width": [
         "109",
         1
@@ -435,12 +435,17 @@
     }
   },
   "125": {
-    "class_type": "LTXVAudioVAEEncode",
+    "class_type": "LTXVEmptyLatentAudio",
     "inputs": {
-      "audio": [
-        "124",
-        0
+      "frames_number": [
+        "105",
+        1
       ],
+      "frame_rate": [
+        "101",
+        2
+      ],
+      "batch_size": 1,
       "audio_vae": [
         "117",
         0
@@ -448,36 +453,6 @@
     }
   },
   "126": {
-    "class_type": "SolidMask",
-    "inputs": {
-      "value": 0,
-      "width": [
-        "103",
-        1
-      ],
-      "height": [
-        "104",
-        1
-      ]
-    }
-  },
-  "127": {
-    "class_type": "SetLatentNoiseMask",
-    "inputs": {
-      "samples": [
-        "125",
-        0
-      ],
-      "mask": [
-        "126",
-        0
-      ]
-    },
-    "_meta": {
-      "title": "Hold your clip's sound"
-    }
-  },
-  "128": {
     "class_type": "EmptyLTXVLatentVideo",
     "inputs": {
       "width": [
@@ -495,7 +470,7 @@
       "batch_size": 1
     }
   },
-  "129": {
+  "127": {
     "class_type": "LTXAddVideoICLoRAGuide",
     "inputs": {
       "positive": [
@@ -511,7 +486,7 @@
         2
       ],
       "latent": [
-        "128",
+        "126",
         0
       ],
       "image": [
@@ -535,20 +510,20 @@
       "title": "Reference guide"
     }
   },
-  "130": {
+  "128": {
     "class_type": "LTXVConcatAVLatent",
     "inputs": {
       "video_latent": [
-        "129",
+        "127",
         2
       ],
       "audio_latent": [
-        "127",
+        "125",
         0
       ]
     }
   },
-  "131": {
+  "129": {
     "class_type": "RandomNoise",
     "inputs": {
       "noise_seed": [
@@ -557,19 +532,19 @@
       ]
     }
   },
-  "132": {
+  "130": {
     "class_type": "KSamplerSelect",
     "inputs": {
       "sampler_name": "euler"
     }
   },
-  "133": {
+  "131": {
     "class_type": "ManualSigmas",
     "inputs": {
       "sigmas": "1.0, 0.99375, 0.9875, 0.98125, 0.975, 0.909375, 0.725, 0.421875, 0.0"
     }
   },
-  "134": {
+  "132": {
     "class_type": "CFGGuider",
     "inputs": {
       "cfg": [
@@ -581,67 +556,67 @@
         0
       ],
       "positive": [
-        "129",
+        "127",
         0
       ],
       "negative": [
-        "129",
+        "127",
         1
       ]
     }
   },
-  "135": {
+  "133": {
     "class_type": "SamplerCustomAdvanced",
     "inputs": {
       "noise": [
-        "131",
+        "129",
         0
       ],
       "guider": [
-        "134",
-        0
-      ],
-      "sampler": [
         "132",
         0
       ],
+      "sampler": [
+        "130",
+        0
+      ],
       "sigmas": [
-        "133",
+        "131",
         0
       ],
       "latent_image": [
-        "130",
+        "128",
+        0
+      ]
+    }
+  },
+  "134": {
+    "class_type": "LTXVSeparateAVLatent",
+    "inputs": {
+      "av_latent": [
+        "133",
+        0
+      ]
+    }
+  },
+  "135": {
+    "class_type": "LTXVCropGuides",
+    "inputs": {
+      "positive": [
+        "127",
+        0
+      ],
+      "negative": [
+        "127",
+        1
+      ],
+      "latent": [
+        "134",
         0
       ]
     }
   },
   "136": {
-    "class_type": "LTXVSeparateAVLatent",
-    "inputs": {
-      "av_latent": [
-        "135",
-        0
-      ]
-    }
-  },
-  "137": {
-    "class_type": "LTXVCropGuides",
-    "inputs": {
-      "positive": [
-        "129",
-        0
-      ],
-      "negative": [
-        "129",
-        1
-      ],
-      "latent": [
-        "136",
-        0
-      ]
-    }
-  },
-  "138": {
     "class_type": "VAEDecodeTiled",
     "inputs": {
       "tile_size": 768,
@@ -649,7 +624,7 @@
       "temporal_size": 4096,
       "temporal_overlap": 4,
       "samples": [
-        "137",
+        "135",
         2
       ],
       "vae": [
@@ -658,7 +633,7 @@
       ]
     }
   },
-  "139": {
+  "137": {
     "class_type": "CreateVideo",
     "inputs": {
       "fps": [
@@ -669,7 +644,7 @@
       "color_space": "sRGB",
       "codec": "none",
       "images": [
-        "138",
+        "136",
         0
       ],
       "audio": [
@@ -678,14 +653,14 @@
       ]
     }
   },
-  "140": {
+  "138": {
     "class_type": "SaveVideo",
     "inputs": {
       "filename_prefix": "video/Sulphur_Relight",
       "format": "auto",
       "format.codec": "auto",
       "video": [
-        "139",
+        "137",
         0
       ]
     }
