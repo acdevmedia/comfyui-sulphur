@@ -83,7 +83,7 @@
       "directory": "loras",
       "variant": "all",
       "size": 1308778338,
-      "sha256": null,
+      "sha256": "515e4e139001ac6282357a5b35372e42e98b3affd5fcc886a52242abeed19559",
       "gated": true
     },
     {
@@ -93,7 +93,7 @@
       "directory": "loras",
       "variant": "all",
       "size": 327309305,
-      "sha256": null,
+      "sha256": "c0d519f83681395d160e115829a9044d7d2ec013be6a2655834d235a2e866ebd",
       "gated": true
     },
     {
@@ -103,7 +103,7 @@
       "directory": "loras",
       "variant": "all",
       "size": 327309305,
-      "sha256": null,
+      "sha256": "984771a6aae278c42538984a22a74b4a57549463b47483e8ebd0d40d02aa9f3a",
       "gated": true
     }
   ],
