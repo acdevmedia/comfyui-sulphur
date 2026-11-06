@@ -3,7 +3,7 @@
 import copy
 import json
 from pathlib import Path
-from workflow_frame import add_transition_lora, fit_frame
+from workflow_frame import add_exact_frame, add_transition_lora, fit_frame
 from workflow_panels import fold_into_panel
 ROOT=Path(__file__).resolve().parents[1];P=ROOT/'versions/2'
 SCHEMA=json.loads((P/'node-schemas.json').read_text())
@@ -72,7 +72,7 @@ def to_ui(api,title):
 def package(path):
     api=json.loads(path.read_text())
     # A reference sheet is not the picture: Ingredients renders at its trained size whatever the sheet's shape.
-    if 'ingredients' not in path.name:api=fit_frame(api)
+    if 'ingredients' not in path.name:api=add_exact_frame(fit_frame(api))
     if 'flf2v' in path.name:add_transition_lora(api)
     path.write_text(json.dumps(api,indent=2)+'\n')
     catalog=json.loads((P/'workflow-catalog.json').read_text()) if (P/'workflow-catalog.json').exists() else {}
@@ -83,7 +83,7 @@ def package(path):
     keep={n['id'] for n in d['nodes'] if n['type'] in ('LoadImage','SaveVideo','PrimitiveStringMultiline')}
     nodes[29].update(title='Prompt — describe the shot',size=[500,230])
     if 67 in nodes:nodes[67].update(title='Starting image — upload your own',size=[480,680])
-    fields_to_expose=[{'label':'Width','source':40},{'label':'Height','source':25},{'label':'Frames (8n + 1)','source':27},{'label':'FPS','source':26},
+    fields_to_expose=[{'label':'Width','source':40},{'label':'Height','source':25},*([{'label':'Exact Frame','source':9101}] if '9101' in api else []),{'label':'Frames (8n + 1)','source':27},{'label':'FPS','source':26},
         {'label':'Seed','kind':'PrimitiveInt','targets':[(2,'noise_seed')]},
         {'label':'Refinement seed','kind':'PrimitiveInt','targets':[(1,'noise_seed')]},
         {'label':'CFG','kind':'PrimitiveFloat','targets':[(42,'cfg')]},

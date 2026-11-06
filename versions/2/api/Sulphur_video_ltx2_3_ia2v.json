@@ -499,7 +499,7 @@
         "9015",
         1
       ],
-      "resize_type.crop": "disabled",
+      "resize_type.crop": "center",
       "scale_method": "lanczos",
       "input": [
         "100",
@@ -632,7 +632,7 @@
   },
   "9014": {
     "inputs": {
-      "expression": "max(64,round(sqrt(a*b*c/d)/32)*32)",
+      "expression": "a if e else max(64,round(sqrt(a*b*c/d)/32)*32)",
       "values.a": [
         "9000",
         0
@@ -648,6 +648,10 @@
       "values.d": [
         "9013",
         1
+      ],
+      "values.e": [
+        "9101",
+        0
       ]
     },
     "class_type": "ComfyMathExpression",
@@ -657,7 +661,7 @@
   },
   "9015": {
     "inputs": {
-      "expression": "max(64,round(sqrt(a*b*d/c)/32)*32)",
+      "expression": "b if e else max(64,round(sqrt(a*b*d/c)/32)*32)",
       "values.a": [
         "9000",
         0
@@ -673,11 +677,24 @@
       "values.d": [
         "9013",
         1
+      ],
+      "values.e": [
+        "9101",
+        0
       ]
     },
     "class_type": "ComfyMathExpression",
     "_meta": {
       "title": "Fit Frame Height"
+    }
+  },
+  "9101": {
+    "inputs": {
+      "value": false
+    },
+    "class_type": "PrimitiveBoolean",
+    "_meta": {
+      "title": "Exact Frame"
     }
   }
 }

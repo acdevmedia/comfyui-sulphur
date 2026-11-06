@@ -2019,7 +2019,7 @@
                     "megapixels": [
                       "FLOAT",
                       {
-                        "tooltip": "Target total megapixels (e.g., 1.0 \u2248 1024\u00d71024). Aspect ratio is preserved.",
+                        "tooltip": "Target total megapixels (e.g., 1.0 ≈ 1024×1024). Aspect ratio is preserved.",
                         "default": 1.0,
                         "min": 0.01,
                         "max": 16.0,
@@ -2949,5 +2949,24 @@
       "render"
     ],
     "output_node": false
+  },
+  "PrimitiveBoolean": {
+    "input": {
+      "required": {
+        "value": [
+          "BOOLEAN",
+          {}
+        ]
+      }
+    },
+    "output": [
+      "BOOLEAN"
+    ],
+    "output_name": [
+      "BOOLEAN"
+    ],
+    "name": "PrimitiveBoolean",
+    "display_name": "Boolean",
+    "category": "utilities/primitive"
   }
 }

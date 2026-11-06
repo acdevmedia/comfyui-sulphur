@@ -7,7 +7,7 @@ checkpoint, adapter and sampling. package-workflows.py folds them like every oth
 """
 import json
 from pathlib import Path
-from workflow_frame import HEIGHT, WIDTH
+from workflow_frame import FIT_HEIGHT as HEIGHT, FIT_WIDTH as WIDTH
 ROOT=Path(__file__).resolve().parents[1];P=ROOT/'versions/2'
 SCHEMA=json.loads((P/'node-schemas.json').read_text())
 PREFIX='Sulphur';MODEL='sulphur_dev_fp8mixed.safetensors';ENCODER='gemma_3_12B_it_fp4_mixed.safetensors'

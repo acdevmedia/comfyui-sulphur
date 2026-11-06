@@ -1,19 +1,20 @@
 #!/usr/bin/env python3
-"""Check that every image-driven workflow sizes its frame from the image and crops nothing."""
+"""Check that image-driven workflows size the frame from the image unless Exact Frame is on."""
 import json
 import math
 from pathlib import Path
-from workflow_frame import HEIGHT, WIDTH
+from workflow_frame import EXACT_NODE, HEIGHT, WIDTH
 ROOT=Path(__file__).resolve().parents[1];P=next(p for p in (ROOT/'versions').iterdir() if p.is_dir())
 
-def fitted(width,height,image_width,image_height):
-    names=dict(a=width,b=height,c=image_width,d=image_height,max=max,round=round,sqrt=math.sqrt)
+def fitted(width,height,image_width,image_height,exact=False):
+    names=dict(a=width,b=height,c=image_width,d=image_height,e=exact,max=max,round=round,sqrt=math.sqrt)
     return tuple(eval(e,{'__builtins__':{}},names) for e in (WIDTH,HEIGHT))
 
 assert fitted(960,544,1920,1080)==(960,544)
 assert fitted(544,960,1080,1920)==(544,960)
 assert fitted(960,544,1024,1536)==(576,896)
 assert fitted(960,544,3000,3000)==(736,736)
+assert fitted(960,544,1024,1536,exact=True)==(960,544)
 
 count=0
 for path in sorted((P/'api').glob('*.json')):
@@ -32,6 +33,7 @@ for path in sorted((P/'api').glob('*.json')):
     image=api[first]['inputs']['image'][0]
     for n in api.values():
         if n['inputs'].get('image',n['inputs'].get('input'))==[image,0]:
-            assert n['inputs'].get('crop',n['inputs'].get('resize_type.crop','disabled'))=='disabled',(path.name,n['class_type'])
+            assert n['inputs'].get('crop',n['inputs'].get('resize_type.crop','center'))=='center',(path.name,n['class_type'])
+    assert api[EXACT_NODE]['class_type']=='PrimitiveBoolean' and api[EXACT_NODE]['inputs']['value'] is False,path.name
     count+=1
-print('PASS: %d image-driven workflows fit the frame to the image and crop nothing.'%count)
+print('PASS: %d image-driven workflows fit the frame to the image, with Exact Frame off by default.'%count)

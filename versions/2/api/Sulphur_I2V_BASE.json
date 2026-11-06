@@ -438,7 +438,7 @@
         "74",
         1
       ],
-      "crop": "disabled"
+      "crop": "center"
     }
   },
   "14": {
@@ -556,7 +556,7 @@
   },
   "73": {
     "inputs": {
-      "expression": "max(64,round(sqrt(a*b*c/d)/32)*32)",
+      "expression": "a if e else max(64,round(sqrt(a*b*c/d)/32)*32)",
       "values.a": [
         "40",
         0
@@ -572,6 +572,10 @@
       "values.d": [
         "72",
         1
+      ],
+      "values.e": [
+        "9101",
+        0
       ]
     },
     "class_type": "ComfyMathExpression",
@@ -581,7 +585,7 @@
   },
   "74": {
     "inputs": {
-      "expression": "max(64,round(sqrt(a*b*d/c)/32)*32)",
+      "expression": "b if e else max(64,round(sqrt(a*b*d/c)/32)*32)",
       "values.a": [
         "40",
         0
@@ -597,11 +601,24 @@
       "values.d": [
         "72",
         1
+      ],
+      "values.e": [
+        "9101",
+        0
       ]
     },
     "class_type": "ComfyMathExpression",
     "_meta": {
       "title": "Fit Frame Height"
+    }
+  },
+  "9101": {
+    "inputs": {
+      "value": false
+    },
+    "class_type": "PrimitiveBoolean",
+    "_meta": {
+      "title": "Exact Frame"
     }
   }
 }

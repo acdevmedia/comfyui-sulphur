@@ -71,7 +71,7 @@
   "103": {
     "class_type": "ComfyMathExpression",
     "inputs": {
-      "expression": "max(64,round(sqrt(a*b*c/d)/32)*32)",
+      "expression": "a if e else max(64,round(sqrt(a*b*c/d)/32)*32)",
       "values.a": [
         "9000",
         0
@@ -87,6 +87,10 @@
       "values.d": [
         "102",
         1
+      ],
+      "values.e": [
+        "9101",
+        0
       ]
     },
     "_meta": {
@@ -96,7 +100,7 @@
   "104": {
     "class_type": "ComfyMathExpression",
     "inputs": {
-      "expression": "max(64,round(sqrt(a*b*d/c)/32)*32)",
+      "expression": "b if e else max(64,round(sqrt(a*b*d/c)/32)*32)",
       "values.a": [
         "9000",
         0
@@ -112,6 +116,10 @@
       "values.d": [
         "102",
         1
+      ],
+      "values.e": [
+        "9101",
+        0
       ]
     },
     "_meta": {
@@ -680,6 +688,15 @@
         "139",
         0
       ]
+    }
+  },
+  "9101": {
+    "inputs": {
+      "value": false
+    },
+    "class_type": "PrimitiveBoolean",
+    "_meta": {
+      "title": "Exact Frame"
     }
   }
 }

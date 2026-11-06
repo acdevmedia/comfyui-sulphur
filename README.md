@@ -139,7 +139,7 @@ All startup messages are saved to `/workspace/logs/sulphur-startup.log` inside t
 
 ## Portrait and landscape images
 
-The picture you start from is always used whole. **Width** and **Height** set the frame's area, and so the render time and memory; the image sets its shape. A typed size that already matches the image is used as it is. A head-to-toe portrait on the default 960 × 544 renders at 576 × 896 with the whole figure in frame, not a slice of it, and a square image at 736 × 736. Nothing is outpainted: the video takes the image's shape rather than generating new sides. In First and Last Frame the first frame sets the shape; a last frame with different proportions is centre-cropped to match.
+By default the picture you start from is used whole. **Width** and **Height** set the frame's area, and so the render time and memory; the image sets its shape. A typed size that already matches the image is used as it is. A head-to-toe portrait on the default 960 × 544 renders at 576 × 896 with the whole figure in frame, not a slice of it, and a square image at 736 × 736. Nothing is outpainted: the video takes the image's shape rather than generating new sides. Turn on **Exact Frame** to use your typed Width and Height exactly instead, for a landscape video from a portrait image for example. The image is then centre-cropped to that frame, so a tall figure loses its top and bottom. In First and Last Frame the first frame sets the shape; a last frame with different proportions is centre-cropped to match.
 
 ## Optional LoRAs
 
