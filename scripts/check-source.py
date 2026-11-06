@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Small structural checks run locally and in Actions without model downloads."""
-import json
+import json,subprocess
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 files=list((ROOT/'versions/2/workflows').glob('*.json'))
@@ -26,3 +26,6 @@ p=json.loads((ROOT/'versions/2/profile.json').read_text())
 assert sum(x['size'] for x in p['models'] if x['variant'] in ('fp8','all'))<100e9
 assert all(len(x['sha256'])==64 and len(x['revision'])==40 for x in p['models'])
 print(f'PASS: {len(files)} workflow graphs; valid links, pinned assets, default model budget <100 GB.')
+
+# Exercise quota-aware thread sizing without importing torch or requiring a GPU.
+subprocess.run(["bash",str(ROOT/"scripts/test-cpu-threads.sh")],check=True)
