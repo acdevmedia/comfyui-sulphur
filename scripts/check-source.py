@@ -107,3 +107,6 @@ print(f'PASS: {len(loras)} IC-LoRA graphs wired correctly.')
 # Exercise quota-aware thread sizing without importing torch or requiring a GPU.
 subprocess.run(["bash",str(ROOT/"scripts/test-cpu-threads.sh")],check=True)
 subprocess.run(["python3",str(ROOT/"scripts/test_workflow_frame.py")],check=True)
+
+# The seed extension must be present in the whitelisted Docker build context.
+assert "!frontend/**" in (ROOT / ".dockerignore").read_text()

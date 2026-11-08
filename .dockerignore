@@ -4,6 +4,8 @@
 !scripts/**
 !versions/
 !versions/**
+!frontend/
+!frontend/**
 versions/*/upstream/
 
 !.runpod/
