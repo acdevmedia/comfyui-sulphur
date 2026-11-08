@@ -60,7 +60,7 @@
         {
           "name": "video",
           "type": "VIDEO",
-          "links": []
+          "links": null
         }
       ],
       "properties": {
@@ -261,7 +261,11 @@
       "title": "Shot settings \u2014 Text to Video \u2014 Distilled",
       "properties": {
         "cnr_id": "comfy-core",
-        "ver": "0.39.0"
+        "ver": "0.39.0",
+        "acdevSeedModes": {
+          "seed": "randomize",
+          "refinement_seed": "randomize"
+        }
       },
       "widgets_values": [
         960,
@@ -620,7 +624,7 @@
               {
                 "name": "denoised_output",
                 "type": "LATENT",
-                "links": []
+                "links": null
               }
             ],
             "properties": {
@@ -678,7 +682,7 @@
               {
                 "name": "latent",
                 "type": "LATENT",
-                "links": []
+                "links": null
               }
             ],
             "properties": {
@@ -720,7 +724,7 @@
               {
                 "name": "FLOAT",
                 "type": "FLOAT",
-                "links": []
+                "links": null
               },
               {
                 "name": "INT",
@@ -732,7 +736,7 @@
               {
                 "name": "BOOL",
                 "type": "BOOLEAN",
-                "links": []
+                "links": null
               }
             ],
             "properties": {
@@ -778,7 +782,7 @@
               {
                 "name": "FLOAT",
                 "type": "FLOAT",
-                "links": []
+                "links": null
               },
               {
                 "name": "INT",
@@ -790,7 +794,7 @@
               {
                 "name": "BOOL",
                 "type": "BOOLEAN",
-                "links": []
+                "links": null
               }
             ],
             "properties": {
@@ -965,7 +969,7 @@
               {
                 "name": "BOOL",
                 "type": "BOOLEAN",
-                "links": []
+                "links": null
               }
             ],
             "properties": {
@@ -1416,7 +1420,7 @@
               {
                 "name": "denoised_output",
                 "type": "LATENT",
-                "links": []
+                "links": null
               }
             ],
             "properties": {
@@ -1666,7 +1670,7 @@
               {
                 "name": "CLIP",
                 "type": "CLIP",
-                "links": []
+                "links": null
               },
               {
                 "name": "VAE",

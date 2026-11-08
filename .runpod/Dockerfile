@@ -29,6 +29,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends zip unzip && rm
     python3 -m venv /opt/awscli && /opt/awscli/bin/pip install --no-cache-dir 'awscli==1.46.3' && ln -s /opt/awscli/bin/aws /usr/local/bin/aws
 COPY scripts /opt/sulphur/scripts
 COPY versions /opt/sulphur/versions
+COPY frontend/workflow-defaults/ /opt/comfyui-baked/web/extensions/ACDEV-workflow-defaults/
 ARG VCS_REF=development
 RUN printf "SULPHUR_BUNDLE=%s\n" "$VCS_REF" >> /opt/comfyui-baked/.runpod-bundle-version && \
     sed -i 's/BAKED_NODES=(/BAKED_NODES=("ComfyUI-LTXVideo" "Sphere-Light-Render-ComfyUI" /' /start.sh && \

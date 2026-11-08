@@ -129,3 +129,8 @@ def package_extra(path,entry):
 
 if __name__=='__main__':
     for path in sorted((P/'api').glob('*.json')):package(path)
+
+# Apply the same canvas defaults after every regeneration.
+if __name__ == "__main__":
+    from workflow_defaults import normalize
+    normalize(Path(__file__).resolve().parents[1])

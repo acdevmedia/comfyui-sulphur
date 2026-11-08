@@ -38,7 +38,7 @@
         {
           "name": "MASK",
           "type": "MASK",
-          "links": []
+          "links": null
         }
       ],
       "properties": {
@@ -109,7 +109,7 @@
         {
           "name": "video",
           "type": "VIDEO",
-          "links": []
+          "links": null
         }
       ],
       "properties": {
@@ -164,7 +164,7 @@
         {
           "name": "MASK",
           "type": "MASK",
-          "links": []
+          "links": null
         }
       ],
       "properties": {
@@ -363,7 +363,10 @@
       "title": "Shot settings \u2014 First and Last Frame to Video",
       "properties": {
         "cnr_id": "comfy-core",
-        "ver": "0.39.0"
+        "ver": "0.39.0",
+        "acdevSeedModes": {
+          "seed": "randomize"
+        }
       },
       "widgets_values": [
         960,
@@ -901,12 +904,12 @@
               {
                 "name": "positive",
                 "type": "CONDITIONING",
-                "links": []
+                "links": null
               },
               {
                 "name": "negative",
                 "type": "CONDITIONING",
-                "links": []
+                "links": null
               },
               {
                 "name": "latent",
@@ -1094,7 +1097,7 @@
               {
                 "name": "batch_size",
                 "type": "INT",
-                "links": []
+                "links": null
               }
             ],
             "properties": {
@@ -1529,7 +1532,7 @@
               {
                 "name": "output",
                 "type": "LATENT",
-                "links": []
+                "links": null
               },
               {
                 "name": "denoised_output",
@@ -2103,7 +2106,7 @@
               {
                 "name": "CLIP",
                 "type": "CLIP",
-                "links": []
+                "links": null
               },
               {
                 "name": "VAE",
@@ -2410,7 +2413,7 @@
               {
                 "name": "batch_size",
                 "type": "INT",
-                "links": []
+                "links": null
               }
             ],
             "properties": {
@@ -2472,7 +2475,7 @@
               {
                 "name": "FLOAT",
                 "type": "FLOAT",
-                "links": []
+                "links": null
               },
               {
                 "name": "INT",
@@ -2486,7 +2489,7 @@
               {
                 "name": "BOOL",
                 "type": "BOOLEAN",
-                "links": []
+                "links": null
               }
             ],
             "properties": {
@@ -2552,7 +2555,7 @@
               {
                 "name": "FLOAT",
                 "type": "FLOAT",
-                "links": []
+                "links": null
               },
               {
                 "name": "INT",
@@ -2566,7 +2569,7 @@
               {
                 "name": "BOOL",
                 "type": "BOOLEAN",
-                "links": []
+                "links": null
               }
             ],
             "properties": {

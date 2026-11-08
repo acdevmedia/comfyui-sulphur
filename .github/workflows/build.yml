@@ -20,6 +20,8 @@ jobs:
         run: |
           bash -n scripts/*.sh
           python3 scripts/check-source.py
+          python3 scripts/audit-seeds.py
+          node scripts/test-workflow-defaults.mjs
           python3 scripts/package-workflows.py
           git diff --exit-code -- versions/2/workflows
       - name: Free build disk

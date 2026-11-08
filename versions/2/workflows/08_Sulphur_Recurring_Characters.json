@@ -82,7 +82,7 @@
         {
           "name": "MASK",
           "type": "MASK",
-          "links": []
+          "links": null
         }
       ],
       "properties": {
@@ -153,7 +153,7 @@
         {
           "name": "video",
           "type": "VIDEO",
-          "links": []
+          "links": null
         }
       ],
       "properties": {
@@ -297,7 +297,10 @@
       "title": "Shot settings \u2014 Recurring Characters",
       "properties": {
         "cnr_id": "comfy-core",
-        "ver": "0.39.0"
+        "ver": "0.39.0",
+        "acdevSeedModes": {
+          "seed": "randomize"
+        }
       },
       "widgets_values": [
         768,
@@ -321,30 +324,6 @@
       },
       "color": "#24364b",
       "bgcolor": "#172331"
-    },
-    {
-      "id": 9110,
-      "type": "MarkdownNote",
-      "pos": [
-        -540,
-        100
-      ],
-      "size": [
-        500,
-        760
-      ],
-      "flags": {},
-      "order": 0,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "title": "How to use this workflow",
-      "properties": {},
-      "widgets_values": [
-        "## How to keep a character across shots\n\n1. Upload one **Reference sheet** on a black background with no text: a face close-up and a full-body view of each person, each important prop, and a clean panel of the location. Bigger panels carry over better.\n2. Keep the prompt's two parts. **Reference sheet:** names each panel by its position. **Generated video:** describes the action and shot.\n3. Run. Reuse the same sheet and the same descriptions for every shot of the scene.\n\nThe sheet guides the shot and is never seen in the result. It is stretched to the frame, so make it the same shape. 768 x 448, 121 frames at 24 fps is what the model was trained on; other sizes and longer clips drift. Lightricks tuned **IC-LoRA strength** at 1.4 and start their examples at 1.0.\n\n**This one needs a licence first.** Accept the LTX-2 Community License at [Lightricks/LTX-2.3-22b-IC-LoRA-Ingredients](https://huggingface.co/Lightricks/LTX-2.3-22b-IC-LoRA-Ingredients) with the Hugging Face account behind `HF_TOKEN`, then restart the Pod or run `python3 /opt/sulphur/scripts/download-models.py` in its terminal. Until then this workflow reports a missing LoRA; nothing else is affected."
-      ],
-      "color": "#222",
-      "bgcolor": "#000"
     }
   ],
   "links": [
@@ -738,7 +717,7 @@
               {
                 "name": "CLIP",
                 "type": "CLIP",
-                "links": []
+                "links": null
               },
               {
                 "name": "VAE",
@@ -1732,7 +1711,7 @@
               {
                 "name": "denoised_output",
                 "type": "LATENT",
-                "links": []
+                "links": null
               }
             ],
             "properties": {
@@ -1819,12 +1798,12 @@
               {
                 "name": "positive",
                 "type": "CONDITIONING",
-                "links": []
+                "links": null
               },
               {
                 "name": "negative",
                 "type": "CONDITIONING",
-                "links": []
+                "links": null
               },
               {
                 "name": "latent",
