@@ -16,6 +16,8 @@ with open('/tmp/comfy-build-check.log','w') as log:
                 info=verify.request('http://127.0.0.1:18188','/object_info');break
             except Exception:time.sleep(1)
         else:raise RuntimeError('ComfyUI CPU smoke check timed out')
+        from verify_frontend import verify_frontend
+        verify_frontend()
         for path in Path('/opt/sulphur/versions/2/workflows').glob('*.json'):
             prompt=verify.convert(json.loads(path.read_text()),info)
             for key,node in prompt.items():

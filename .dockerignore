@@ -4,8 +4,9 @@
 !scripts/**
 !versions/
 !versions/**
-!frontend/
-!frontend/**
+!custom_nodes/
+!custom_nodes/acdev_workflow_defaults/
+!custom_nodes/acdev_workflow_defaults/**
 versions/*/upstream/
 
 !.runpod/
